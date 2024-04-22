@@ -60,7 +60,7 @@ Ubahlah kata yang terdapat `<>`
     2. klik tombol root (memiliki icon folder)
     3. pada folder tersebut klik kanan dan `Open in Terminal` (folder www)
     4. ketik perintah `git clone https://github.com/Fahridanaa/sawira.git`
-    5. masuk ke folder dengan perintah `cd .\Sawira\`
+    5. masuk ke folder dengan perintah `cd .\sawira\`
     6. jalankan `npm install` dan `composer install`
     7. Anda dapat menjalankan seperti biasa ketikkan perintah `npm run dev` dan `php artisan serve`
     8. buka http://localhost:8000
@@ -72,7 +72,7 @@ Ubahlah kata yang terdapat `<>`
 
    **Contoh:** (semisal sekarang aku berada di remote origin dan branch login)
     1. `git add .`
-    2. `git commit -m "feat:add login functionality"`
+    2. `git commit -m "feat: add login functionality"`
     3. `git push -u origin login`
 
    Dan sudah, kode anda akan berada di branch login :D
