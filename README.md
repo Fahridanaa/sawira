@@ -1,66 +1,94 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+### **Tentang Website**
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+---
 
-## About Laravel
+> SAWIRA merupakan aplikasi e-government berbasis web yang dirancang untuk membantu memenuhi kebutuhan administrasi dan
+> manajemen di lingkup RW, dengan tambahan beberapa fitur untuk memudahkan pengelolaan arsip, surat-menyurat, dan fitur
+> pembagian zakat fitrah yang inovatif. Sistem ini dibangun dengan fokus pada kemudahan penggunaan dan pemberdayaan
+> masyarakat, SAWIRA menjadi solusi terdepan bagi warga Villa Bukit Tidar dalam mengatasi berbagai kebutuhan mereka.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+### **Anggota Tim**
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+---
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+- Ahmad Faza Alfan Fashlah (**Project Manager**)
+- Fahridana Ahmad Rayyansyah (**Front-end Developer**)
+- Hanief Mochsin (**Back-end Developer**)
+- Rista Marlina Hutagaol (**UI/UX Designer**)
 
-## Learning Laravel
+### **Tech Stack:**
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+---
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+- **[Laravel](https://laravel.com/docs/10.x/releases#laravel-10)**
+- **[Bootstrap](https://getbootstrap.com/docs/5.3/getting-started/introduction/)**
+- **[Mysql](https://dev.mysql.com/doc/refman/8.0/en/)**
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 2000 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+### **Software Requirement:**
 
-## Laravel Sponsors
+---
+Sebelum menjalankan project ini, diwajibkan memiliki:
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+- **[Git](https://git-scm.com/downloads)**
+- **[Composer](https://getcomposer.org/download/)**
+- **[NodeJS](https://nodejs.org/en/download/current)**
 
-### Premium Partners
+### Do & Don't
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
+---
 
-## Contributing
+1. Gunakan Aturan [conventional commit](https://www.conventionalcommits.org/en/v1.0.0/) ketika ingin
+   menulis pesan commit:
+    * `feat`: untuk fitur baru
+    * `fix`: untuk perbaikan bug
+    * `refactor`: untuk perubahan kode tanpa ada perubahan fungsi
+    * `style`: untuk perubahan gaya/format kode tanpa ada perubahan fungsi
+    * `docs`: untuk perubahan dokumentasi
+    * `test`: untuk penambahan atau perubahan tes
+    * `chore`: untuk perubahan rutin atau kebersihan kode
+      <br/>Contoh: `feat: add login functionality`
+2. Gunakan bahasa inggris untuk pesan commit
+3. **Jangan** push di main
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+### How to
 
-## Code of Conduct
+--- 
+Ubahlah kata yang terdapat `<>`
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+1. **Clone Project ini**
+    1. buka laragon
+    2. klik tombol root (memiliki icon folder)
+    3. pada folder tersebut klik kanan dan `Open in Terminal` (folder www)
+    4. ketik perintah `git clone https://github.com/Fahridanaa/sawira.git`
+    5. masuk ke folder dengan perintah `cd .\Sawira\`
+    6. jalankan `npm install` dan `composer install`
+    7. Anda dapat menjalankan seperti biasa ketikkan perintah `npm run dev` dan `php artisan serve`
+    8. buka http://localhost:8000
 
-## Security Vulnerabilities
+2. **push to GitHub**
+    1. `git add .`
+    2. `git commit -m "<kata-kata mutiara>"`
+    3. `git push -u <nama-remote> <nama-branch>`
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+   **Contoh:** (semisal sekarang aku berada di remote origin dan branch login)
+    1. `git add .`
+    2. `git commit -m "feat:add login functionality"`
+    3. `git push -u origin login`
 
-## License
+   Dan sudah, kode anda akan berada di branch login :D
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+3. **Membuat branch**
+    1. `git checkout -b "<nama branch>"`
+
+   **Contoh:** Semisal saya ingin membuat branch login
+    1. `git checkout -b "login"`
+    2. udah gitu doang
+
+### Resources
+
+--- 
+
+1. https://laravel.com/docs/10.x
+2. https://getbootstrap.com/docs/5.3/getting-started/introduction/
+3. https://www.freecodecamp.org/news/the-model-view-controller-pattern-mvc-architecture-and-frameworks-explained/
+4. https://www.google.com/
