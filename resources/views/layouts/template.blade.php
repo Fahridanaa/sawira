@@ -4,41 +4,56 @@
     <title>{{ config('app.name', 'Sawira') }}</title>
     <!-- Required meta tags -->
     <meta charset="utf-8">
-    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"/>
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"
+          name="viewport"/>
 
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+    <meta http-equiv="X-UA-Compatible"
+          content="IE=edge,chrome=1"/>
 
     <!--     Fonts and icons     -->
-    <link rel="stylesheet" type="text/css"
+    <link rel="stylesheet"
+          type="text/css"
           href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:400,700|Material+Icons"/>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect"
+          href="https://fonts.googleapis.com">
+    <link rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap"
           rel="stylesheet">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css"/>
+    <link rel="stylesheet"
+          href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css"/>
 
     <!-- Material Dashboard CSS -->
-    <link rel="stylesheet" href="{{ asset("material-dashboard/assets/css/material-dashboard.css") }}">
+    <link rel="stylesheet"
+          href="{{ asset("material-dashboard/assets/css/material-dashboard.css") }}">
 
     @stack("css")
 </head>
 <body>
 <div class="wrapper">
-    <div class="sidebar" data-color="green" data-background-color="white"
+    <div class="sidebar"
+         data-color="green"
+         data-background-color="white"
          data-image="{{ 'material-dashboard/assets/img/sidebar-1.jpg' }}">
         @include('layouts.sidebar')
     </div>
-    <div class="main-panel ps-container ps-theme-default ps-active-y" data-ps-id="567f00be-16bf-3238-5beb-1eef2e6eee73">
+    <div class="main-panel ps-container ps-theme-default ps-active-y"
+         data-ps-id="567f00be-16bf-3238-5beb-1eef2e6eee73">
         @include('layouts.navbar')
         <div class="content">
-            @yield("content")
+            <div class="container-fluid">
+                @yield("content")
+            </div>
         </div>
     </div>
 </div>
 
 <!--   Core JS Files   -->
-<script src="{{ asset("material-dashboard/assets/js/core/jquery.min.js") }}" type="text/javascript"></script>
-<script src="{{ asset("material-dashboard/assets/js/core/popper.min.js") }}" type="text/javascript"></script>
+<script src="{{ asset("material-dashboard/assets/js/core/jquery.min.js") }}"
+        type="text/javascript"></script>
+<script src="{{ asset("material-dashboard/assets/js/core/popper.min.js") }}"
+        type="text/javascript"></script>
 <script src="{{ asset("material-dashboard/assets/js/core/bootstrap-material-design.min.js") }}"
         type="text/javascript"></script>
 

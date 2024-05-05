@@ -1,64 +1,62 @@
 @extends('layouts.template')
 @section('content')
-    <div class="container-fluid">
-        <div class="row">
-            <x-cards.stats-card
-                    color="warning"
-                    icon="content_copy"
-                    category="Used Space"
-                    title="49/50 GB"
-                    footerIcon="warning"
-                    footerText="Get More Space...">
-            </x-cards.stats-card>
-            <x-cards.stats-card
-                    color="success"
-                    icon="store"
-                    category="Revenue"
-                    title="$34,245"
-                    footerIcon="date_range"
-                    footerText="Last 24 Hours">
-            </x-cards.stats-card>
-            <x-cards.stats-card
-                    color="danger"
-                    icon="info_outline"
-                    category="Fixed Issues"
-                    title="75"
-                    footerIcon="local_offer"
-                    footerText="Tracked from Github">
-            </x-cards.stats-card>
-            <x-cards.stats-card
-                    color="info"
-                    icon="fa-twitter"
-                    iconType="fa"
-                    category="Followers"
-                    title="+245"
-                    footerIcon="update"
-                    footerText="Just Updated">
-            </x-cards.stats-card>
-        </div>
-        <div class="row">
-            <x-cards.chart-card color="success"
-                                chartId="dailySalesChart"
-                                title="Daily Sales"
-                                category="55% increase in today sales."
-                                statsIcon="access_time"
-                                statsText="updated 4 minutes ago">
-            </x-cards.chart-card>
-            <x-cards.chart-card color="warning"
-                                chartId="websiteViewsChart"
-                                title="Email Subscriptions"
-                                category="Last Campaign Performance"
-                                statsIcon="access_time"
-                                statsText="campaign sent 2 days ago">
-            </x-cards.chart-card>
-            <x-cards.chart-card color="danger"
-                                chartId="completedTasksChart"
-                                title="Completed Tasks"
-                                category="Last Campaign Performance"
-                                statsIcon="access_time"
-                                statsText="campaign sent 2 days ago">
-            </x-cards.chart-card>
-        </div>
+    <div class="row">
+        <x-cards.stats-card
+                color="warning"
+                icon="content_copy"
+                category="Used Space"
+                title="49/50 GB"
+                footerIcon="warning"
+                footerText="Get More Space...">
+        </x-cards.stats-card>
+        <x-cards.stats-card
+                color="success"
+                icon="store"
+                category="Revenue"
+                title="$34,245"
+                footerIcon="date_range"
+                footerText="Last 24 Hours">
+        </x-cards.stats-card>
+        <x-cards.stats-card
+                color="danger"
+                icon="info_outline"
+                category="Fixed Issues"
+                title="75"
+                footerIcon="local_offer"
+                footerText="Tracked from Github">
+        </x-cards.stats-card>
+        <x-cards.stats-card
+                color="info"
+                icon="fa-twitter"
+                iconType="fa"
+                category="Followers"
+                title="+245"
+                footerIcon="update"
+                footerText="Just Updated">
+        </x-cards.stats-card>
+    </div>
+    <div class="row">
+        <x-cards.chart-card color="success"
+                            chartId="dailySalesChart"
+                            title="Daily Sales"
+                            category="55% increase in today sales."
+                            statsIcon="access_time"
+                            statsText="updated 4 minutes ago">
+        </x-cards.chart-card>
+        <x-cards.chart-card color="warning"
+                            chartId="websiteViewsChart"
+                            title="Email Subscriptions"
+                            category="Last Campaign Performance"
+                            statsIcon="access_time"
+                            statsText="campaign sent 2 days ago">
+        </x-cards.chart-card>
+        <x-cards.chart-card color="danger"
+                            chartId="completedTasksChart"
+                            title="Completed Tasks"
+                            category="Last Campaign Performance"
+                            statsIcon="access_time"
+                            statsText="campaign sent 2 days ago">
+        </x-cards.chart-card>
     </div>
 @endsection
 @push('css')
