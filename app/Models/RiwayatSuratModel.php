@@ -4,12 +4,13 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class LevelModel extends Model
+class RiwayatSuratModel extends Model
 {
 	use HasFactory;
 
-	protected $table = 'level';
+	protected $table = 'riwayat_surat';
 
 	/**
 	 * The attributes that are mass assignable.
@@ -17,8 +18,8 @@ class LevelModel extends Model
 	 * @var array
 	 */
 	protected $fillable = [
-		'kode_level',
-		'nama_level',
+		'data_surat',
+		'template_surat_id',
 	];
 
 	/**
@@ -27,6 +28,12 @@ class LevelModel extends Model
 	 * @var array
 	 */
 	protected $casts = [
-		'id_level' => 'integer',
+		'id_riwayatSurat' => 'integer',
+		'id_surat' => 'integer',
 	];
+
+	public function templateSurat(): BelongsTo
+	{
+		return $this->belongsTo(TemplateSuratModel::class);
+	}
 }

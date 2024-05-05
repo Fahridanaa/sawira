@@ -4,12 +4,13 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class LevelModel extends Model
+class NotifikasiModel extends Model
 {
 	use HasFactory;
 
-	protected $table = 'level';
+	protected $table = 'notifikasi';
 
 	/**
 	 * The attributes that are mass assignable.
@@ -17,8 +18,9 @@ class LevelModel extends Model
 	 * @var array
 	 */
 	protected $fillable = [
-		'kode_level',
-		'nama_level',
+		'jenis_notifikasi',
+		'tanggal_notifikasi',
+		'id_akun',
 	];
 
 	/**
@@ -27,6 +29,13 @@ class LevelModel extends Model
 	 * @var array
 	 */
 	protected $casts = [
-		'id_level' => 'integer',
+		'id_notifikasi' => 'integer',
+		'tanggal_notifikasi' => 'date',
+		'id_akun' => 'integer',
 	];
+
+	public function akun(): BelongsTo
+	{
+		return $this->belongsTo(AkunModel::class);
+	}
 }

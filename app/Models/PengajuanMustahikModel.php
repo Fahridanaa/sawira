@@ -5,11 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class LevelModel extends Model
+class PengajuanMustahikModel extends Model
 {
 	use HasFactory;
 
-	protected $table = 'level';
+	protected $table = 'pengajuan_mustahik';
 
 	/**
 	 * The attributes that are mass assignable.
@@ -17,8 +17,8 @@ class LevelModel extends Model
 	 * @var array
 	 */
 	protected $fillable = [
-		'kode_level',
-		'nama_level',
+		'verifikasi_amil',
+		'alasan_ditolak',
 	];
 
 	/**
@@ -27,6 +27,7 @@ class LevelModel extends Model
 	 * @var array
 	 */
 	protected $casts = [
-		'id_level' => 'integer',
+		'id_pengajuan' => 'integer',
+		'verifikasi_amil' => 'boolean',
 	];
 }

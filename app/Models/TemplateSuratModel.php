@@ -5,11 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class LevelModel extends Model
+class TemplateSuratModel extends Model
 {
 	use HasFactory;
 
-	protected $table = 'level';
+	protected $table = 'template_surat';
 
 	/**
 	 * The attributes that are mass assignable.
@@ -17,8 +17,12 @@ class LevelModel extends Model
 	 * @var array
 	 */
 	protected $fillable = [
-		'kode_level',
-		'nama_level',
+		'kode_surat',
+		'nama_surat',
+		'deskripsi_surat',
+		'var_surat',
+		'tgl_pembuatan',
+		'isActive',
 	];
 
 	/**
@@ -27,6 +31,8 @@ class LevelModel extends Model
 	 * @var array
 	 */
 	protected $casts = [
-		'id_level' => 'integer',
+		'id_surat' => 'integer',
+		'tgl_pembuatan' => 'datetime',
+		'isActive' => 'boolean',
 	];
 }
