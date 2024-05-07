@@ -1,5 +1,5 @@
-@props(['color' => 'info', 'icon' => '', 'iconType' => 'material', 'category' => '', 'title' => '', 'footerIcon' => '', 'footerText' => ''])
-<div class="col-lg-3 col-md-6 col-sm-6">
+@props(['color' => 'info', 'icon' => '', 'iconType' => 'material', 'category' => '', 'title' => '', 'footerLink' => '/dashboard' ,'footerText' => ''])
+<div class="col-lg-4 col-md-6 col-sm-6">
     <div class="card card-stats">
         <div class="card-header card-header-{{$color}} card-header-icon">
             <div class="card-icon">
@@ -14,7 +14,8 @@
         </div>
         <div class="card-footer">
             <div class="stats">
-                <i class="material-icons">{{ $footerIcon }}</i>{{ $footerText }}
+                <a class="text-decoration-none text-black"
+                   href={{ $footerLink }}>{{ $footerText }}</a>
             </div>
         </div>
     </div>
