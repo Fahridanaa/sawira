@@ -23,9 +23,6 @@
           rel="stylesheet">
     <link rel="stylesheet"
           href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css"/>
-
-    {{--    <link rel="stylesheet"--}}
-    {{--          href="{{ asset('build/assets/app-94a8c0ac.css') }}">--}}
     <link rel="stylesheet"
           href="{{ asset('build/' . json_decode(file_get_contents(public_path('build/manifest.json')), true)['resources/js/app.css']['file']) }}">
     @stack("css")
