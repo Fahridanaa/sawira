@@ -1,0 +1,92 @@
+models:
+  Level:
+    kode_level: string:8 unique
+    nama_level: string:16
+    timestamps: true
+  RT:
+    no_rt: integer unique
+    timestamps: true
+  KK:
+    no_kk: string:16 unique
+    timestamps: true
+  StatusHubunganWarga:
+    nama_hubungan: string:25 unique
+    timestamps: true
+  SuratPindah:
+    surat_pindah: string:255
+    timestamps: true
+  TemplateSurat:
+    kode_surat: string:8 unique
+    nama_surat: string:50
+    deskripsi_surat: string:255
+    var_surat: string:255
+    tgl_pembuatan: datetime
+    isActive: boolean
+    timestamps: true
+  KategoriMustahik:
+    nama_kategori: string:255 unique
+    timestamps: true
+  PengajuanMustahik:
+    verifikasi_amil: boolean
+    alasan_ditolak: string:255 nullable
+    timestamps: true
+  Akun:
+    username: string:25 unique
+    password: string:20
+    timestamps: true
+    relationships:
+      belongsTo: KK, Level
+  SemuaWarga:
+    nik: string:16 unique
+    nama_lengkap: string:100
+    no_telp: string:30
+    jenis_kelamin: enum:L,P
+    asal_kota: string:50
+    tanggal_lahir: date
+    agama: string:20
+    pendidikan_terakhir: string:20
+    jenis_pekerjaan: string:50
+    alamat: string:255
+    tanggal_masuk: date
+    isActive: boolean
+    timestamps: true
+    relationships:
+      belongsTo: RT, Kk, StatusHubunganWarga
+  KetuaRT:
+    timestamps: true
+    relationships:
+      belongsTo: RT, SemuaWarga
+  RiwayatPenduduk:
+    tanggal_keluar: date
+    alamat_tujuan: string:255
+    alasan_keluar: string:255
+    timestamps: true
+    relationships:
+      belongsTo: SuratPindah
+  RiwayatPendudukKk:
+    timestamps: true
+    relationships:
+      belongsTo: KK, RiwayatPenduduk
+  Notifikasi:
+    jenis_notifikasi: enum:danger,warning,success
+    tanggal_notifikasi: date
+    timestamps: true
+    relationships:
+      belongsTo: Akun
+  RiwayatSurat:
+    data_surat: string:255
+    relationships:
+      belongsTo: TemplateSurat
+  Mustahik:
+    kondisi_rumah: enum:1,2,3,4,5
+    pendapatan_bulanan: integer
+    pengeluaran_bulanan: integer
+    jumlah_hutang: integer
+    verifikasi: boolean
+    timestamps: true
+    relationships:
+      belongsTo: KategoriMustahik
+  VerifikasiMustahik:
+    timestamps: true
+    relationships:
+      belongsTo: Mustahik, PengajuanMustahik
