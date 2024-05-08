@@ -28,7 +28,7 @@
     @stack("css")
 </head>
 <body>
-<div class="wrapper">
+<div class="wrapper overflow-auto">
     <div class="sidebar"
          data-color="green"
          data-background-color="white"
@@ -37,7 +37,7 @@
     </div>
     <div class="main-panel ps-container ps-theme-default ps-active-y">
         @include('layouts.navbar')
-        <div class="content d-flex flex-column">
+        <div class="content d-flex flex-column py-2">
             <div class="container-fluid d-flex flex-column flex-grow-1">
                 @yield("content")
             </div>
