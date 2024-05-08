@@ -23,16 +23,21 @@
                 footerText="Riwayat Penduduk">
         </x-cards.stats-card>
     </div>
-    <div class="row flex-grow-1 mx-xl-5">
-        <div class="col flex-grow-1 d-flex flex-column overflow-auto mw-100">
-            <div class="card card-chart">
+    <div class="row flex-grow-1">
+        <div class="col d-flex">
+            <div class="card card-chart flex-grow-1">
                 <div class="card-header card-header-success">
-                    <span class="card-title">Jumlah Penduduk yang masuk</span>
-                    <span class="card-category">2024</span>
+                    <h4 class="card-title">Jumlah Penduduk yang masuk</h4>
+                    <p class="card-category">2024</p>
                 </div>
-                <div class="card-body d-flex flex-column  overflow-auto">
+                <div class="card-body d-flex">
                     <div class="ct-chart flex-grow-1"
                          id="dailySalesChart">
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <div class="stats">
+                        <i class="material-icons">access_time</i> updated 4 minutes ago
                     </div>
                 </div>
             </div>
@@ -43,6 +48,35 @@
 @endpush
 @push('js')
     <script>
+        function startAnimationForLineChart(chart) {
+            chart.on('draw', function (data) {
+                if (data.type === 'line' || data.type === 'area') {
+                    data.element.animate({
+                        d: {
+                            begin: 600,
+                            dur: 700,
+                            from: data.path.clone().scale(1, 0).translate(0, data.chartRect.height()).stringify(),
+                            to: data.path.clone().stringify(),
+                            easing: Chartist.Svg.Easing.easeOutQuint
+                        }
+                    });
+                } else if (data.type === 'point') {
+                    seq++;
+                    data.element.animate({
+                        opacity: {
+                            begin: 0,
+                            dur: 500,
+                            from: 0,
+                            to: 1,
+                            easing: 'ease'
+                        }
+                    });
+                }
+            });
+
+            seq = 0;
+        }
+
         $(document).ready(function () {
             function initDashboardPageCharts() {
                 let dataDailySalesChart;
@@ -60,20 +94,18 @@
                             tension: 0
                         }),
                         low: 0,
-                        high: 40, // creative tim: we recommend you to set the high sa the biggest value + something for a better look
+                        high: 50, // creative tim: we recommend you to set the high sa the biggest value + something for a better look
                         chartPadding: {
-                            top: 25,
-                            right: 10,
-                            bottom: 25,
-                            left: 10
+                            top: 30,
+                            right: 15,
+                            bottom: 30,
+                            left: 15
                         },
-                        width: '100%',
-                        height: '300px'
                     }
 
                     const dailySalesChart = new Chartist.LineChart('#dailySalesChart', dataDailySalesChart, optionsDailySalesChart);
 
-                    dailySalesChart.update();
+                    startAnimationForLineChart(dailySalesChart);
                 }
             }
 
