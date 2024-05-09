@@ -9,7 +9,7 @@ class DashboardController extends Controller
 	public function index()
 	{
 		$breadcrumb = 'Dashboard';
-		$level = 'rt';
+		$level = 'RT';
 		return view('dashboard.' . $level, ['breadcrumb' => $breadcrumb]);
 	}
 }
