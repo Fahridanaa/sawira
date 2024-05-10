@@ -1,46 +1,35 @@
 import {defineConfig} from 'vite';
 import laravel from 'laravel-vite-plugin';
+import {resolve} from 'path';
 
-export default defineConfig(({command, mode}) => {
-    const isProd = mode === 'production';
-
-    return {
-        define: {
-            'process.env': {},
-            'process.env.NODE_ENV': isProd ? '"production"' : '"development"',
-            global: 'window',
-            'global.jQuery': 'jquery',
+export default defineConfig({
+    plugins: [
+        laravel({
+            input: [
+                'resources/js/app.js',
+                'resources/sass/app.scss',
+                'resources/css/app.css'
+            ],
+            refresh: true,
+        }),
+    ],
+    resolve: {
+        alias: {
+            jquery: resolve(__dirname, './node_modules/jquery/dist/jquery.min.js')
         },
-        plugins: [
-            laravel({
-                input: [
-                    'resources/js/app.js',
-                ],
-                refresh: true,
-            }),
-        ],
-        css: {
-            preprocessorOptions: {
-                scss: {
-                    additionalData: `@import 'node_modules/material-dashboard/assets/scss/material-dashboard.scss';`,
-                },
-            },
+    },
+    server: {
+        hmr: {
+            host: 'localhost',
         },
-        server: {
-            hmr: {
-                host: 'localhost',
-            },
+    },
+    optimizeDeps: {
+        include: ['jquery'],
+    },
+    build: {
+        outDir: 'public/build',
+        rollupOptions: {
+            external: ['jquery'],
         },
-        resolve: {
-            alias: {
-                'material-dashboard': 'material-dashboard/assets/js/material-dashboard.js',
-            },
-        },
-        optimizeDeps: {
-            include: ['jquery'],
-        },
-        build: {
-            outDir: 'public/build',
-        },
-    };
+    },
 });
