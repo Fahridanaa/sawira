@@ -23,30 +23,22 @@
                 footerText="Riwayat Penduduk">
         </x-cards.stats-card>
     </div>
-    <div class="row fill-remaining-space">
-        <div class="col">
-            <div class="card card-chart">
-                <div class="card-header card-header-success">
-                    <h4 class="card-title">Jumlah Penduduk yang masuk</h4>
-                    <p class="card-category">2024</p>
-                </div>
-                <div class="card-body">
-                    <div class="ct-chart"
-                         id="dailySalesChart">
-                    </div>
-                </div>
-                <div class="card-footer">
-                    <div class="stats">
-                        <i class="material-icons">access_time</i> updated 4 minutes ago
-                    </div>
-                </div>
-            </div>
-        </div>
+    <div class="row flex-grow-1 d-flex">
+        <x-charts.penduduk-line-chart
+                cardTitle="Penduduk Masuk dan Keluar"
+                cardCategory="2024"
+                chartId="citizensChart"
+                updatedTime="updated 4 minutes ago">
+        </x-charts.penduduk-line-chart>
+        <x-charts.usia-penduduk-pie-chart
+                cardTitle="Usia Penduduk"
+                chartId="ageChart"
+                updatedTime="updated 4 minutes ago">
+        </x-charts.usia-penduduk-pie-chart>
     </div>
 @endsection
-@push('css')
-@endpush
 @push('js')
+    <<<<<<< HEAD
     <script>
         $(document).ready(function () {
             function initDashboardPageCharts() {
@@ -83,5 +75,8 @@
             initDashboardPageCharts();
         });
     </script>
+    =======
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    >>>>>>> 8c0f19caace1781512ac79e7f8f1480dc12e3aa4
 @endpush
 
