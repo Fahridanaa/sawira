@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\DataTables\CitizensDataTable;
 use Illuminate\Http\Request;
 
 class ManageCitizens extends Controller
@@ -9,10 +10,10 @@ class ManageCitizens extends Controller
 	/**
 	 * Display a listing of the resource.
 	 */
-	public function index()
+	public function index(CitizensDataTable $dataTable)
 	{
 		$breadcrumb = 'Kelola Penduduk';
-		return view('manage.citizensRt', ['breadcrumb' => $breadcrumb]);
+		return $dataTable->render('manage.citizensRT', ['breadcrumb' => $breadcrumb]);
 	}
 
 	/**

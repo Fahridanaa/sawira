@@ -13,7 +13,7 @@ use App\Models\RiwayatPendudukKkModel;
 use App\Models\RiwayatPendudukModel;
 use App\Models\RiwayatSuratModel;
 use App\Models\RTModel;
-use App\Models\SemuaWargaModel;
+use App\Models\CitizensModel;
 use App\Models\StatusHubunganWargaModel;
 use App\Models\SuratPindahModel;
 use App\Models\TemplateSuratModel;
@@ -36,7 +36,7 @@ class DatabaseSeeder extends Seeder
 		$this->call(KategoriMustahikSeeder::class);
 		PengajuanMustahikModel::factory(5)->create();
 		AkunModel::factory(25)->create();
-		SemuaWargaModel::factory(25)->create();
+		CitizensModel::factory(25)->create();
 		KetuaRTModel::factory(18)->create();
 		RiwayatPendudukModel::factory(15)->create();
 		RiwayatPendudukKkModel::factory(10)->create();

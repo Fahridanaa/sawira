@@ -4,6 +4,7 @@ namespace App\DataTables;
 
 use App\Models\CitizensModel;
 use Illuminate\Database\Eloquent\Builder as QueryBuilder;
+use Illuminate\Support\Facades\Log;
 use Yajra\DataTables\EloquentDataTable;
 use Yajra\DataTables\Html\Builder as HtmlBuilder;
 use Yajra\DataTables\Html\Button;
@@ -22,13 +23,18 @@ class CitizensDataTable extends DataTable
 	public function dataTable(QueryBuilder $query): EloquentDataTable
 	{
 		return (new EloquentDataTable($query))
-			->editColumn('nik', function ($row) {
-				return strtoupper($row->nik);
+			->addColumn('action', function () {
+				return '<a class="edit btn btn-info btn-sm" href="#">show</a>';
 			})
-			->addColumn('show', function () {
-				return '<a class="edit btn btn-success btn-sm" href="#">show</a>';
+			->addColumn('no_kk', function ($citizens) {
+				return $citizens->kk->no_kk ?? 'N/A';
 			})
-			->rawColumns(['show'])
+			->filterColumn('no_kk', function ($query, $keyword) {
+				$query->whereHas('kk', function ($query) use ($keyword) {
+					$query->where('no_kk', 'like', "%$keyword%");
+				});
+			})
+			->rawColumns(['action', 'no_kk'])
 			->setRowId('id');
 	}
 
@@ -37,7 +43,10 @@ class CitizensDataTable extends DataTable
 	 */
 	public function query(CitizensModel $model): QueryBuilder
 	{
-		return $model->newQuery();
+		return $model->newQuery()
+			->with(['kk:id_kk,no_kk', 'statusHubunganWarga:nama_hubungan'])
+			->select('semua_warga.*')
+			->where('semua_warga.id_hubungan', 1);
 	}
 
 	/**
@@ -53,7 +62,8 @@ class CitizensDataTable extends DataTable
 			->selectStyleSingle()
 //			->addTableClass('table-responsive')
 			->parameters([
-				'buttons' => ['export'],
+				'dom' => 'Bfrtip',
+				'buttons' => ['add'],
 			]);
 	}
 
@@ -63,18 +73,13 @@ class CitizensDataTable extends DataTable
 	public function getColumns(): array
 	{
 		return [
-			Column::make('nik')->addClass('uppercase-header'),
-			Column::make('nama_lengkap'),
-			Column::make('no_telp'),
-			Column::make('asal_kota'),
-			Column::make('agama'),
-			Column::computed('show')
+			Column::make('no_kk')->title('No. KK'),
+			Column::make('nama_lengkap')->title('Kepala Keluarga'),
+			Column::computed('action')
 				->exportable(false)
 				->printable(false)
 				->width(60)
-				->addClass(
-					'text-center'
-				),
+				->addClass('text-center'),
 		];
 	}
 
