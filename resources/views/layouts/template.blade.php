@@ -23,8 +23,9 @@
           rel="stylesheet">
     <link rel="stylesheet"
           href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css"/>
-    <link rel="stylesheet"
-          href="{{ asset('build/' . json_decode(file_get_contents(public_path('build/manifest.json')), true)['resources/js/app.css']['file']) }}">
+    {{--    <link rel="stylesheet"--}}
+    {{--              href="{{ asset('build/' . json_decode(file_get_contents(public_path('build/manifest.json')), true)['resources/js/app.css']['file']) }}">--}}
+    @vite('resources/css/app.css')
     @stack("css")
 </head>
 <body>
@@ -44,7 +45,8 @@
         </div>
     </div>
 </div>
-<script src="{{ asset('build/' . json_decode(file_get_contents(public_path('build/manifest.json')), true)['resources/js/app.js']['file']) }}"></script>
+{{--<script src="{{ asset('build/' . json_decode(file_get_contents(public_path('build/manifest.json')), true)['resources/js/app.js']['file']) }}"></script>--}}
+@vite('resources/js/app.js')
 @stack('js')
 </body>
 </html>

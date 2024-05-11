@@ -11,8 +11,7 @@
     </div>
 </div>
 @push('js')
-    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
-    <script>
+    <script type="module">
         $(document).ready(function () {
             const ctx = document.getElementById('{{ $chartId }}').getContext('2d');
             new Chart(ctx, {
