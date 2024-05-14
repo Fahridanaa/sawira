@@ -24,7 +24,7 @@ class CitizensDataTable extends DataTable
 	{
 		return (new EloquentDataTable($query))
 			->addColumn('action', function () {
-				return '<a class="edit btn btn-info btn-sm" href="#">show</a>';
+				return '<a class="edit btn btn-info btn-sm" href="#">Tampilkan</a>';
 			})
 			->addColumn('no_kk', function ($citizens) {
 				return $citizens->kk->no_kk ?? 'N/A';
@@ -59,12 +59,8 @@ class CitizensDataTable extends DataTable
 			->columns($this->getColumns())
 			->minifiedAjax()
 			->orderBy(1)
-			->selectStyleSingle()
+			->selectStyleSingle();
 //			->addTableClass('table-responsive')
-			->parameters([
-				'dom' => 'Bfrtip',
-				'buttons' => ['add'],
-			]);
 	}
 
 	/**
