@@ -5,21 +5,21 @@
                 color="success"
                 icon="people"
                 category="Penduduk"
-                title="55555"
+                title="{{ $jumlahWarga }}"
                 footerText="Kelola Data Penduduk">
         </x-cards.stats-card>
         <x-cards.stats-card
                 color="info"
                 icon="family_restroom"
                 category="Kartu Keluarga"
-                title="44444"
+                title="{{ $jumlahKK }}"
                 footerText="Kelola Kartu Keluarga">
         </x-cards.stats-card>
         <x-cards.stats-card
                 color="warning"
                 icon="history"
                 category="Riwayat Penduduk"
-                title="32"
+                title="{{ $jumlahRT }}"
                 footerText="Riwayat Penduduk">
         </x-cards.stats-card>
     </div>
@@ -28,11 +28,15 @@
                 cardTitle="Penduduk Masuk dan Keluar"
                 cardCategory="2024"
                 chartId="citizensChart"
+                :labels="$labels"
+                :values="$values"
+                :valuess="$values1"
                 updatedTime="updated 4 minutes ago">
         </x-charts.penduduk-line-chart>
         <x-charts.usia-penduduk-pie-chart
                 cardTitle="Usia Penduduk"
                 chartId="ageChart"
+                :data="$usiaPendudukArray"
                 updatedTime="updated 4 minutes ago">
         </x-charts.usia-penduduk-pie-chart>
     </div>

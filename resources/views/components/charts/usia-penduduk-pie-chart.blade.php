@@ -18,15 +18,15 @@
                 type: 'pie',
                 data: {
                     labels: [
-                        'Balita',
-                        'Anak-anak',
-                        'Remaja',
-                        'Dewasa',
-                        'Lansia'
+                        'Balita', // 5< tahun
+                        'Anak-anak', // 6 - 10 tahun 
+                        'Remaja', // 10 - 25 tahun
+                        'Dewasa', // 26 - 45 tahun
+                        'Lansia' // >45 tahun
                     ],
                     datasets: [{
                         // label: 'Usia Penduduk'
-                        data: [20, 80, 170, 220, 70],
+                        data: {{ json_encode($data) }},
                         backgroundColor: [
                             'rgb(255, 99, 132)',
                             'rgb(54, 162, 235)',

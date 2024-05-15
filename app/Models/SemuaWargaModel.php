@@ -11,6 +11,7 @@ class SemuaWargaModel extends Model
 	use HasFactory;
 
 	protected $table = 'semua_warga';
+	protected $primaryKey = 'id_warga';
 	/**
 	 * The attributes that are mass assignable.
 	 *
