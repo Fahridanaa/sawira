@@ -15,9 +15,18 @@ use App\Http\Controllers\ManageCitizens;
 */
 
 Route::get('/', function () {
-	return view('welcome');
+	return view('layouts.app');
 });
 
 Route::get('/dashboard', [\App\Http\Controllers\DashboardController::class, 'index'])->name('dashboard');
 
-Route::resource('/penduduk', ManageCitizens::class);
+Route::resource('/penduduk', ManageCitizens::class)->names([
+	'index' => 'penduduk.index',
+	'create' => 'penduduk.create',
+	'store' => 'penduduk.store',
+	'show' => 'penduduk.show',
+	'edit' => 'penduduk.edit',
+	'update' => 'penduduk.update',
+	'destroy' => 'penduduk.destroy',
+]);
+Route::get('/penduduk/riwayat', [\App\Http\Controllers\historyCitizensController::class, 'index'])->name('history');

@@ -13,7 +13,7 @@ class ManageCitizens extends Controller
 	public function index(CitizensDataTable $dataTable)
 	{
 		$breadcrumb = 'Kelola Penduduk';
-		return $dataTable->render('manage.citizensRT', ['breadcrumb' => $breadcrumb]);
+		return $dataTable->render('pages.manageCitizens.RT', ['breadcrumb' => $breadcrumb]);
 	}
 
 	/**
@@ -21,7 +21,7 @@ class ManageCitizens extends Controller
 	 */
 	public function create()
 	{
-		//
+		return view('pages.manageCitizens.create');
 	}
 
 	/**

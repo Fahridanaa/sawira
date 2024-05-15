@@ -10,6 +10,6 @@ class DashboardController extends Controller
 	{
 		$breadcrumb = 'Dashboard';
 		$level = 'RT';
-		return view('dashboard.' . $level, ['breadcrumb' => $breadcrumb]);
+		return view('pages.dashboard.' . $level, ['breadcrumb' => $breadcrumb]);
 	}
 }

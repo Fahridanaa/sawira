@@ -1,17 +1,11 @@
-<div class="col-lg-8">
-    <div class="card card-chart">
-        <div class="card-header card-header-success">
-            <span class="card-title">{{ $cardTitle }}</span>
-            <p class="card-category">{{ $cardCategory }}</p>
+<div class="col-lg-8 col-md-12 col-12 col-sm-12">
+    <div class="card">
+        <div class="card-header">
+            <h4 class="card-title">{{ $cardTitle }}</h4>
         </div>
-        <div class="card-body d-flex">
+        <div class="card-body">
             <canvas id="{{ $chartId }}"
                     class="flex-grow-1"></canvas>
-        </div>
-        <div class="card-footer">
-            <div class="stats">
-                <i class="material-icons">access_time</i> {{ $updatedTime }}
-            </div>
         </div>
     </div>
 </div>

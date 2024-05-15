@@ -20,6 +20,7 @@
     "@popperjs/core": "^2.11.8",
     "bootstrap": "^5.3.3",
     "chart.js": "^4.4.2",
+    "jquery.nicescroll": "^3.7.6",
     "material-dashboard": "^2.1.0",
     "sass": "^1.77.1"
   }
