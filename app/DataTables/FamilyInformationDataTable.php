@@ -3,6 +3,7 @@
 namespace App\DataTables;
 
 use App\Models\CitizensModel;
+use App\Models\KartuKeluarga;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder as QueryBuilder;
 use Yajra\DataTables\EloquentDataTable;
@@ -13,8 +14,10 @@ use Yajra\DataTables\Html\Editor\Editor;
 use Yajra\DataTables\Html\Editor\Fields;
 use Yajra\DataTables\Services\DataTable;
 
-class CitizensDataTable extends DataTable
+class FamilyInformationDataTable extends DataTable
 {
+	public $id_kk;
+
 	/**
 	 * Build the DataTable class.
 	 *
@@ -22,12 +25,18 @@ class CitizensDataTable extends DataTable
 	 */
 	public function dataTable(QueryBuilder $query): EloquentDataTable
 	{
-		return (new EloquentDataTable($query))
+		return datatables()
+			->eloquent($query)
 			->editColumn('tanggal_lahir', function ($row) {
 				return $row->tanggal_lahir ? with(new Carbon($row->tanggal_lahir))->format('d/m/Y') : '';
 			})
-			->addColumn('action', 'citizens.action')
-			->setRowId('id');
+			->addColumn('No', function ($row) {
+				return '';
+			})
+			->addColumn('show', function () {
+				return '<button class="btn btn-primary trigger--fire-modal-2" id="modal-2">Detail</button>';
+			})
+			->rawColumns(['show']);
 	}
 
 	/**
@@ -35,7 +44,10 @@ class CitizensDataTable extends DataTable
 	 */
 	public function query(CitizensModel $model): QueryBuilder
 	{
-		return $model->newQuery();
+		return $model->newQuery()
+			->with(['kk:id_kk,no_kk', 'statusHubunganWarga:nama_hubungan'])
+			->select('semua_warga.*')
+			->where('semua_warga.id_kk', $this->id_kk);
 	}
 
 	/**
@@ -44,17 +56,15 @@ class CitizensDataTable extends DataTable
 	public function html(): HtmlBuilder
 	{
 		return $this->builder()
-			->setTableId('citizens-table')
+			->setTableId('kartukeluarga-table')
 			->columns($this->getColumns())
 			->minifiedAjax()
-			//->dom('Bfrtip')
 			->orderBy(1)
 			->selectStyleSingle()
-			->buttons([
-				[
-					'text' => 'Tambah Warga',
-					'className' => 'btn btn-primary',
-				]
+			->parameters([
+				'dom' => 't', // This line will only show table
+				'paging' => false, // This will disable the pagination
+				'searching' => false, // this will disable the search bar
 			]);
 	}
 
@@ -64,16 +74,18 @@ class CitizensDataTable extends DataTable
 	public function getColumns(): array
 	{
 		return [
+			Column::make('No'),
 			Column::make('nama_lengkap'),
 			Column::make('nik'),
 			Column::make('asal_kota'),
 			Column::make('tanggal_lahir'),
 			Column::make('no_telp'),
-			Column::computed('action')
+			Column::computed('show')
 				->exportable(false)
 				->printable(false)
-				->width(60)
-				->addClass('text-center'),
+				->width(90)
+				->addClass('text-center')
+				->title('Detail'),
 		];
 	}
 
@@ -82,6 +94,6 @@ class CitizensDataTable extends DataTable
 	 */
 	protected function filename(): string
 	{
-		return 'Citizens_' . date('YmdHis');
+		return 'KartuKeluarga_' . date('YmdHis');
 	}
 }

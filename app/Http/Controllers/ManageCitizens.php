@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\DataTables\CitizensDataTable;
+use App\DataTables\FamilyHeadDataTable;
+use App\DataTables\FamilyInformationDataTable;
+use App\Models\CitizensModel;
+use App\Models\KKModel;
 use Illuminate\Http\Request;
 
 class ManageCitizens extends Controller
@@ -10,10 +13,10 @@ class ManageCitizens extends Controller
 	/**
 	 * Display a listing of the resource.
 	 */
-	public function index(CitizensDataTable $dataTable)
+	public function index()
 	{
 		$breadcrumb = 'Kelola Penduduk';
-		return $dataTable->render('pages.manageCitizens.RT', ['breadcrumb' => $breadcrumb]);
+		return view('pages.manageCitizens.index', ['breadcrumb' => $breadcrumb]);
 	}
 
 	/**
@@ -21,7 +24,8 @@ class ManageCitizens extends Controller
 	 */
 	public function create()
 	{
-		return view('pages.manageCitizens.create');
+		$breadcrumb = 'Detail Penduduk';
+		return view('pages.manageCitizens.show', ['breadcrumb' => $breadcrumb]);
 	}
 
 	/**
@@ -35,9 +39,11 @@ class ManageCitizens extends Controller
 	/**
 	 * Display the specified resource.
 	 */
-	public function show(string $id)
+	public function show(string $id, FamilyInformationDataTable $dataTable)
 	{
-		//
+		$dataTable->id_kk = $id;
+		$penduduk = CitizensModel::with(['kk:id_kk'])->where('id_kk', $dataTable->id_kk)->get();
+		return $dataTable->render('pages.manageCitizens.show', ['penduduk' => $penduduk]);
 	}
 
 	/**

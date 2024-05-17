@@ -14,9 +14,9 @@
             <a class="nav-link"
                href="/penduduk"><i class="fas fa-columns"></i> <span>Kelola Penduduk</span></a>
         </li>
-        <li class="">
+        <li class="@if(url()->current() === route('history')) active @endif">
             <a class="nav-link"
-               href="{{ route('history') }}"><i class="fa fa-history"></i> <span>Riwayat Penduduk</span></a>
+               href="{{ route('history') }}"><i class="fas fa-history"></i> <span>Riwayat Penduduk</span></a>
         </li>
     </ul>
 </aside>
