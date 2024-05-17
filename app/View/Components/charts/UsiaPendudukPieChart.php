@@ -1,12 +1,12 @@
 <?php
 
-namespace App\View\Components;
+namespace App\View\Components\charts;
 
 use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 
-class stats-card extends Component
+class UsiaPendudukPieChart extends Component
 {
     /**
      * Create a new component instance.
@@ -21,6 +21,6 @@ class stats-card extends Component
      */
     public function render(): View|Closure|string
     {
-        return view('components.stats-card');
+        return view('components.charts.usia-penduduk-pie-chart');
     }
 }
