@@ -10,33 +10,36 @@
                     iconType="far"
                     iconName="fa-user"
                     title="Total Penduduk"
-                    value="100">
+                    value="{{ $totalCitizenCount }}">
             </x-cards.stats-card>
             <x-cards.stats-card
                     background="bg-success"
                     iconType="fas"
                     iconName="fa-users"
                     title="Total Kartu Keluarga"
-                    value="50">
+                    value="{{ $totalFamilyCount }}">
             </x-cards.stats-card>
-
             <x-cards.stats-card
                     background="bg-info"
                     iconType="fas"
                     iconName="fa-flag"
                     title="Total RT"
-                    value="20">
+                    value="{{ $totalRTCount }}">
             </x-cards.stats-card>
         </div>
         <div class="row flex-grow-1 d-flex">
             <x-charts.penduduk-line-chart
                     cardTitle="Penduduk Masuk dan Keluar"
                     cardCategory="2024"
+                    :labels="$monthLabels"
+                    :entryCitizenData="$entryDataPerMonth"
+                    :exitCitizenData="$exitDataPerMonth"
                     chartId="citizensChart">
             </x-charts.penduduk-line-chart>
             <x-charts.usia-penduduk-pie-chart
                     cardTitle="Usia Penduduk"
                     chartId="ageChart"
+                    :data="$ageGroupCounts"
                     updatedTime="updated 4 minutes ago">
             </x-charts.usia-penduduk-pie-chart>
         </div>
