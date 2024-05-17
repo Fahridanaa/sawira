@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 use App\Models\KetuaRTModel;
 use App\Models\RTModel;
-use App\Models\SemuaWargaModel;
+use App\Models\CitizensModel;
 
 class KetuaRTModelFactory extends Factory
 {
@@ -24,7 +24,7 @@ class KetuaRTModelFactory extends Factory
 	{
 		return [
 			'id_rt' => RTModel::inRandomOrder()->first()->id_rt,
-			'id_warga' => SemuaWargaModel::factory(),
+			'id_warga' => CitizensModel::factory(),
 		];
 	}
 }

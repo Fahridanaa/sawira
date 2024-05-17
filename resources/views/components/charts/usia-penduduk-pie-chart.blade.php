@@ -1,7 +1,7 @@
 <div class="col-lg-4">
-    <div class="card card-chart">
-        <div class="card-header card-header-success">
-            <span class="card-title">{{ $cardTitle }}</span>
+    <div class="card">
+        <div class="card-header">
+            <h4 class="card-title">{{ $cardTitle }}</h4>
         </div>
         <div class="card-body d-flex justify-content-center"
              style="max-width: 500px; max-height: 500px;">

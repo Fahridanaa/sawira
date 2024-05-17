@@ -1,72 +1,35 @@
-<nav class="navbar navbar-expand-lg navbar-transparent navbar-absolute fixed-top ">
-    <div class="container-fluid">
-        <div class="navbar-wrapper">
-            <span class="navbar-brand">{{ $breadcrumb }}</span>
+<form class="form-inline mr-auto">
+    <ul class="navbar-nav mr-3">
+        <li><a href="#"
+               data-toggle="sidebar"
+               id="burger"
+               class="nav-link nav-link-lg"><i class="fas fa-bars"></i></a></li>
+    </ul>
+</form>
+<ul class="navbar-nav navbar-right">
+    <li class="dropdown"><a href="#"
+                            data-toggle="dropdown"
+                            class="nav-link dropdown-toggle nav-link-lg nav-link-user">
+            <img alt="image"
+                 src="../assets/img/avatar/avatar-1.png"
+                 class="rounded-circle mr-1">
+            <div class="d-sm-none d-lg-inline-block">Hi, Ujang Maman</div>
+        </a>
+        <div class="dropdown-menu dropdown-menu-right">
+            <div class="dropdown-title">Logged in 5 min ago</div>
+            <a href="features-profile.html"
+               class="dropdown-item has-icon">
+                <i class="far fa-user"></i> Profile
+            </a>
+            <a href="features-settings.html"
+               class="dropdown-item has-icon">
+                <i class="fas fa-cog"></i> Settings
+            </a>
+            <div class="dropdown-divider"></div>
+            <a href="{{ route('login') }}"
+               class="dropdown-item has-icon text-danger">
+                <i class="fas fa-sign-out-alt"></i> Logout
+            </a>
         </div>
-        <button class="navbar-toggler"
-                type="button"
-                data-toggle="collapse"
-                aria-controls="navigation-index"
-                aria-expanded="false"
-                aria-label="Toggle navigation">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="navbar-toggler-icon icon-bar"></span>
-            <span class="navbar-toggler-icon icon-bar"></span>
-            <span class="navbar-toggler-icon icon-bar"></span>
-        </button>
-        <div class="collapse navbar-collapse justify-content-end">
-            <ul class="navbar-nav">
-                <li class="nav-item dropdown">
-                    <a class="nav-link"
-                       href="http://example.com"
-                       id="navbarDropdownMenuLink"
-                       data-toggle="dropdown"
-                       aria-haspopup="true"
-                       aria-expanded="false">
-                        <i class="material-icons">notifications</i>
-                        <span class="notification">5</span>
-                        <p class="d-lg-none d-md-block">
-                            Some Actions
-                        </p>
-                    </a>
-                    <div class="dropdown-menu dropdown-menu-right"
-                         aria-labelledby="navbarDropdownMenuLink">
-                        <a class="dropdown-item"
-                           href="#">Mike John responded to your email</a>
-                        <a class="dropdown-item"
-                           href="#">You have 5 new tasks</a>
-                        <a class="dropdown-item"
-                           href="#">You're now friend with Andrew</a>
-                        <a class="dropdown-item"
-                           href="#">Another Notification</a>
-                        <a class="dropdown-item"
-                           href="#">Another One</a>
-                    </div>
-                </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link"
-                       href="javascript:;"
-                       id="navbarDropdownProfile"
-                       data-toggle="dropdown"
-                       aria-haspopup="true"
-                       aria-expanded="false">
-                        <i class="material-icons">person</i>
-                        <p class="d-lg-none d-md-block">
-                            Account
-                        </p>
-                    </a>
-                    <div class="dropdown-menu dropdown-menu-right"
-                         aria-labelledby="navbarDropdownProfile">
-                        <a class="dropdown-item"
-                           href="#">Profile</a>
-                        <a class="dropdown-item"
-                           href="#">Settings</a>
-                        <div class="dropdown-divider"></div>
-                        <a class="dropdown-item"
-                           href="#">Log out</a>
-                    </div>
-                </li>
-            </ul>
-        </div>
-    </div>
-</nav>
+    </li>
+</ul>

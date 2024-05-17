@@ -1,10 +1,12 @@
-import $ from 'jquery';
+import 'jquery-ui-dist/jquery-ui';
+import 'jquery.nicescroll';
 import './bootstrap';
+import './scripts';
+import './stisla';
+import './custom';
 import 'laravel-datatables-vite';
-import 'material-dashboard/assets/js/material-dashboard.min.js';
 import Chart from 'chart.js/auto';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 
-window.$ = window.jQuery = $;
 window.Chart = Chart;
 window.ChartDataLabels = ChartDataLabels;

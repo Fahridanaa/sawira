@@ -2,21 +2,21 @@
 
 namespace Database\Factories;
 
+use App\Models\CitizensModel;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 use App\Models\KKModel;
 use App\Models\RTModel;
-use App\Models\SemuaWargaModel;
 use App\Models\StatusHubunganWargaModel;
 
-class SemuaWargaModelFactory extends Factory
+class CitizensModelFactory extends Factory
 {
 	/**
 	 * The name of the factory's corresponding model.
 	 *
 	 * @var string
 	 */
-	protected $model = SemuaWargaModel::class;
+	protected $model = CitizensModel::class;
 
 	/**
 	 * Define the model's default state.
