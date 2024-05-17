@@ -17,11 +17,13 @@
             new Chart(ctx, {
                 type: 'line',
                 data: {
-                    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Ags', 'Sep', 'Okt', 'Nov', 'Des'],
+                    labels: @json($labels),
+                    // ['january', 'february', 'march', 'april', 'mei', 'june', 'july', 'august', 'september', 'october', 'descember']
                     datasets: [
                         {
                             label: 'Penduduk Masuk',
-                            data: [15, 25, 30, 22, 20, 10, 5, 17, 21, 28, 30, 35],
+                            data: @json($values),
+                            // [9, 3, 7, 5, 3, 5, 0, 2, 9, 6, 15, 10]
                             backgroundColor: 'green',
                             borderColor: 'green',
                             borderWidth: 2,
@@ -30,7 +32,8 @@
                         },
                         {
                             label: 'Penduduk Keluar',
-                            data: [2, 5, 10, 8, 7, 3, 1, 4, 6, 9, 10, 12],
+                            data: @json($valuess),
+                            // [2, 5, 10, 8, 7, 3, 1, 4, 6, 9, 10, 12]
                             backgroundColor: 'red',
                             borderColor: 'red',
                             borderWidth: 2,
