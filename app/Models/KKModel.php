@@ -10,6 +10,7 @@ class KKModel extends Model
 	use HasFactory;
 
 	protected $table = 'kk';
+	protected $primaryKey = 'id_kk';
 
 	/**
 	 * The attributes that are mass assignable.
@@ -28,4 +29,9 @@ class KKModel extends Model
 	protected $casts = [
 		'id_kk' => 'integer',
 	];
+
+	public function akun()
+	{
+		return $this->belongsTo(AkunModel::class, 'id_kk', 'id_kk');
+	}
 }

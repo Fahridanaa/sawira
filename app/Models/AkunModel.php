@@ -5,12 +5,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class AkunModel extends Model
 {
 	use HasFactory;
 
 	protected $table = 'akun';
+	protected $primaryKey = 'id_akun';
 
 	/**
 	 * The attributes that are mass assignable.
@@ -44,9 +46,9 @@ class AkunModel extends Model
 		'level_id' => 'integer',
 	];
 
-	public function kK(): BelongsTo
+	public function kk(): HasOne
 	{
-		return $this->belongsTo(KKModel::class);
+		return $this->hasOne(KKModel::class, 'id_kk', 'id_kk');
 	}
 
 	public function level(): BelongsTo

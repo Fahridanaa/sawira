@@ -40,6 +40,6 @@ class KetuaRTModel extends Model
 
 	public function semuaWarga(): BelongsTo
 	{
-		return $this->belongsTo(SemuaWargaModel::class);
+		return $this->belongsTo(CitizensModel::class);
 	}
 }

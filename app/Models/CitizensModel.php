@@ -6,11 +6,12 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class SemuaWargaModel extends Model
+class CitizensModel extends Model
 {
 	use HasFactory;
 
 	protected $table = 'semua_warga';
+	protected $primaryKey = 'id_warga';
 	/**
 	 * The attributes that are mass assignable.
 	 *
@@ -49,14 +50,14 @@ class SemuaWargaModel extends Model
 		'id_hubungan' => 'integer',
 	];
 
-	public function rT(): BelongsTo
+	public function rt(): BelongsTo
 	{
 		return $this->belongsTo(RTModel::class);
 	}
 
 	public function kk(): BelongsTo
 	{
-		return $this->belongsTo(\App\Models\RiwayatPendudukKkModel::class);
+		return $this->belongsTo(KKModel::class, 'id_kk', 'id_kk');
 	}
 
 	public function statusHubunganWarga(): BelongsTo

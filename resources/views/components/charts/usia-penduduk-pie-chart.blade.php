@@ -1,7 +1,7 @@
 <div class="col-lg-4">
-    <div class="card card-chart">
-        <div class="card-header card-header-success">
-            <span class="card-title">{{ $cardTitle }}</span>
+    <div class="card">
+        <div class="card-header">
+            <h4 class="card-title">{{ $cardTitle }}</h4>
         </div>
         <div class="card-body d-flex justify-content-center"
              style="max-width: 500px; max-height: 500px;">
@@ -11,23 +11,22 @@
     </div>
 </div>
 @push('js')
-    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
-    <script>
+    <script type="module">
         $(document).ready(function () {
             const ctx = document.getElementById('{{ $chartId }}').getContext('2d');
             new Chart(ctx, {
                 type: 'pie',
                 data: {
                     labels: [
-                        'Balita',
-                        'Anak-anak',
-                        'Remaja',
-                        'Dewasa',
-                        'Lansia'
+                        'Balita', // 5< tahun
+                        'Anak-anak', // 6 - 10 tahun 
+                        'Remaja', // 10 - 25 tahun
+                        'Dewasa', // 26 - 45 tahun
+                        'Lansia' // >45 tahun
                     ],
                     datasets: [{
                         // label: 'Usia Penduduk'
-                        data: [20, 80, 170, 220, 70],
+                        data: {{ json_encode($data) }},
                         backgroundColor: [
                             'rgb(255, 99, 132)',
                             'rgb(54, 162, 235)',
