@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-class historyCitizensController extends Controller
+class HistoryCitizensController extends Controller
 {
 	public function index()
 	{

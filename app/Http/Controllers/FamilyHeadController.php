@@ -5,18 +5,16 @@ namespace App\Http\Controllers;
 use App\DataTables\FamilyHeadsDataTable;
 use App\DataTables\FamilyInformationDataTable;
 use App\Models\CitizensModel;
-use App\Models\KKModel;
 use Illuminate\Http\Request;
 
-class ManageCitizens extends Controller
+class FamilyHeadController extends Controller
 {
 	/**
 	 * Display a listing of the resource.
 	 */
-	public function index()
+	public function index(FamilyHeadsDataTable $familyHeadDataTable)
 	{
-		$breadcrumb = 'Kelola Penduduk';
-		return view('pages.manageCitizens.index', ['breadcrumb' => $breadcrumb]);
+		return $familyHeadDataTable->render('components.tables.family-heads');
 	}
 
 	/**
@@ -24,8 +22,7 @@ class ManageCitizens extends Controller
 	 */
 	public function create()
 	{
-		$breadcrumb = 'Detail Penduduk';
-		return view('pages.manageCitizens.show', ['breadcrumb' => $breadcrumb]);
+		return view('pages.familyHeads.create');
 	}
 
 	/**

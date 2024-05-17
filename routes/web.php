@@ -3,6 +3,8 @@
 use App\Http\Controllers\TabController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ManageCitizens;
+use App\Http\Controllers\CitizenController;
+use App\Http\Controllers\FamilyHeadController;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,15 +23,10 @@ Route::get('/login', [\App\Http\Controllers\AuthController::class, 'index'])->na
 
 Route::get('/dashboard', [\App\Http\Controllers\DashboardController::class, 'index'])->name('dashboard');
 
-Route::resource('/penduduk', ManageCitizens::class)->names([
-	'index' => 'penduduk.index',
-	'create' => 'penduduk.create',
-	'store' => 'penduduk.store',
-	'show' => 'penduduk.show',
-	'edit' => 'penduduk.edit',
-	'update' => 'penduduk.update',
-	'destroy' => 'penduduk.destroy',
-]);
+Route::get('/penduduk', [ManageCitizens::class, 'index'])->name('penduduk.index');
 Route::get('/riwayat', [\App\Http\Controllers\historyCitizensController::class, 'index'])->name('history');
 
-Route::get('/tab-content/{tabId}', [TabController::class, 'getTabContent']);
+Route::get('/tab-content/family-heads', [FamilyHeadController::class, 'index'])->name('family-heads.index');
+Route::get('/family-heads/create', [FamilyHeadController::class, 'create'])->name('family-heads.create');
+Route::get('/family-heads/{id}', [FamilyHeadController::class, 'show'])->name('family-heads.show');
+Route::get('/tab-content/citizens', [CitizenController::class, 'index'])->name('citizen.index');

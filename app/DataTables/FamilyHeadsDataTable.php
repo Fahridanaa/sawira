@@ -13,7 +13,7 @@ use Yajra\DataTables\Html\Editor\Editor;
 use Yajra\DataTables\Html\Editor\Fields;
 use Yajra\DataTables\Services\DataTable;
 
-class FamilyHeadDataTable extends DataTable
+class FamilyHeadsDataTable extends DataTable
 {
 	/**
 	 * Build the DataTable class.
@@ -24,7 +24,7 @@ class FamilyHeadDataTable extends DataTable
 	{
 		return (new EloquentDataTable($query))
 			->addColumn('action', function ($row) {
-				return '<a class="edit btn btn-info btn-sm" href="' . route("penduduk.show", $row->id_kk) . '">Tampilkan</a>';
+				return '<a class="edit btn btn-info btn-sm" href="' . route("family-heads.show", $row->id_kk) . '">Tampilkan</a>';
 			})
 			->addColumn('no_kk', function ($citizens) {
 				return $citizens->kk->no_kk ?? 'N/A';
@@ -55,7 +55,7 @@ class FamilyHeadDataTable extends DataTable
 	public function html(): HtmlBuilder
 	{
 		return $this->builder()
-			->setTableId('family-head-table')
+			->setTableId('family-heads-table')
 			->columns($this->getColumns())
 			->minifiedAjax()
 			->orderBy(1)
@@ -63,6 +63,9 @@ class FamilyHeadDataTable extends DataTable
 			->buttons([
 				[
 					'text' => 'Tambah Kartu Keluarga',
+					'action' => 'function ( e, dt, node, config ) {
+                                    window.location.href = "/family-heads/create";
+                                 }',
 					'className' => 'btn btn-primary',
 				]
 			]);
