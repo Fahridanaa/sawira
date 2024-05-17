@@ -1,10 +1,10 @@
 <?php
 
-use App\Http\Controllers\TabController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ManageCitizens;
 use App\Http\Controllers\CitizenController;
 use App\Http\Controllers\FamilyHeadController;
+use App\Http\Controllers\DependantDropdownController;
 
 /*
 |--------------------------------------------------------------------------
@@ -30,3 +30,8 @@ Route::get('/tab-content/family-heads', [FamilyHeadController::class, 'index'])-
 Route::get('/family-heads/create', [FamilyHeadController::class, 'create'])->name('family-heads.create');
 Route::get('/family-heads/{id}', [FamilyHeadController::class, 'show'])->name('family-heads.show');
 Route::get('/tab-content/citizens', [CitizenController::class, 'index'])->name('citizen.index');
+
+
+Route::get('cities', [DependantDropdownController::class, 'cities'])->name('cities');
+Route::get('districts', [DependantDropdownController::class, 'districts'])->name('districts');
+Route::get('villages', [DependantDropdownController::class, 'villages'])->name('villages');

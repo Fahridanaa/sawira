@@ -19,6 +19,10 @@ use App\Models\SuratPindahModel;
 use App\Models\TemplateSuratModel;
 use App\Models\VerifikasiMustahikModel;
 use Illuminate\Database\Seeder;
+use Laravolt\Indonesia\Seeds\CitiesSeeder;
+use Laravolt\Indonesia\Seeds\DistrictsSeeder;
+use Laravolt\Indonesia\Seeds\ProvincesSeeder;
+use Laravolt\Indonesia\Seeds\VillagesSeeder;
 
 class DatabaseSeeder extends Seeder
 {
@@ -44,5 +48,11 @@ class DatabaseSeeder extends Seeder
 		RiwayatSuratModel::factory(5)->create();
 		MustahikModel::factory(25)->create();
 		VerifikasiMustahikModel::factory(15)->create();
+		$this->call([
+			ProvincesSeeder::class,
+			CitiesSeeder::class,
+			DistrictsSeeder::class,
+			VillagesSeeder::class,
+		]);
 	}
 }

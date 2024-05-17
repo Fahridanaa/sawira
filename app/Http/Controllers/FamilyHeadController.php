@@ -22,7 +22,8 @@ class FamilyHeadController extends Controller
 	 */
 	public function create()
 	{
-		return view('pages.familyHeads.create');
+		$provinces = \Indonesia::allProvinces();
+		return view('pages.familyHeads.create', ['provinces' => $provinces]);
 	}
 
 	/**
