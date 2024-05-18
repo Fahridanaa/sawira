@@ -1,6 +1,6 @@
 <?php
 
-namespace App\View\Components\netizen;
+namespace App\View\Components\citizens;
 
 use Closure;
 use Illuminate\Contracts\View\View;
@@ -27,6 +27,6 @@ class FamilyMemberForm extends Component
 	 */
 	public function render(): View|Closure|string
 	{
-		return view('components.netizen.family-member-form');
+		return view('components.citizens.family-member-form');
 	}
 }

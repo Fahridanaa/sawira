@@ -55,6 +55,9 @@ class CitizensDataTable extends DataTable
 			->buttons([
 				[
 					'text' => 'Tambah Warga',
+					'action' => 'function ( e, dt, node, config ) {
+                                    window.location.href = "/citizen/create";
+                                 }',
 					'className' => 'btn btn-primary',
 				]
 			]);

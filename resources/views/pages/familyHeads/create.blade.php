@@ -4,7 +4,11 @@
         <div class="section-header justify-content-between">
             <h1>Menambah Kartu Keluarga</h1>
             <div class="btn-group p-1">
-                <button class="btn btn-danger mr-2">Batal</button>
+                <a href="{{ route('penduduk.index') }}">
+                    <button class="btn btn-danger mr-2">
+                        Batal
+                    </button>
+                </a>
                 <button class="btn btn-primary ml-2">Simpan</button>
             </div>
         </div>
@@ -106,9 +110,9 @@
                             </form>
                         </div>
                     </div>
-                    <x-netizen.family-member-form id="headFamily"
-                                                  status="headFamily"
-                                                  iteration=0
+                    <x-citizens.family-member-form id="headFamily"
+                                                   status="headFamily"
+                                                   iteration=0
                     />
                     <div class="row pb-5">
                         <div class="col-12 d-flex justify-content-center">
@@ -127,16 +131,16 @@
         $(document).ready(() => {
             let i = 1;
             $("#add-member").click(function () {
-                const newCard = `<x-netizen.family-member-form id="familyMember-${i}" status="familyMember" iteration="${i}"/>`;
+                const newCard = `<x-citizens.family-member-form id="familyMember-${i}" status="familyMember" iteration="${i}"/>`;
 
                 $(this).closest('.row').before(newCard);
+                $("button#delete-family-member-card").click(function () {
+                    const dataForm = $(this).data('form');
+                    $(`#familyMember-${dataForm}`).remove();
+                });
                 i += 1;
             });
 
-            $("#delete-family-member-card").click(function () {
-                const dataForm = $(this).data('form');
-                $(`#familyMember-${dataForm}`).remove();
-            });
 
             function onChangeSelect(url, id, name) {
                 $.ajax({

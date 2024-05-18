@@ -24,12 +24,13 @@ Route::get('/login', [\App\Http\Controllers\AuthController::class, 'index'])->na
 Route::get('/dashboard', [\App\Http\Controllers\DashboardController::class, 'index'])->name('dashboard');
 
 Route::get('/penduduk', [ManageCitizens::class, 'index'])->name('penduduk.index');
-Route::get('/riwayat', [\App\Http\Controllers\historyCitizensController::class, 'index'])->name('history');
+Route::get('/history', [\App\Http\Controllers\historyCitizensController::class, 'index'])->name('history');
 
 Route::get('/tab-content/family-heads', [FamilyHeadController::class, 'index'])->name('family-heads.index');
 Route::get('/family-heads/create', [FamilyHeadController::class, 'create'])->name('family-heads.create');
 Route::get('/family-heads/{id}', [FamilyHeadController::class, 'show'])->name('family-heads.show');
 Route::get('/tab-content/citizens', [CitizenController::class, 'index'])->name('citizen.index');
+Route::get('/citizen/create', [CitizenController::class, 'create'])->name('citizen.create');
 
 
 Route::get('cities', [DependantDropdownController::class, 'cities'])->name('cities');

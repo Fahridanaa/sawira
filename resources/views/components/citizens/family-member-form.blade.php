@@ -11,7 +11,7 @@
             @else
             Anggota Keluarga
             @endif</h4>
-        @if($isFamilyMember)
+        @if($isFamilyMember && url()->current() === route('family-heads.create'))
             <div class="btn-group p-1">
                 <button class="btn btn-danger mr-2"
                         id="delete-family-member-card"
