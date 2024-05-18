@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use App\Models\KKModel;
 use App\DataTables\CitizensDataTable;
 use Illuminate\Http\Request;
 
@@ -20,7 +20,9 @@ class CitizenController extends Controller
 	 */
 	public function create()
 	{
-		return view('pages.citizen.create');
+		$id_rt = 4; // Ganti 1 dengan nilai id_rt yang diinginkan
+		$no_kk = KKModel::where('id_rt', $id_rt)->get(['no_kk']);
+		return view('pages.citizen.create', ['no_kk' => $no_kk]);
 	}
 
 	/**

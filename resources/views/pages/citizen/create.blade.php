@@ -30,10 +30,14 @@
                                                     name="kk"
                                                     id="kk"
                                                     required>
-                                                <option disabled
-                                                        hidden
-                                                        selected>Pilih No. KK
-                                                </option>
+                                                    <option disabled hidden selected>Pilih No. KK</option>
+                                                    @if(isset($no_kk) && $no_kk->isNotEmpty())
+                                                        @foreach ($no_kk as $item)
+                                                            <option value="{{ $item->no_kk }}">{{ $item->no_kk }}</option>
+                                                        @endforeach
+                                                    @else
+                                                        <option disabled>Tidak ada data KK</option>
+                                                    @endif
                                             </select>
                                         </div>
                                     </div>
@@ -59,3 +63,9 @@
         </div>
     </section>
 @endsection
+
+<script>
+    document.getElementById('kk').addEventListener('change', function() {
+        console.log('No. KK selected:', this.value);
+    });
+</script>
