@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\DataTables\CitizensHistoryDataTable;
 use Illuminate\Http\Request;
+use App\Models\RiwayatWargaModel;
 
 class HistoryCitizensController extends Controller
 {
-	public function index()
+	public function index(CitizensHistoryDataTable $dataTable)
 	{
-		return view('pages.history.citizens.RT');
+		return $dataTable->render('pages.history.citizens.RT');
 	}
 }

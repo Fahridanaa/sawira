@@ -6,11 +6,11 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class RiwayatPendudukModel extends Model
+class RiwayatPindahModel extends Model
 {
 	use HasFactory;
 
-	protected $table = 'riwayat_penduduk';
+	protected $table = 'riwayat_pindah';
 
 	/**
 	 * The attributes that are mass assignable.
@@ -18,10 +18,12 @@ class RiwayatPendudukModel extends Model
 	 * @var array
 	 */
 	protected $fillable = [
-		'tanggal_keluar',
+		'id_kk',
+		'id_suratPindah',
+		'tgl_keluar',
+		'surat_pindah',
 		'alamat_tujuan',
-		'alasan_keluar',
-		'surat_pindah_id',
+		'alasan_keluar'
 	];
 
 	/**
@@ -30,10 +32,16 @@ class RiwayatPendudukModel extends Model
 	 * @var array
 	 */
 	protected $casts = [
-		'id_riwayatPenduduk' => 'integer',
-		'tanggal_keluar' => 'date',
+		'id' => 'integer',
+		'id_kk' => 'integer',
 		'id_suratPindah' => 'integer',
+		'tgl_keluar' => 'date'
 	];
+
+	public function kK(): BelongsTo
+	{
+		return $this->belongsTo(KKModel::class);
+	}
 
 	public function suratPindah(): BelongsTo
 	{
