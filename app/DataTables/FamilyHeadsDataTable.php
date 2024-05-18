@@ -44,7 +44,7 @@ class FamilyHeadsDataTable extends DataTable
 	public function query(CitizensModel $model): QueryBuilder
 	{
 		return $model->newQuery()
-			->with(['kk:id_kk,no_kk', 'statusHubunganWarga:nama_hubungan'])
+			->with(['kk.akun'])
 			->select('semua_warga.*')
 			->where('semua_warga.id_hubungan', 1);
 	}
@@ -79,6 +79,7 @@ class FamilyHeadsDataTable extends DataTable
 		return [
 			Column::make('no_kk')->title('No. KK'),
 			Column::make('nama_lengkap')->title('Kepala Keluarga'),
+			Column::make('kk.akun.username')->title('Username'),
 			Column::computed('action')
 				->exportable(false)
 				->printable(false)

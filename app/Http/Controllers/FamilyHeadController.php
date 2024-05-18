@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\DataTables\FamilyHeadAccountDataTable;
 use App\DataTables\FamilyHeadsDataTable;
 use App\DataTables\FamilyInformationDataTable;
 use App\Models\CitizensModel;
@@ -40,8 +41,7 @@ class FamilyHeadController extends Controller
 	public function show(string $id, FamilyInformationDataTable $dataTable)
 	{
 		$dataTable->id_kk = $id;
-		$penduduk = CitizensModel::with(['kk:id_kk'])->where('id_kk', $dataTable->id_kk)->get();
-		return $dataTable->render('pages.manageCitizens.show', ['penduduk' => $penduduk]);
+		return $dataTable->render('pages.manageCitizens.show');
 	}
 
 	/**
