@@ -12,7 +12,6 @@ return new class extends Migration {
 	{
 		Schema::create('semua_warga', function (Blueprint $table) {
 			$table->id('id_warga');
-			$table->unsignedBigInteger('id_rt')->index();
 			$table->unsignedBigInteger('id_kk')->index();
 			$table->unsignedBigInteger('id_hubungan')->index();
 			$table->string('nik', 16)->unique();
@@ -24,12 +23,9 @@ return new class extends Migration {
 			$table->string('agama', 20);
 			$table->string('pendidikan_terakhir', 20);
 			$table->string('jenis_pekerjaan', 50);
-			$table->string('alamat', 255);
 			$table->date('tanggal_masuk');
-			$table->boolean('isActive');
 			$table->timestamps();
-
-			$table->foreign('id_rt')->references('id_rt')->on('rt');
+			
 			$table->foreign('id_kk')->references('id_kk')->on('kk');
 			$table->foreign('id_hubungan')->references('id_hubungan')->on('status_hubungan_warga');
 		});

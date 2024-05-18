@@ -22,7 +22,6 @@ class AkunModel extends Model
 	protected $fillable = [
 		'username',
 		'password',
-		'kk_id',
 		'level_id',
 	];
 
@@ -42,13 +41,12 @@ class AkunModel extends Model
 	 */
 	protected $casts = [
 		'id_akun' => 'integer',
-		'kk_id' => 'integer',
 		'level_id' => 'integer',
 	];
 
 	public function kk(): HasOne
 	{
-		return $this->hasOne(KKModel::class, 'id_kk', 'id_kk');
+		return $this->hasOne(KKModel::class, 'id_akun', 'id_akun');
 	}
 
 	public function level(): BelongsTo

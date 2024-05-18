@@ -25,7 +25,6 @@ class AkunModelFactory extends Factory
 		return [
 			'username' => $this->faker->userName(),
 			'password' => $this->faker->password(),
-			'id_kk' => KKModel::factory(),
 			'id_level' => LevelModel::inRandomOrder()->first()->id_level
 		];
 	}

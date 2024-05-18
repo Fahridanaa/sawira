@@ -27,10 +27,7 @@ class CitizensModel extends Model
 		'agama',
 		'pendidikan_terakhir',
 		'jenis_pekerjaan',
-		'alamat',
 		'tanggal_masuk',
-		'isActive',
-		'id_rt',
 		'id_kk',
 		'status_hubungan_warga_id',
 	];
@@ -44,16 +41,9 @@ class CitizensModel extends Model
 		'id_warga' => 'integer',
 		'tanggal_lahir' => 'date',
 		'tanggal_masuk' => 'date',
-		'isActive' => 'boolean',
-		'id_rt' => 'integer',
 		'id_kk' => 'integer',
 		'id_hubungan' => 'integer',
 	];
-
-	public function rt(): BelongsTo
-	{
-		return $this->belongsTo(RTModel::class);
-	}
 
 	public function kk(): BelongsTo
 	{
