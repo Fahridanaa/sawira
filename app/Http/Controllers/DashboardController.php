@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\CitizensModel;
-use App\Models\RiwayatPendudukModel;
+use App\Models\RiwayatWargaModel;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
@@ -12,7 +12,7 @@ class DashboardController extends Controller
 	public function index()
 	{
 		$citizens = CitizensModel::all();
-		$citizensHistory = RiwayatPendudukModel::all();
+		$citizensHistory = RiwayatWargaModel::all();
 		$chartController = new ChartController();
 
 		$citizensByEntryMonth = $chartController->countCitizensByEntryDate($citizens);
