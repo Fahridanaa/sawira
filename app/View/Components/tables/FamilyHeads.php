@@ -1,12 +1,12 @@
 <?php
 
-namespace App\View\Components;
+namespace App\View\Components\tables;
 
 use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 
-class chart-card extends Component
+class FamilyHeads extends Component
 {
     /**
      * Create a new component instance.
@@ -21,6 +21,6 @@ class chart-card extends Component
      */
     public function render(): View|Closure|string
     {
-        return view('components.chart-card');
+        return view('components.tables.family-heads');
     }
 }

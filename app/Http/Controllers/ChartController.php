@@ -6,6 +6,7 @@ use App\Models\CitizensModel;
 use App\Models\KKModel;
 use App\Models\RTModel;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 
 class ChartController extends Controller
@@ -67,17 +68,22 @@ class ChartController extends Controller
 
 	public function countCitizens()
 	{
-		return CitizensModel::count('id_warga');
+		return $this->getCountFromModel(new CitizensModel(), 'id_warga');
 	}
 
 	public function countKKs()
 	{
-		return KKModel::count('id_kk');
+		return $this->getCountFromModel(new KKModel(), 'id_kk');
 	}
 
 	public function countRTs()
 	{
-		return RTModel::count('id_rt');
+		return $this->getCountFromModel(new RTModel(), 'id_rt');
+	}
+
+	private function getCountFromModel(Model $model, string $field): int
+	{
+		return $model->count($field);
 	}
 
 	private function countCitizensByDate($citizens, $dateField)

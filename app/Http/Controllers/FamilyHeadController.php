@@ -2,21 +2,20 @@
 
 namespace App\Http\Controllers;
 
+use App\DataTables\FamilyHeadAccountDataTable;
 use App\DataTables\FamilyHeadsDataTable;
 use App\DataTables\FamilyInformationDataTable;
 use App\Models\CitizensModel;
-use App\Models\KKModel;
 use Illuminate\Http\Request;
 
-class ManageCitizens extends Controller
+class FamilyHeadController extends Controller
 {
 	/**
 	 * Display a listing of the resource.
 	 */
-	public function index()
+	public function index(FamilyHeadsDataTable $familyHeadDataTable)
 	{
-		$breadcrumb = 'Kelola Penduduk';
-		return view('pages.manageCitizens.index', ['breadcrumb' => $breadcrumb]);
+		return $familyHeadDataTable->render('components.tables.family-heads');
 	}
 
 	/**
@@ -24,8 +23,8 @@ class ManageCitizens extends Controller
 	 */
 	public function create()
 	{
-		$breadcrumb = 'Detail Penduduk';
-		return view('pages.manageCitizens.show', ['breadcrumb' => $breadcrumb]);
+		$provinces = \Indonesia::allProvinces();
+		return view('pages.familyHeads.create', ['provinces' => $provinces]);
 	}
 
 	/**
@@ -42,8 +41,7 @@ class ManageCitizens extends Controller
 	public function show(string $id, FamilyInformationDataTable $dataTable)
 	{
 		$dataTable->id_kk = $id;
-		$penduduk = CitizensModel::with(['kk:id_kk'])->where('id_kk', $dataTable->id_kk)->get();
-		return $dataTable->render('pages.manageCitizens.show', ['penduduk' => $penduduk]);
+		return $dataTable->render('pages.manageCitizens.show');
 	}
 
 	/**

@@ -19,6 +19,14 @@ class KKModel extends Model
 	 */
 	protected $fillable = [
 		'no_kk',
+		'alamat',
+		'kode_pos',
+		'id_akun',
+		'id_provinsi',
+		'id_kabupaten',
+		'id_kecamatan',
+		'id_kelurahan',
+		'id_rt',
 	];
 
 	/**
@@ -28,10 +36,41 @@ class KKModel extends Model
 	 */
 	protected $casts = [
 		'id_kk' => 'integer',
+		'id_akun' => 'integer',
+		'id_provinsi' => 'integer',
+		'id_kabupaten' => 'integer',
+		'id_kecamatan' => 'integer',
+		'id_kelurahan' => 'integer',
+		'id_rt' => 'integer',
 	];
 
 	public function akun()
 	{
-		return $this->belongsTo(AkunModel::class, 'id_kk', 'id_kk');
+		return $this->belongsTo(AkunModel::class, 'id_akun', 'id_akun');
+	}
+
+	public function provinsi()
+	{
+		return $this->hasOne(IndonesiaProvincesModel::class, 'id', 'id_provinsi');
+	}
+
+	public function kabupaten()
+	{
+		return $this->hasOne(IndonesiaCitiesModel::class, 'id', 'id_kabupaten');
+	}
+
+	public function kecamatan()
+	{
+		return $this->hasOne(IndonesiaDistrictsModel::class, 'id', 'id_kecamatan');
+	}
+
+	public function kelurahan()
+	{
+		return $this->hasOne(IndonesiaVillagesModel::class, 'id', 'id_kelurahan');
+	}
+
+	public function rt()
+	{
+		return $this->hasOne(RTModel::class, 'id_rt', 'id_rt');
 	}
 }

@@ -16,11 +16,11 @@
                                         role="tablist">
                                         <li class="nav-item mb-1">
                                             <a class="nav-link"
-                                               id="kk-tab"
+                                               id="family-heads-tab"
                                                data-toggle="tab"
-                                               href="#kk"
+                                               href="#family-heads"
                                                role="tab"
-                                               aria-controls="kk"
+                                               aria-controls="family-heads"
                                                aria-selected="true">Keluarga</a>
                                         </li>
                                         <li class="nav-item">
@@ -38,7 +38,7 @@
                                     <div class="tab-content no-padding"
                                          id="myTab2Content">
                                         <div class="tab-pane fade"
-                                             id="kk"
+                                             id="family-heads"
                                              role="tabpanel"
                                              aria-labelledby="kk-tab">
                                         </div>
@@ -80,7 +80,7 @@
 @push('js')
     {{--    <script src="{{ asset('assets/js/page/modules-datatables.js') }}"></script>--}}
     <script type="module">
-        const tableIds = ['#citizens-table', '#family-head-table'];
+        const tableIds = ['#citizens-table', '#family-heads-table'];
         $(document).ready(() => {
             $('#citizens-table').removeClass('table-bordered');
             $('#citizens-table_processing').empty();
@@ -104,20 +104,27 @@
             });
 
             // Load content based on URL parameter on page load
-            var activeTab = new URL(window.location.href).searchParams.get('activeTab');
+            function setActiveTabAndUpdateContent(tabName) {
+                $('a[data-toggle="tab"][href="#' + tabName + '"]').addClass('active show');
+                $('#' + tabName).addClass('active show').siblings().removeClass('active show');
+                loadTabContent(tabName);
+            }
+
+            const activeTab = new URL(window.location.href).searchParams.get('activeTab');
             if (activeTab) {
-                $('a[data-toggle="tab"][href="#' + activeTab + '"]').addClass('active show');
-                $('#' + activeTab).addClass('active show').siblings().removeClass('active show');
-                loadTabContent(activeTab);
+                setActiveTabAndUpdateContent(activeTab);
             } else {
-                $('a[data-toggle="tab"][href="#kk"]').click();
-                // Default tab
-                loadTabContent('kk');
+                setActiveTabAndUpdateContent('family-heads'); // Default tab
             }
 
             function loadTabContent(tabId) {
+
+                const urlBase = '/tab-content/';
+
+                const url = urlBase + tabId;
+
                 $.ajax({
-                    url: '/tab-content/' + tabId,
+                    url: url,
                     method: 'GET',
                     success: function (response) {
                         $('#' + tabId).html(response);

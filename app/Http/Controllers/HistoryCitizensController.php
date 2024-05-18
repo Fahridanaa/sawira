@@ -6,7 +6,7 @@ use App\DataTables\CitizensHistoryDataTable;
 use Illuminate\Http\Request;
 use App\Models\RiwayatWargaModel;
 
-class historyCitizensController extends Controller
+class HistoryCitizensController extends Controller
 {
 	public function index(CitizensHistoryDataTable $dataTable)
 	{

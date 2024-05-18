@@ -5,27 +5,27 @@
             <h1>Dashboard</h1>
         </div>
         <div class="row">
-            <x-cards.stats-card
+            <x-cards.stat-card
                     background="bg-primary"
                     iconType="far"
                     iconName="fa-user"
                     title="Total Penduduk"
-                    value="{{ $totalCitizenCount }}">
-            </x-cards.stats-card>
-            <x-cards.stats-card
+                    value="{{ $totalCitizenCount }}"
+            />
+            <x-cards.stat-card
                     background="bg-success"
                     iconType="fas"
                     iconName="fa-users"
                     title="Total Kartu Keluarga"
-                    value="{{ $totalFamilyCount }}">
-            </x-cards.stats-card>
-            <x-cards.stats-card
+                    value="{{ $totalFamilyCount }}"
+            />
+            <x-cards.stat-card
                     background="bg-info"
                     iconType="fas"
                     iconName="fa-flag"
                     title="Total RT"
-                    value="{{ $totalRTCount }}">
-            </x-cards.stats-card>
+                    value="{{ $totalRTCount }}"
+            />
         </div>
         <div class="row flex-grow-1 d-flex">
             <x-charts.penduduk-line-chart
@@ -34,14 +34,13 @@
                     :labels="$monthLabels"
                     :entryCitizenData="$entryDataPerMonth"
                     :exitCitizenData="$exitDataPerMonth"
-                    chartId="citizensChart">
-            </x-charts.penduduk-line-chart>
+                    chartId="citizensChart"
+            />
             <x-charts.usia-penduduk-pie-chart
                     cardTitle="Usia Penduduk"
                     chartId="ageChart"
-                    :data="$ageGroupCounts"
-                    updatedTime="updated 4 minutes ago">
-            </x-charts.usia-penduduk-pie-chart>
+                    :ageGroupData="$ageGroupCounts"
+            />
         </div>
     </section>
 @endsection

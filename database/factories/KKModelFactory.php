@@ -2,9 +2,15 @@
 
 namespace Database\Factories;
 
+use App\Models\AkunModel;
+use App\Models\RTModel;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 use App\Models\KKModel;
+use Laravolt\Indonesia\Models\Kabupaten;
+use Laravolt\Indonesia\Models\Kecamatan;
+use Laravolt\Indonesia\Models\Kelurahan;
+use Laravolt\Indonesia\Models\Province;
 
 class KKModelFactory extends Factory
 {
@@ -22,6 +28,14 @@ class KKModelFactory extends Factory
 	{
 		return [
 			'no_kk' => $this->faker->numerify('###############'),
+			'id_akun' => AkunModel::factory(),
+			'id_provinsi' => $this->faker->numberBetween(1, 2),
+			'id_kabupaten' => $this->faker->numberBetween(1, 2),
+			'id_kecamatan' => $this->faker->numberBetween(1, 2),
+			'id_kelurahan' => $this->faker->numberBetween(1, 2),
+			'id_rt' => RTModel::inRandomOrder()->first()->id_rt,
+			'alamat' => $this->faker->address(),
+			'kode_pos' => $this->faker->numerify('#####'),
 		];
 	}
 }

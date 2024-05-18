@@ -26,7 +26,9 @@ class CitizensDataTable extends DataTable
 			->editColumn('tanggal_lahir', function ($row) {
 				return $row->tanggal_lahir ? with(new Carbon($row->tanggal_lahir))->format('d/m/Y') : '';
 			})
-			->addColumn('action', 'citizens.action')
+			->addColumn('action', function () {
+				return '<button class="btn btn-primary trigger--fire-modal-2" id="modal-2">Detail</button>';
+			})
 			->setRowId('id');
 	}
 
@@ -53,6 +55,9 @@ class CitizensDataTable extends DataTable
 			->buttons([
 				[
 					'text' => 'Tambah Warga',
+					'action' => 'function ( e, dt, node, config ) {
+                                    window.location.href = "/citizen/create";
+                                 }',
 					'className' => 'btn btn-primary',
 				]
 			]);

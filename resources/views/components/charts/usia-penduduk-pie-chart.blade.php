@@ -1,3 +1,4 @@
+@php use Illuminate\Support\Facades\Log; @endphp
 <div class="col-lg-4">
     <div class="card">
         <div class="card-header">
@@ -19,14 +20,14 @@
                 data: {
                     labels: [
                         'Balita', // 5< tahun
-                        'Anak-anak', // 6 - 10 tahun 
+                        'Anak-anak', // 6 - 10 tahun
                         'Remaja', // 10 - 25 tahun
                         'Dewasa', // 26 - 45 tahun
                         'Lansia' // >45 tahun
                     ],
                     datasets: [{
                         // label: 'Usia Penduduk'
-                        data: {{ json_encode($data) }},
+                        data: {{ json_encode($ageGroupData) }},
                         backgroundColor: [
                             'rgb(255, 99, 132)',
                             'rgb(54, 162, 235)',
