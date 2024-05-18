@@ -8,12 +8,12 @@
             <div class="row">
                 <div class="col-12">
                     <div class="card">
-                        {{--                        <div class="card-header">--}}
-                        {{--                            <h4>Warga</h4>--}}
-                        {{--                        </div>--}}
+                            <div class="card-header">
+                                <h4>Warga</h4>
+                            </div>
                         <div class="card-body">
                             <div class="table-responsive">
-                                {{--                                {{ $dataTable->table() }}--}}
+                                {{ $dataTable->table() }}
                             </div>
                         </div>
                     </div>
@@ -22,3 +22,7 @@
         </div>
     </section>
 @endsection
+
+@push('js')
+    {{ $dataTable->scripts() }}
+@endpush

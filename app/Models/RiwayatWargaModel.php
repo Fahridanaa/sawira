@@ -34,6 +34,6 @@ class RiwayatWargaModel extends Model
 
 	public function warga(): BelongsTo
 	{
-		return $this->belongsTo(CitizensModel::class);
+		return $this->belongsTo(CitizensModel::class, 'id_warga', 'id_warga');
 	}
 }
