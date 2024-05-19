@@ -16,22 +16,21 @@ class UserSeeder extends Seeder
 	{
 		$userList = [
 			[
-				'id_level' => 1,
 				'username' => 'rw',
+				'role' => 'rw',
 				'password' => Hash::make('rw'),
 			],
 			[
-				'id_level' => 2,
 				'username' => 'rt',
+				'role' => 'rt',
 				'password' => Hash::make('rt'),
 			],
 			[
-				'id_level' => 3,
 				'username' => 'amil',
+				'role' => 'amil',
 				'password' => Hash::make('amil'),
 			],
 			[
-				'id_level' => 4,
 				'username' => 'warga',
 				'password' => Hash::make('warga'),
 			],

@@ -25,7 +25,6 @@ class UsersModelFactory extends Factory
 		return [
 			'username' => $this->faker->userName(),
 			'password' => $this->faker->password(),
-			'id_level' => 4,
 		];
 	}
 }

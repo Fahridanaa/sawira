@@ -37,7 +37,6 @@ class DatabaseSeeder extends Seeder
 			DistrictsSeeder::class,
 			VillagesSeeder::class,
 		]);
-		$this->call(LevelSeeder::class);
 		$this->call(UserSeeder::class);
 		$this->call(RTSeeder::class);
 		$this->call(StatusHubunganWargaSeeder::class);

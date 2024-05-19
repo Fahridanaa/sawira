@@ -12,12 +12,10 @@ return new class extends Migration {
 	{
 		Schema::create('users', function (Blueprint $table) {
 			$table->id('id_user');
-			$table->unsignedBigInteger('id_level')->index();
 			$table->string('username', 25)->unique();
+			$table->enum('role', ['rw', 'rt', 'amil', 'warga'])->default('warga');
 			$table->string('password', 255);
 			$table->timestamps();
-
-			$table->foreign('id_level')->references('id_level')->on('level');
 		});
 	}
 
@@ -26,6 +24,6 @@ return new class extends Migration {
 	 */
 	public function down(): void
 	{
-		Schema::dropIfExists('akun');
+		Schema::dropIfExists('users');
 	}
 };

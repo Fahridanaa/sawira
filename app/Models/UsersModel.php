@@ -25,7 +25,7 @@ class UsersModel extends Authenticatable
 	protected $fillable = [
 		'username',
 		'password',
-		'level_id',
+		'role',
 	];
 
 	/**
@@ -44,16 +44,11 @@ class UsersModel extends Authenticatable
 	 */
 	protected $casts = [
 		'id_user' => 'integer',
-		'level_id' => 'integer',
+		'role' => 'string',
 	];
 
 	public function kk(): HasOne
 	{
 		return $this->hasOne(KKModel::class, 'id_akun', 'id_akun');
-	}
-
-	public function level(): BelongsTo
-	{
-		return $this->belongsTo(LevelModel::class);
 	}
 }
