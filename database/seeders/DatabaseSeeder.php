@@ -38,7 +38,7 @@ class DatabaseSeeder extends Seeder
 			VillagesSeeder::class,
 		]);
 		$this->call(LevelSeeder::class);
-		UsersModel::factory(25)->create();
+		$this->call(UserSeeder::class);
 		$this->call(RTSeeder::class);
 		$this->call(StatusHubunganWargaSeeder::class);
 		SuratPindahModel::factory(3)->create();

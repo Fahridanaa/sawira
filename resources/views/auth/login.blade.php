@@ -9,22 +9,25 @@
 
         <div class="card-body">
             <form method="POST"
-                  action="#"
+                  action="{{ route('login') }}"
                   class="needs-validation"
                   novalidate="">
+                @csrf
                 <div class="form-group">
                     <label for="username">Username</label>
                     <input id="username"
                            type="text"
-                           class="form-control"
+                           class="form-control @error('username') is-invalid @enderror"
                            placeholder="Masukkan Username"
                            name="username"
                            tabindex="1"
                            required
-                           autofocus="">
+                           autofocus>
+                    @error('username')
                     <div class="invalid-feedback">
-                        Please fill in your username
+                        {{ $message }}
                     </div>
+                    @enderror
                 </div>
 
                 <div class="form-group">
@@ -34,14 +37,16 @@
                     </div>
                     <input id="password"
                            type="password"
-                           class="form-control"
+                           class="form-control @error('password') is-invalid @enderror"
                            placeholder="Masukkan Password"
                            name="password"
                            tabindex="2"
                            required>
+                    @error('password')
                     <div class="invalid-feedback">
-                        please fill in your password
+                        {{ $message }}
                     </div>
+                    @enderror
                 </div>
 
                 <div class="form-group">

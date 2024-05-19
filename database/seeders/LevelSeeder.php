@@ -13,7 +13,7 @@ class LevelSeeder extends Seeder
 	 */
 	public function run(): void
 	{
-		$levelList = ['warga', 'rt', 'rw', 'amil'];
+		$levelList = ['rw', 'rt', 'amil', 'warga'];
 		foreach ($levelList as $index => $level) {
 			LevelModel::create([
 				'kode_level' => 'LVL' . ($index + 1),

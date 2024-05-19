@@ -14,7 +14,7 @@ return new class extends Migration {
 			$table->id('id_user');
 			$table->unsignedBigInteger('id_level')->index();
 			$table->string('username', 25)->unique();
-			$table->string('password', 20);
+			$table->string('password', 255);
 			$table->timestamps();
 
 			$table->foreign('id_level')->references('id_level')->on('level');

@@ -6,10 +6,13 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
 
-class UsersModel extends Model
+class UsersModel extends Authenticatable
 {
 	use HasFactory;
+	use Notifiable;
 
 	protected $table = 'users';
 	protected $primaryKey = 'id_user';

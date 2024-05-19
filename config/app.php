@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Facade;
 use Yajra\DataTables\ButtonsServiceProvider;
 use Yajra\DataTables\DataTablesServiceProvider;
+use App\Providers\FortifyServiceProvider;
 
 return [
 
@@ -187,6 +188,8 @@ return [
 		/*
 		 * Package Service Providers...
 		 */
+
+		FortifyServiceProvider::class,
 
 		/*
 		 * Application Service Providers...
