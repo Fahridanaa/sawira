@@ -12,7 +12,7 @@ return new class extends Migration {
 	{
 		Schema::create('kk', function (Blueprint $table) {
 			$table->id('id_kk');
-			$table->unsignedBigInteger('id_akun')->index();
+			$table->unsignedBigInteger('id_user')->index();
 			$table->unsignedBigInteger('id_provinsi')->index();
 			$table->unsignedBigInteger('id_kabupaten')->index();
 			$table->unsignedBigInteger('id_kecamatan')->index();
@@ -23,7 +23,7 @@ return new class extends Migration {
 			$table->string('kode_pos', 5)->nullable();
 			$table->timestamps();
 
-			$table->foreign('id_akun')->references('id_akun')->on('akun');
+			$table->foreign('id_user')->references('id_user')->on('users');
 			$table->foreign('id_provinsi')->references('id')->on('indonesia_provinces');
 			$table->foreign('id_kabupaten')->references('id')->on('indonesia_cities');
 			$table->foreign('id_kecamatan')->references('id')->on('indonesia_districts');

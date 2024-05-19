@@ -3,7 +3,7 @@
 namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
-use App\Models\AkunModel;
+use App\Models\UsersModel;
 use App\Models\KetuaRTModel;
 use App\Models\KKModel;
 use App\Models\MustahikModel;
@@ -38,7 +38,7 @@ class DatabaseSeeder extends Seeder
 			VillagesSeeder::class,
 		]);
 		$this->call(LevelSeeder::class);
-		AkunModel::factory(25)->create();
+		UsersModel::factory(25)->create();
 		$this->call(RTSeeder::class);
 		$this->call(StatusHubunganWargaSeeder::class);
 		SuratPindahModel::factory(3)->create();

@@ -10,8 +10,8 @@ return new class extends Migration {
 	 */
 	public function up(): void
 	{
-		Schema::create('akun', function (Blueprint $table) {
-			$table->id('id_akun');
+		Schema::create('users', function (Blueprint $table) {
+			$table->id('id_user');
 			$table->unsignedBigInteger('id_level')->index();
 			$table->string('username', 25)->unique();
 			$table->string('password', 20);

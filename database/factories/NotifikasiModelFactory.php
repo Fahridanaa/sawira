@@ -4,7 +4,7 @@ namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
-use App\Models\AkunModel;
+use App\Models\UsersModel;
 use App\Models\NotifikasiModel;
 
 class NotifikasiModelFactory extends Factory
@@ -24,7 +24,7 @@ class NotifikasiModelFactory extends Factory
 		return [
 			'jenis_notifikasi' => $this->faker->randomElement(["danger", "warning", "success"]),
 			'tanggal_notifikasi' => $this->faker->date(),
-			'id_akun' => AkunModel::factory(),
+			'id_user' => UsersModel::factory(),
 		];
 	}
 }

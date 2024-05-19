@@ -44,7 +44,7 @@ class FamilyHeadsDataTable extends DataTable
 	public function query(CitizensModel $model): QueryBuilder
 	{
 		return $model->newQuery()
-			->with(['kk.akun'])
+			->with(['kk.user'])
 			->select('semua_warga.*')
 			->where('semua_warga.id_hubungan', 1);
 	}

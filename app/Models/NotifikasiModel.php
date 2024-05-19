@@ -20,7 +20,7 @@ class NotifikasiModel extends Model
 	protected $fillable = [
 		'jenis_notifikasi',
 		'tanggal_notifikasi',
-		'id_akun',
+		'id_user',
 	];
 
 	/**
@@ -31,11 +31,11 @@ class NotifikasiModel extends Model
 	protected $casts = [
 		'id_notifikasi' => 'integer',
 		'tanggal_notifikasi' => 'date',
-		'id_akun' => 'integer',
+		'id_user' => 'integer',
 	];
 
-	public function akun(): BelongsTo
+	public function user(): BelongsTo
 	{
-		return $this->belongsTo(AkunModel::class);
+		return $this->belongsTo(UsersModel::class);
 	}
 }
