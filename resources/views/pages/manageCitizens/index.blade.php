@@ -114,7 +114,7 @@
             if (activeTab) {
                 setActiveTabAndUpdateContent(activeTab);
             } else {
-                setActiveTabAndUpdateContent('family-heads'); // Default tab
+                setActiveTabAndUpdateContent('family-heads');
             }
 
             function loadTabContent(tabId) {

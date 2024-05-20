@@ -20,11 +20,17 @@
                    href="{{ route('history') }}"><i class="fas fa-history"></i> <span>Riwayat Penduduk</span></a>
             </li>
             @if(!\App\Helpers\SidebarHelper::hasAnyRole(['warga', 'amil', 'rw']))
-            <li>
-                <a class="nav-link"
-                   href="{{ route('dashboard') }}"><i class="fas fa-handshake"></i> <span>Pengajuan Mustahik</span></a>
-            </li>
+                <li>
+                    <a class="nav-link"
+                       href="{{ route('dashboard') }}"><i class="fas fa-handshake"></i> <span>Pengajuan Mustahik</span></a>
+                </li>
             @endif
+        @endif
+        @if(\App\Helpers\SidebarHelper::hasAnyRole(['warga']))
+            <li class="{{ Request::is('family') }}">
+                <a class="nav-link"
+                   href="/family"><i class="fas fa-columns"></i> <span>Informasi Pribadi</span></a>
+            </li>
         @endif
     </ul>
 </aside>

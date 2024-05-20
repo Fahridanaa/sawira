@@ -59,7 +59,7 @@ class CitizensDataTable extends DataTable
 	public function html(): HtmlBuilder
 	{
 		$html = $this->builder()
-			->setTableId('family-heads-table')
+			->setTableId('citizens-table')
 			->columns($this->getColumns())
 			->minifiedAjax()
 			->orderBy(1)
@@ -69,9 +69,9 @@ class CitizensDataTable extends DataTable
 		if (auth()->user()->role !== 'rw') {
 			$html->buttons([
 				[
-					'text' => 'Tambah Kartu Keluarga',
+					'text' => 'Tambah Warga',
 					'action' => 'function ( e, dt, node, config ) {
-										window.location.href = "/family-heads/create";
+										window.location.href = "/citizens/create";
 									 }',
 					'className' => 'btn btn-primary',
 				]

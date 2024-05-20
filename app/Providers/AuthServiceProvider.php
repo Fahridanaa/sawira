@@ -28,7 +28,9 @@ class AuthServiceProvider extends ServiceProvider
 	 * @var array
 	 */
 	protected static $permissions = [
-		'manage-citizens' => []
+		'manager' => [],
+		'user' => [],
+		'amil' => []
 	];
 
 	/**
@@ -36,7 +38,9 @@ class AuthServiceProvider extends ServiceProvider
 	 */
 	protected static function initializePermissions(): void
 	{
-		self::$permissions['manage-citizens'] = self::generateRtRoles();
+		self::$permissions['manager'] = self::generateRtRoles();
+		self::$permissions['user'] = ['warga'];
+		self::$permissions['amil'] = ['amil'];
 	}
 
 	/**
