@@ -3,6 +3,7 @@
 namespace App\DataTables;
 
 use App\Models\CitizensModel;
+use App\Models\KKModel;
 use Illuminate\Database\Eloquent\Builder as QueryBuilder;
 use Illuminate\Support\Facades\Log;
 use Yajra\DataTables\EloquentDataTable;
@@ -26,13 +27,11 @@ class FamilyHeadsDataTable extends DataTable
 			->addColumn('action', function ($row) {
 				return '<a class="edit btn btn-info btn-sm" href="' . route("family-heads.show", $row->id_kk) . '">Tampilkan</a>';
 			})
-			->addColumn('no_kk', function ($citizens) {
-				return $citizens->kk->no_kk ?? 'N/A';
+			->addColumn('nama_lengkap', function ($kk) {
+				return $kk->citizens->first()->nama_lengkap ?? 'N/A';
 			})
-			->filterColumn('no_kk', function ($query, $keyword) {
-				$query->whereHas('kk', function ($query) use ($keyword) {
-					$query->where('no_kk', 'like', "%$keyword%");
-				});
+			->addColumn('id_rt', function ($row) {
+				return $row->id_rt;
 			})
 			->rawColumns(['action', 'no_kk'])
 			->setRowId('id');
@@ -41,12 +40,18 @@ class FamilyHeadsDataTable extends DataTable
 	/**
 	 * Get the query source of dataTable.
 	 */
-	public function query(CitizensModel $model): QueryBuilder
+	public function query(KKModel $model): QueryBuilder
 	{
-		return $model->newQuery()
-			->with(['kk.user'])
-			->select('semua_warga.*')
-			->where('semua_warga.id_hubungan', 1);
+		$role = auth()->user()->role;
+		$query = $model->newQuery()->with('user', 'citizens');
+
+
+		if ($role !== 'rw') {
+			$rt = str_replace('rt', '', $role);
+			$query->where('id_rt', $rt);
+		}
+
+		return $query;
 	}
 
 	/**
@@ -76,16 +81,23 @@ class FamilyHeadsDataTable extends DataTable
 	 */
 	public function getColumns(): array
 	{
-		return [
+		$columns = [
 			Column::make('no_kk')->title('No. KK'),
 			Column::make('nama_lengkap')->title('Kepala Keluarga'),
-			Column::make('kk.user.username')->title('Username'),
-			Column::computed('action')
-				->exportable(false)
-				->printable(false)
-				->width(60)
-				->addClass('text-center'),
+			Column::make('user.username')->title('Username'),
 		];
+
+		if (auth()->user()->role === 'rw') {
+			$columns[] = Column::make('id_rt')->title('RT');
+		}
+
+		$columns[] = Column::computed('action')
+			->exportable(false)
+			->printable(false)
+			->width(60)
+			->addClass('text-center');
+
+		return $columns;
 	}
 
 	/**

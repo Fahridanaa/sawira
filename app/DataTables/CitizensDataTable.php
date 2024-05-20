@@ -26,6 +26,9 @@ class CitizensDataTable extends DataTable
 			->editColumn('tanggal_lahir', function ($row) {
 				return $row->tanggal_lahir ? with(new Carbon($row->tanggal_lahir))->format('d/m/Y') : '';
 			})
+			->addColumn('id_rt', function ($row) {
+				return $row->kk->id_rt;
+			})
 			->addColumn('action', function () {
 				return '<button class="btn btn-primary trigger--fire-modal-2" id="modal-2">Detail</button>';
 			})
@@ -37,7 +40,17 @@ class CitizensDataTable extends DataTable
 	 */
 	public function query(CitizensModel $model): QueryBuilder
 	{
-		return $model->newQuery();
+		$role = auth()->user()->role;
+		$query = $model->newQuery()->with('kk');
+
+		if ($role !== 'rw') {
+			$rt = str_replace('rt', '', $role);
+			$query->whereHas('kk', function ($query) use ($rt) {
+				$query->where('id_rt', $rt);
+			});
+		}
+
+		return $query;
 	}
 
 	/**
@@ -68,18 +81,24 @@ class CitizensDataTable extends DataTable
 	 */
 	public function getColumns(): array
 	{
-		return [
+		$columns = [
 			Column::make('nama_lengkap'),
 			Column::make('nik'),
 			Column::make('asal_kota'),
 			Column::make('tanggal_lahir'),
 			Column::make('no_telp'),
-			Column::computed('action')
-				->exportable(false)
-				->printable(false)
-				->width(60)
-				->addClass('text-center'),
 		];
+		if (auth()->user()->role === 'rw') {
+			$columns[] = Column::make('id_rt')->title('RT');
+		}
+
+		$columns[] = Column::computed('action')
+			->exportable(false)
+			->printable(false)
+			->width(60)
+			->addClass('text-center');
+
+		return $columns;
 	}
 
 	/**
