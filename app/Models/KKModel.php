@@ -36,7 +36,7 @@ class KKModel extends Model
 	 */
 	protected $casts = [
 		'id_kk' => 'integer',
-		'id_akun' => 'integer',
+		'id_user' => 'integer',
 		'id_provinsi' => 'integer',
 		'id_kabupaten' => 'integer',
 		'id_kecamatan' => 'integer',
@@ -44,9 +44,9 @@ class KKModel extends Model
 		'id_rt' => 'integer',
 	];
 
-	public function akun()
+	public function user()
 	{
-		return $this->belongsTo(AkunModel::class, 'id_akun', 'id_akun');
+		return $this->belongsTo(UsersModel::class, 'id_user', 'id_user');
 	}
 
 	public function provinsi()
@@ -72,5 +72,10 @@ class KKModel extends Model
 	public function rt()
 	{
 		return $this->hasOne(RTModel::class, 'id_rt', 'id_rt');
+	}
+
+	public function citizens()
+	{
+		return $this->hasMany(CitizensModel::class, 'id_kk', 'id_kk');
 	}
 }

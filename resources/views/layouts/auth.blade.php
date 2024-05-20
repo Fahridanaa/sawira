@@ -19,11 +19,7 @@
     <!-- CSS Libraries -->
 
     <!-- Template CSS -->
-    <link rel="stylesheet"
-          href="{{ asset('/assets/css/style.css') }}">
-    <link rel="stylesheet"
-          href="{{ asset('/assets/css/components.css') }}">
-    @vite('resources/css/app.css')
+    @vite(['resources/css/app.css', 'resources/sass/app.scss', 'resources/js/app.js'])
 
     @stack('css')
 </head>
@@ -58,16 +54,9 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
         integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
         crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.nicescroll/3.7.6/jquery.nicescroll.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
-<script src="{{ asset('assets/js/stisla.js') }}"></script>
 
 <!-- JS Libraries -->
-
-@vite('resources/js/app.js')
 <!-- Template JS File -->
-<script src="{{ asset('assets/js/scripts.js') }}"></script>
-<script src="{{ asset('assets/js/custom.js') }}"></script>
 
 <!-- Page Specific JS File -- run> -->
 @stack('js')

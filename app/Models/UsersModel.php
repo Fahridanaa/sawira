@@ -6,13 +6,16 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
 
-class AkunModel extends Model
+class UsersModel extends Authenticatable
 {
 	use HasFactory;
+	use Notifiable;
 
-	protected $table = 'akun';
-	protected $primaryKey = 'id_akun';
+	protected $table = 'users';
+	protected $primaryKey = 'id_user';
 
 	/**
 	 * The attributes that are mass assignable.
@@ -22,7 +25,7 @@ class AkunModel extends Model
 	protected $fillable = [
 		'username',
 		'password',
-		'level_id',
+		'role',
 	];
 
 	/**
@@ -40,8 +43,8 @@ class AkunModel extends Model
 	 * @var array
 	 */
 	protected $casts = [
-		'id_akun' => 'integer',
-		'level_id' => 'integer',
+		'id_user' => 'integer',
+		'role' => 'string',
 	];
 
 	public function kk(): HasOne
@@ -49,8 +52,8 @@ class AkunModel extends Model
 		return $this->hasOne(KKModel::class, 'id_akun', 'id_akun');
 	}
 
-	public function level(): BelongsTo
+	public function hasRole($role)
 	{
-		return $this->belongsTo(LevelModel::class);
+		return $this->role === $role;
 	}
 }

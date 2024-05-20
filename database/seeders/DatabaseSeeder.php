@@ -3,7 +3,7 @@
 namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
-use App\Models\AkunModel;
+use App\Models\UsersModel;
 use App\Models\KetuaRTModel;
 use App\Models\KKModel;
 use App\Models\MustahikModel;
@@ -37,22 +37,20 @@ class DatabaseSeeder extends Seeder
 			DistrictsSeeder::class,
 			VillagesSeeder::class,
 		]);
-		$this->call(LevelSeeder::class);
-		AkunModel::factory(25)->create();
+		$this->call(UserSeeder::class);
 		$this->call(RTSeeder::class);
 		$this->call(StatusHubunganWargaSeeder::class);
-		SuratPindahModel::factory(3)->create();
+		KKModel::factory(25)->create();
 		TemplateSuratModel::factory(3)->create();
 		$this->call(KategoriMustahikSeeder::class);
 		PengajuanMustahikModel::factory(5)->create();
-		CitizensModel::factory(25)->create();
+		CitizensModel::factory(250)->create();
 		KetuaRTModel::factory(18)->create();
-		RiwayatWargaModel::factory(15)->create();
-		RiwayatPindahModel::factory(10)->create();
+		RiwayatWargaModel::factory(100)->create();
+		RiwayatPindahModel::factory(50)->create();
 		NotifikasiModel::factory(25)->create();
 		RiwayatSuratModel::factory(5)->create();
 		MustahikModel::factory(25)->create();
 		VerifikasiMustahikModel::factory(15)->create();
-		KKModel::factory(25)->create();
 	}
 }

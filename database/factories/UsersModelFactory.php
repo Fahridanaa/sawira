@@ -4,18 +4,18 @@ namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
-use App\Models\AkunModel;
+use App\Models\UsersModel;
 use App\Models\KKModel;
 use App\Models\LevelModel;
 
-class AkunModelFactory extends Factory
+class UsersModelFactory extends Factory
 {
 	/**
 	 * The name of the factory's corresponding model.
 	 *
 	 * @var string
 	 */
-	protected $model = AkunModel::class;
+	protected $model = UsersModel::class;
 
 	/**
 	 * Define the model's default state.
@@ -25,7 +25,6 @@ class AkunModelFactory extends Factory
 		return [
 			'username' => $this->faker->userName(),
 			'password' => $this->faker->password(),
-			'id_level' => LevelModel::inRandomOrder()->first()->id_level
 		];
 	}
 }

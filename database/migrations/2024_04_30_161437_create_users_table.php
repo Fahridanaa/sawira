@@ -10,14 +10,12 @@ return new class extends Migration {
 	 */
 	public function up(): void
 	{
-		Schema::create('riwayat_warga', function (Blueprint $table) {
-			$table->id('id_riwayatWarga');
-			$table->unsignedBigInteger('id_warga')->index();
-			$table->string('kategori_riwayat', 255);
-			$table->date('tanggal');
+		Schema::create('users', function (Blueprint $table) {
+			$table->id('id_user');
+			$table->string('username', 25);
+			$table->enum('role', ['rw', 'rt', 'amil', 'warga'])->default('warga');
+			$table->string('password', 255);
 			$table->timestamps();
-
-			$table->foreign('id_warga')->references('id_warga')->on('semua_warga');
 		});
 	}
 
@@ -26,6 +24,6 @@ return new class extends Migration {
 	 */
 	public function down(): void
 	{
-		Schema::dropIfExists('riwayat_warga');
+		Schema::dropIfExists('users');
 	}
 };

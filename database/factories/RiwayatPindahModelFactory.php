@@ -18,15 +18,26 @@ class RiwayatPindahModelFactory extends Factory
 	 */
 	protected $model = RiwayatPindahModel::class;
 
+	private static $kkIds = [];
+
 	/**
 	 * Define the model's default state.
 	 */
 	public function definition(): array
 	{
+		if (empty(self::$kkIds)) {
+			self::$kkIds = KKModel::all()->pluck('id_kk')->toArray(); // get all citizen Ids
+		}
+
+		$randomIdKKKey = array_rand(self::$kkIds); // Pick a random key
+		$randomWargaId = self::$kkIds[$randomIdKKKey]; // Get the corresponding value
+		unset(self::$kkIds[$randomIdKKKey]); // Remove used id from the pool
+
+
 		return [
-			'id_kk' => KKModel::factory(),
+			'id_kk' => $randomWargaId,
 			'id_suratPindah' => SuratPindahModel::factory(),
-			'tgl_keluar' => $this->faker->date(),
+			'tanggal' => $this->faker->date(),
 			'alamat_tujuan' => $this->faker->address(),
 			'alasan_keluar' => $this->faker->text()
 		];

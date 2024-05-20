@@ -2,7 +2,7 @@
 
 namespace Database\Factories;
 
-use App\Models\AkunModel;
+use App\Models\UsersModel;
 use App\Models\RTModel;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
@@ -28,7 +28,7 @@ class KKModelFactory extends Factory
 	{
 		return [
 			'no_kk' => $this->faker->numerify('###############'),
-			'id_akun' => AkunModel::factory(),
+			'id_user' => UsersModel::factory(),
 			'id_provinsi' => $this->faker->numberBetween(1, 2),
 			'id_kabupaten' => $this->faker->numberBetween(1, 2),
 			'id_kecamatan' => $this->faker->numberBetween(1, 2),

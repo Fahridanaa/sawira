@@ -13,7 +13,7 @@
             <img alt="image"
                  src="../assets/img/avatar/avatar-1.png"
                  class="rounded-circle mr-1">
-            <div class="d-sm-none d-lg-inline-block">Hi, Ujang Maman</div>
+            <div class="d-sm-none d-lg-inline-block">Hi, {{ auth()->user()->username }}</div>
         </a>
         <div class="dropdown-menu dropdown-menu-right">
             <div class="dropdown-title">Logged in 5 min ago</div>
@@ -25,8 +25,14 @@
                class="dropdown-item has-icon">
                 <i class="fas fa-cog"></i> Settings
             </a>
+            <form id="logoutForm"
+                  method="POST"
+                  action="{{ route('logout') }}">
+                @csrf
+            </form>
             <div class="dropdown-divider"></div>
-            <a href="{{ route('login') }}"
+            <a href="{{ route('logout') }}"
+               onClick="event.preventDefault(); document.getElementById('logoutForm').submit();"
                class="dropdown-item has-icon text-danger">
                 <i class="fas fa-sign-out-alt"></i> Logout
             </a>
