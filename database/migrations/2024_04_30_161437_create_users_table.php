@@ -12,7 +12,7 @@ return new class extends Migration {
 	{
 		Schema::create('users', function (Blueprint $table) {
 			$table->id('id_user');
-			$table->string('username', 25)->unique();
+			$table->string('username', 25);
 			$table->enum('role', ['rw', 'rt', 'amil', 'warga'])->default('warga');
 			$table->string('password', 255);
 			$table->timestamps();

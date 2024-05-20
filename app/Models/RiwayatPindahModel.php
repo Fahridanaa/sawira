@@ -20,7 +20,7 @@ class RiwayatPindahModel extends Model
 	protected $fillable = [
 		'id_kk',
 		'id_suratPindah',
-		'tgl_keluar',
+		'tanggal',
 		'surat_pindah',
 		'alamat_tujuan',
 		'alasan_keluar'
@@ -32,15 +32,15 @@ class RiwayatPindahModel extends Model
 	 * @var array
 	 */
 	protected $casts = [
-		'id' => 'integer',
+		'id_riwayatPindahan' => 'integer',
 		'id_kk' => 'integer',
 		'id_suratPindah' => 'integer',
-		'tgl_keluar' => 'date'
+		'tanggal' => 'date'
 	];
 
-	public function kK(): BelongsTo
+	public function KK(): BelongsTo
 	{
-		return $this->belongsTo(KKModel::class);
+		return $this->belongsTo(KKModel::class, 'id_kk', 'id_kk');
 	}
 
 	public function suratPindah(): BelongsTo

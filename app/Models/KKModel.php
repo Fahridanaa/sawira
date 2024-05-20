@@ -73,4 +73,9 @@ class KKModel extends Model
 	{
 		return $this->hasOne(RTModel::class, 'id_rt', 'id_rt');
 	}
+
+	public function citizens()
+	{
+		return $this->hasMany(CitizensModel::class, 'id_kk', 'id_kk');
+	}
 }

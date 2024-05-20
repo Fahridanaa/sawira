@@ -45,7 +45,7 @@ class CitizensModel extends Model
 		'id_hubungan' => 'integer',
 	];
 
-	public function kk(): BelongsTo
+	public function kk(): belongsTo
 	{
 		return $this->belongsTo(KKModel::class, 'id_kk', 'id_kk');
 	}

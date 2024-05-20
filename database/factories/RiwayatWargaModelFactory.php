@@ -24,6 +24,7 @@ class RiwayatWargaModelFactory extends Factory
 		return [
 			'kategori_riwayat' => $this->faker->randomElement(['kematian', 'pindah kk']),
 			'id_warga' => CitizensModel::factory(),
+			'tanggal' => $this->faker->date(),
 		];
 	}
 }

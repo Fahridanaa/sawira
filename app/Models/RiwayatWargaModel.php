@@ -20,6 +20,7 @@ class RiwayatWargaModel extends Model
 	protected $fillable = [
 		'kategori_riwayat',
 		'id_warga',
+		'tanggal'
 	];
 
 	/**
@@ -30,6 +31,7 @@ class RiwayatWargaModel extends Model
 	protected $casts = [
 		'id_riwayatWarga' => 'integer',
 		'id_warga' => 'integer',
+		'tanggal' => 'date'
 	];
 
 	public function warga(): BelongsTo
