@@ -121,7 +121,7 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-12">
+                <div class="col-6">
                     <div class="form-group">
                         <label class="form-label">Jenis Kelamin</label>
                         <div class="selectgroup selectgroup-pills">
@@ -140,6 +140,20 @@
                                        class="selectgroup-input">
                                 <span class="selectgroup-button selectgroup-button-icon"><i class="fas fa-venus"></i></span>
                             </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="form-group">
+                        <label>Tempat, Tanggal Lahir</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text">
+                                    <i class="fa fa-address-card"></i>
+                                </div>
+                            </div>
+                            <input type="text"
+                                   class="form-control">
                         </div>
                     </div>
                 </div>
