@@ -58,22 +58,27 @@ class CitizensDataTable extends DataTable
 	 */
 	public function html(): HtmlBuilder
 	{
-		return $this->builder()
-			->setTableId('citizens-table')
+		$html = $this->builder()
+			->setTableId('family-heads-table')
 			->columns($this->getColumns())
 			->minifiedAjax()
-			//->dom('Bfrtip')
 			->orderBy(1)
 			->selectStyleSingle()
-			->buttons([
+			->buttons('l');
+
+		if (auth()->user()->role !== 'rw') {
+			$html->buttons([
 				[
-					'text' => 'Tambah Warga',
+					'text' => 'Tambah Kartu Keluarga',
 					'action' => 'function ( e, dt, node, config ) {
-                                    window.location.href = "/citizen/create";
-                                 }',
+										window.location.href = "/family-heads/create";
+									 }',
 					'className' => 'btn btn-primary',
 				]
 			]);
+		};
+
+		return $html;
 	}
 
 	/**
