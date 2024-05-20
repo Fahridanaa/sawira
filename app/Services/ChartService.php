@@ -1,15 +1,14 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Services;
 
 use App\Models\CitizensModel;
 use App\Models\KKModel;
 use App\Models\RTModel;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Http\Request;
 
-class ChartController extends Controller
+class ChartService
 {
 	const AGE_CATEGORIES = [
 		'Balita' => 5,
@@ -24,9 +23,9 @@ class ChartController extends Controller
 		return $this->countCitizensByDate($citizens, 'tanggal_masuk');
 	}
 
-	public function countCitizensByExitDate($citizensHistory)
+	public function countCitizensByExitDate($citizensHistory, $movingCitizensHistory)
 	{
-		return $this->countCitizensByDate($citizensHistory, 'tanggal_keluar');
+		return $this->countCitizensByDate($citizensHistory, 'tanggal') + $this->countFamilyMembersByDate($movingCitizensHistory, 'tanggal');
 	}
 
 	public function categorizeCitizensByAge($citizens)
@@ -88,16 +87,36 @@ class ChartController extends Controller
 
 	private function countCitizensByDate($citizens, $dateField)
 	{
+		return $this->getCountsByMonth($citizens, $dateField, function ($citizen) {
+			return 1; // the logic in the original countCitizensByDate, i.e., return 1
+		});
+	}
+
+	private function countFamilyMembersByDate($citizens, $dateField)
+	{
+		return $this->getCountsByMonth($citizens, $dateField, function ($citizen) {
+			return $this->getTotalFamilyMember($citizen->id_kk); // the logic in the original CountFamilyMemberByDate
+		});
+	}
+
+	private function getCountsByMonth($citizens, $dateField, callable $getTotal)
+	{
 		$citizensCountByMonth = [];
 
 		foreach ($citizens as $citizen) {
 			$month = Carbon::parse($citizen->$dateField)->format('F');
+			$totalFamilyMember = $getTotal($citizen);
 			array_key_exists($month, $citizensCountByMonth)
-				? $citizensCountByMonth[$month]++
-				: $citizensCountByMonth[$month] = 1;
+				? $citizensCountByMonth[$month] += $totalFamilyMember
+				: $citizensCountByMonth[$month] = $totalFamilyMember;
 		}
 
 		return $citizensCountByMonth;
+	}
+
+	private function getTotalFamilyMember($idKK)
+	{
+		return CitizensModel::where('id_kk', $idKK)->count();
 	}
 
 	private function getAge($birthdate)

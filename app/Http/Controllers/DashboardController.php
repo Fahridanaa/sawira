@@ -3,35 +3,35 @@
 namespace App\Http\Controllers;
 
 use App\Models\CitizensModel;
+use App\Models\RiwayatPindahModel;
 use App\Models\RiwayatWargaModel;
-use Carbon\Carbon;
-use Illuminate\Http\Request;
+use App\Services\ChartService;
 
 class DashboardController extends Controller
 {
-	public function index()
+	public function index(ChartService $chartService)
 	{
 		$citizens = CitizensModel::all();
 		$citizensHistory = RiwayatWargaModel::all();
-		$chartController = new ChartController();
+		$movingCitizensHistory = RiwayatPindahModel::all();
 
-		$citizensByEntryMonth = $chartController->countCitizensByEntryDate($citizens);
-		$citizensByExitMonth = $chartController->countCitizensByExitDate($citizensHistory);
-		$ageGroupCount = $chartController->categorizeCitizensByAge($citizens);
+		$citizensByEntryMonth = $chartService->countCitizensByEntryDate($citizens);
+		$citizensByExitMonth = $chartService->countCitizensByExitDate($citizensHistory, $movingCitizensHistory);
+		$ageGroupCount = $chartService->categorizeCitizensByAge($citizens);
 
-		$totalCitizenCount = $chartController->countCitizens();
-		$totalFamilyCount = $chartController->countKKs();
-		$totalRTCount = $chartController->countRTs();
+		$totalCitizenCount = $chartService->countCitizens();
+		$totalFamilyCount = $chartService->countKKs();
+		$totalRTCount = $chartService->countRTs();
 
 		$breadcrumbTitle = 'Dashboard';
 		$userLevel = 'RT';
-		$indonesianMonthNames = $chartController->getIndonesianMonths();
+		$indonesianMonthNames = $chartService->getIndonesianMonths();
 
 		return view('pages.dashboard.' . $userLevel, [
 			'breadcrumbTitle' => $breadcrumbTitle,
 			'monthLabels' => $indonesianMonthNames,
-			'entryDataPerMonth' => $chartController->sortDataByMonth($citizensByEntryMonth, $indonesianMonthNames),
-			'exitDataPerMonth' => $chartController->sortDataByMonth($citizensByExitMonth, $indonesianMonthNames),
+			'entryDataPerMonth' => $chartService->sortDataByMonth($citizensByEntryMonth, $indonesianMonthNames),
+			'exitDataPerMonth' => $chartService->sortDataByMonth($citizensByExitMonth, $indonesianMonthNames),
 			'totalCitizenCount' => $totalCitizenCount,
 			'totalFamilyCount' => $totalFamilyCount,
 			'totalRTCount' => $totalRTCount,
