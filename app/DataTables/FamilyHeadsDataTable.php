@@ -79,7 +79,7 @@ class FamilyHeadsDataTable extends DataTable
 		return [
 			Column::make('no_kk')->title('No. KK'),
 			Column::make('nama_lengkap')->title('Kepala Keluarga'),
-			Column::make('kk.akun.username')->title('Username'),
+			Column::make('kk.user.username')->title('Username'),
 			Column::computed('action')
 				->exportable(false)
 				->printable(false)

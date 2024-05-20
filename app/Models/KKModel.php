@@ -46,7 +46,7 @@ class KKModel extends Model
 
 	public function user()
 	{
-		return $this->belongsTo(UsersModel::class, 'id_akun', 'id_akun');
+		return $this->belongsTo(UsersModel::class, 'id_user', 'id_user');
 	}
 
 	public function provinsi()
