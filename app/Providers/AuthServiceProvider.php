@@ -8,9 +8,36 @@ use Illuminate\Support\Facades\Gate;
 
 class AuthServiceProvider extends ServiceProvider
 {
-	public static $permission = [
-		'manage-citizens' => ['rw', 'rt']
+	/**
+	 * Generate RT roles dynamically.
+	 *
+	 * @return array
+	 */
+	protected static function generateRtRoles(): array
+	{
+		$rtRoles = ['rw'];
+		for ($i = 1; $i <= 18; $i++) {
+			$rtRoles[] = 'rt' . $i;
+		}
+		return $rtRoles;
+	}
+
+	/**
+	 * The permissions and their associated roles.
+	 *
+	 * @var array
+	 */
+	protected static $permissions = [
+		'manage-citizens' => []
 	];
+
+	/**
+	 * Initialize the static permissions property.
+	 */
+	protected static function initializePermissions(): void
+	{
+		self::$permissions['manage-citizens'] = self::generateRtRoles();
+	}
 
 	/**
 	 * The model to policy mappings for the application.
@@ -28,11 +55,12 @@ class AuthServiceProvider extends ServiceProvider
 	{
 		$this->registerPolicies();
 
-		foreach (self::$permission as $action => $roles) {
+		// Initialize permissions
+		self::initializePermissions();
+
+		foreach (self::$permissions as $action => $roles) {
 			Gate::define($action, function ($user) use ($roles) {
-				if (in_array($user->role, $roles)) {
-					return true;
-				}
+				return in_array($user->role, $roles);
 			});
 		}
 	}
