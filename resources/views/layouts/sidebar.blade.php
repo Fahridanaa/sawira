@@ -10,7 +10,7 @@
             <a class="nav-link"
                href="{{ route('dashboard') }}"><i class="fas fa-fire"></i> <span>Dashboard</span></a>
         </li>
-        @if(\App\Helpers\SidebarHelper::hasAnyRole(['rw', 'rt']))
+        @if(!\App\Helpers\SidebarHelper::hasAnyRole(['warga', 'amil']))
             <li class="{{ Request::is('penduduk') || Request::is('family-heads.create') || Request::is('citizen.create') ? 'active' : '' }}">
                 <a class="nav-link"
                    href="/penduduk"><i class="fas fa-columns"></i> <span>Kelola Penduduk</span></a>
