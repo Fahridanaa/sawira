@@ -19,10 +19,12 @@
                 <a class="nav-link"
                    href="{{ route('history') }}"><i class="fas fa-history"></i> <span>Riwayat Penduduk</span></a>
             </li>
+            @if(!\App\Helpers\SidebarHelper::hasAnyRole(['warga', 'amil', 'rw']))
             <li>
                 <a class="nav-link"
                    href="{{ route('dashboard') }}"><i class="fas fa-handshake"></i> <span>Pengajuan Mustahik</span></a>
             </li>
+            @endif
         @endif
     </ul>
 </aside>

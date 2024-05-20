@@ -59,21 +59,27 @@ class FamilyHeadsDataTable extends DataTable
 	 */
 	public function html(): HtmlBuilder
 	{
-		return $this->builder()
+		$html = $this->builder()
 			->setTableId('family-heads-table')
 			->columns($this->getColumns())
 			->minifiedAjax()
 			->orderBy(1)
 			->selectStyleSingle()
-			->buttons([
+			->buttons('l');
+
+		if (auth()->user()->role !== 'rw') {
+			$html->buttons([
 				[
 					'text' => 'Tambah Kartu Keluarga',
 					'action' => 'function ( e, dt, node, config ) {
-                                    window.location.href = "/family-heads/create";
-                                 }',
+										window.location.href = "/family-heads/create";
+									 }',
 					'className' => 'btn btn-primary',
 				]
 			]);
+		};
+
+		return $html;
 	}
 
 	/**
