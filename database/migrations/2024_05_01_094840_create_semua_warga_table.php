@@ -23,7 +23,6 @@ return new class extends Migration {
 			$table->string('agama', 20);
 			$table->string('pendidikan_terakhir', 20);
 			$table->string('jenis_pekerjaan', 255);
-			$table->date('tanggal_masuk');
 			$table->timestamps();
 
 			$table->foreign('id_kk')->references('id_kk')->on('kk');

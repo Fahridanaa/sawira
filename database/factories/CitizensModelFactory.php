@@ -33,7 +33,6 @@ class CitizensModelFactory extends Factory
 			'agama' => $this->faker->randomElement(["Islam", "Kristen Protestan", "Katolik", "Hindu", "Buddha", "Khonghucu"]),
 			'pendidikan_terakhir' => $this->faker->randomElement(["TK", "SD", "SMP", "SMA", "S1", "S2", "S3"]),
 			'jenis_pekerjaan' => $this->faker->jobTitle(),
-			'tanggal_masuk' => $this->faker->date(),
 			'id_kk' => KKModel::inRandomOrder()->first()->id_kk,
 			'id_hubungan' => StatusHubunganWargaModel::inRandomOrder()->first()->id_hubungan,
 		];
