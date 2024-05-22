@@ -88,7 +88,6 @@ class CitizensDataTable extends DataTable
 	{
 		$columns = [
 			Column::make('nama_lengkap'),
-			Column::make('nik'),
 			Column::make('asal_kota'),
 			Column::make('tanggal_lahir'),
 			Column::make('no_telp'),
