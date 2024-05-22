@@ -29,8 +29,8 @@ class CitizensDataTable extends DataTable
 			->addColumn('id_rt', function ($row) {
 				return $row->kk->id_rt;
 			})
-			->addColumn('action', function () {
-				return '<button class="btn btn-primary trigger--fire-modal-2" id="modal-2">Detail</button>';
+			->addColumn('action', function ($row) {
+				return '<button class="btn btn-primary detail-btn" data-toggle="modal" data-id=' . "$row->id_warga" . ' data-target="#detailModal">Detail</button>';
 			})
 			->setRowId('id');
 	}
