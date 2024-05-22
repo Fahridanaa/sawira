@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\FamilyInformationController;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,7 +14,10 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "api" middleware group. Make something great!
 |
 */
+Route::middleware(['auth:sanctum', 'verified'])->group(function () {
+	Route::get('/user', function (Request $request) {
+		return $request->user();
+	});
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+	Route::get('/details/{id}', [FamilyInformationController::class, 'show']);
 });

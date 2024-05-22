@@ -9,6 +9,7 @@ use App\Http\Controllers\DependantDropdownController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\historyCitizensController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\FamilyInformationController;
 
 /*
 |--------------------------------------------------------------------------
@@ -29,6 +30,7 @@ Route::get('/login', [AuthController::class, 'index'])->name('login');
 Route::middleware(['auth:sanctum', 'verified'])->group(function () {
 
 	Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+	Route::get('/penduduk', [ManageCitizens::class, 'index'])->name('penduduk')->middleware('can:manager');
 	Route::get('/history', [historyCitizensController::class, 'index'])->name('history')->middleware('can:manager');
 
 	Route::prefix('tab-content')->group(function () {
@@ -40,5 +42,5 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
 	Route::get('districts', [DependantDropdownController::class, 'districts'])->name('districts')->middleware('can:manager');
 	Route::get('villages', [DependantDropdownController::class, 'villages'])->name('villages')->middleware('can:manager');
 
-	Route::get('/family', [\App\Http\Controllers\FamilyInformationController::class, 'index'])->name('family-heads.show')->middleware('can:user');
+	Route::get('/family', [FamilyInformationController::class, 'index'])->name('family')->middleware('can:user');
 });

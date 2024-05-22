@@ -27,9 +27,9 @@
             @endif
         @endif
         @if(\App\Helpers\SidebarHelper::hasAnyRole(['warga']))
-            <li class="{{ Request::is('family') }}">
+            <li class="{{ Request::is('family')  ? 'active' : '' }}">
                 <a class="nav-link"
-                   href="/family"><i class="fas fa-columns"></i> <span>Informasi Pribadi</span></a>
+                   href="/family"><i class="fas fa-address-card"></i> <span>Informasi Pribadi</span></a>
             </li>
         @endif
     </ul>
