@@ -1,11 +1,12 @@
-<aside id="sidebar-wrapper">
+<aside id="sidebar-wrapper"
+       class="d-flex h-100 flex-column">
     <div class="sidebar-brand">
         <a href="#">Sawira</a>
     </div>
     <div class="sidebar-brand sidebar-brand-sm">
         <a href="#">Sw</a>
     </div>
-    <ul class="sidebar-menu">
+    <ul class="sidebar-menu d-flex flex-column h-100">
         <li class="{{ Request::is('dashboard') ? 'active' : '' }}">
             <a class="nav-link"
                href="{{ route('dashboard') }}"><i class="fas fa-fire"></i> <span>Dashboard</span></a>
@@ -32,5 +33,23 @@
                    href="/family"><i class="fas fa-address-card"></i> <span>Informasi Pribadi</span></a>
             </li>
         @endif
+        <div class="flex-grow-1"></div>
+        <li class="mb-2">
+            <form id="logoutForm"
+                  method="POST"
+                  action="{{ route('logout') }}">
+                @csrf
+            </form>
+            <a href="{{ route('logout') }}"
+               onClick="event.preventDefault(); document.getElementById('logoutForm').submit();"
+               class="nav-link text-danger">
+                <i class="fas fa-sign-out-alt"></i> <span>Logout</span>
+            </a>
+        </li>
     </ul>
 </aside>
+<style>
+    .main-sidebar .sidebar-menu li a:hover {
+        background-color: #f5f5f5;
+    }
+</style>
