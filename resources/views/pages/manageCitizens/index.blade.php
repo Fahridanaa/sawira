@@ -177,8 +177,21 @@
                             console.log("Error loading table:", xhr);
                         }
                     });
+
+                    $.ajax({
+                        url: "{{ route('family-heads.index') }}",
+                        type: "GET",
+                        data: {id_rt: id_rt},
+                        success: function(data) {
+                            $('#family-heads').html(data);
+                        },
+                        error: function(xhr) {
+                            console.log("Error loading family heads table:", xhr);
+                        }
+                    });
                 } else {
                     $('#citizens').html(''); // Kosongkan tabel jika tidak ada RT yang dipilih
+                    $('#family-heads').html(''); // Kosongkan tabel Family Heads jika tidak ada RT yang dipilih
                 }
             });
         });

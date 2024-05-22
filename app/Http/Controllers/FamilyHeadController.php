@@ -6,6 +6,7 @@ use App\DataTables\FamilyHeadAccountDataTable;
 use App\DataTables\FamilyHeadsDataTable;
 use App\DataTables\FamilyInformationDataTable;
 use App\Models\CitizensModel;
+use App\Models\KKModel;
 use Illuminate\Http\Request;
 
 class FamilyHeadController extends Controller
@@ -13,9 +14,17 @@ class FamilyHeadController extends Controller
 	/**
 	 * Display a listing of the resource.
 	 */
-	public function index(FamilyHeadsDataTable $familyHeadDataTable)
+	public function index(FamilyHeadsDataTable $familyHeadDataTable, Request $request)
 	{
-		return $familyHeadDataTable->render('components.tables.family-heads');
+		if ($request->has('id_rt')) {
+			$id_rt = $request->input('id_rt');
+			$familyHeads = KKModel::where('id_rt', $id_rt)->get();
+		} else {
+			// Handle case where no id_rt is provided (optional)
+			$familyHeads = KKModel::all(); // Or fetch all family heads if no filter is applied
+		}
+	
+		return $familyHeadDataTable->render('components.tables.family-heads', compact('familyHeads'));
 	}
 
 	/**

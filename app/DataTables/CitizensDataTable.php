@@ -66,7 +66,7 @@ class CitizensDataTable extends DataTable
 	public function html(): HtmlBuilder
 	{
 		$html = $this->builder()
-			->setTableId('family-heads-table')
+			->setTableId('citizens-table')
 			->columns($this->getColumns())
 			->minifiedAjax()
 			->orderBy(1)

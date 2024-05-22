@@ -4,9 +4,9 @@ namespace App\Http\Controllers;
 
 use App\DataTables\FamilyHeadsDataTable;
 use App\DataTables\FamilyInformationDataTable;
+use App\DataTables\CitizensDataTable;
 use App\Models\CitizensModel;
 use App\Models\KKModel;
-use App\DataTables\CitizensDataTable;
 use Illuminate\Http\Request;
 
 class ManageCitizens extends Controller
@@ -21,7 +21,12 @@ class ManageCitizens extends Controller
 
 		if ($request->ajax()) {
 			$dataTable = new CitizensDataTable;
-			return $dataTable->render('components.tables.Citizen');
+			$familyHeads = new FamilyHeadsDataTable;
+			$data = [
+				'citizensTable' => $dataTable->render('components.tables.Citizen'),
+				'familyHeadsTable' => $familyHeads->render('components.tables.family-heads'),
+			];
+			return response()->json($data);
 		}
 
 		$breadcrumb = 'Kelola Penduduk';
