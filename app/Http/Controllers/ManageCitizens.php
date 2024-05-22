@@ -6,6 +6,7 @@ use App\DataTables\FamilyHeadsDataTable;
 use App\DataTables\FamilyInformationDataTable;
 use App\Models\CitizensModel;
 use App\Models\KKModel;
+use App\DataTables\CitizensDataTable;
 use Illuminate\Http\Request;
 
 class ManageCitizens extends Controller
@@ -13,10 +14,18 @@ class ManageCitizens extends Controller
 	/**
 	 * Display a listing of the resource.
 	 */
-	public function index()
+	public function index(Request $request)
 	{
+		// Mengambil semua id_rt dari tabel kk melalui relasi citizens tanpa duplikat
+		$rw = CitizensModel::with('kk')->get()->pluck('kk.id_rt')->filter()->unique()->sort();
+
+		if ($request->ajax()) {
+			$dataTable = new CitizensDataTable;
+			return $dataTable->render('components.tables.Citizen');
+		}
+
 		$breadcrumb = 'Kelola Penduduk';
-		return view('pages.manageCitizens.index', ['breadcrumb' => $breadcrumb]);
+		return view('pages.manageCitizens.index', ['breadcrumb' => $breadcrumb], compact('rw'));
 	}
 
 	/**

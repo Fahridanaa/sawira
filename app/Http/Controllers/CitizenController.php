@@ -4,14 +4,23 @@ namespace App\Http\Controllers;
 use App\Models\KKModel;
 use App\DataTables\CitizensDataTable;
 use Illuminate\Http\Request;
+use App\Models\CitizensModel;
 
 class CitizenController extends Controller
 {
 	/**
 	 * Display a listing of the resource.
 	 */
-	public function index(CitizensDataTable $citizensDataTable)
+	public function index(CitizensDataTable $citizensDataTable, Request $request)
 	{
+		if ($request->has('id_rt')) {
+			$id_rt = $request->input('id_rt');
+			$citizens = CitizensModel::whereHas('kk', function ($query) use ($id_rt) {
+				$query->where('id_rt', $id_rt);
+			})->get();
+	
+			return $citizensDataTable->render('components.tables.citizens', compact('citizens'));
+		}
 		return $citizensDataTable->render('components.tables.citizens');
 	}
 
