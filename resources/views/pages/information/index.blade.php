@@ -69,7 +69,7 @@
             $(document).on('click', '.detail-btn', function () {
                 let id = $(this).data('id');
                 $.ajax({
-                    url: '/api/details/' + id,
+                    url: '/details/' + id,
                     success: function (data) {
                         $('#nik').html("<span class='font-weight-bolder'>NIK</span>&ensp;: " + data.nik);
                         $('#nama_lengkap').html("<span class='font-weight-bolder'>Nama Lengkap</span>&ensp;: " + data.nama_lengkap);

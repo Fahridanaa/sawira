@@ -18,6 +18,4 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
 	Route::get('/user', function (Request $request) {
 		return $request->user();
 	});
-
-	Route::get('/details/{id}', [FamilyInformationController::class, 'show']);
 });

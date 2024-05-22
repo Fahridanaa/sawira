@@ -38,6 +38,8 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
 		Route::resource('citizens', CitizenController::class);
 	})->middleware('can:manager');
 
+	Route::get('/details/{id}', [FamilyInformationController::class, 'show']);
+
 	Route::get('cities', [DependantDropdownController::class, 'cities'])->name('cities')->middleware('can:manager');
 	Route::get('districts', [DependantDropdownController::class, 'districts'])->name('districts')->middleware('can:manager');
 	Route::get('villages', [DependantDropdownController::class, 'villages'])->name('villages')->middleware('can:manager');
