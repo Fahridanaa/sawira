@@ -5,7 +5,7 @@
         <div class="section-header justify-content-between">
             <h1>Menambah Penduduk</h1>
             <div class="btn-group p-1">
-                <a href="{{ route('penduduk.index') }}">
+                <a href="{{ route('penduduk') }}">
                     <button class="btn btn-danger mr-2">
                         Batal
                     </button>
