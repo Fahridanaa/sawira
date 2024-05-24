@@ -18,11 +18,11 @@ return new class extends Migration {
 			$table->string('nama_lengkap', 100);
 			$table->string('no_telp', 30);
 			$table->enum('jenis_kelamin', ['L', 'P']);
-			$table->string('asal_kota', 50);
+			$table->string('asal_tempat', 50);
 			$table->date('tanggal_lahir');
-			$table->string('agama', 20);
+			$table->enum('agama', ['Islam', 'Kristen Protestan', 'Katolik', 'Hindu', 'Buddha', 'Konghucu']);
 			$table->string('pendidikan_terakhir', 20);
-			$table->string('jenis_pekerjaan', 255);
+			$table->string('pekerjaan', 255);
 			$table->timestamps();
 
 			$table->foreign('id_kk')->references('id_kk')->on('kk');
