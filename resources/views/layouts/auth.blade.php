@@ -34,8 +34,7 @@
                     <div class="login-brand">
                         <img src="{{ asset('assets/img/logo-01.svg') }}"
                              alt="logo"
-                             width="100"
-                             class="shadow-light rounded-circle">
+                             width="100">
                     </div>
 
                     <!-- Content -->
