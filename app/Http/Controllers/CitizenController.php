@@ -1,12 +1,24 @@
 <?php
 
 namespace App\Http\Controllers;
+
+use App\Http\Requests\StoreCitizenRequest;
+use App\Models\CitizensModel;
 use App\Models\KKModel;
 use App\DataTables\CitizensDataTable;
+use App\Services\CitizenService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class CitizenController extends Controller
 {
+	protected $citizenService;
+
+	public function __construct(CitizenService $citizenService)
+	{
+		$this->citizenService = $citizenService;
+	}
+
 	/**
 	 * Display a listing of the resource.
 	 */
@@ -20,7 +32,7 @@ class CitizenController extends Controller
 	 */
 	public function create()
 	{
-		$id_rt = 4; // Ganti 1 dengan nilai id_rt yang diinginkan
+		$id_rt = 4;
 		$no_kk = KKModel::where('id_rt', $id_rt)->get(['no_kk']);
 		return view('pages.citizen.create', ['no_kk' => $no_kk]);
 	}
@@ -28,9 +40,23 @@ class CitizenController extends Controller
 	/**
 	 * Store a newly created resource in storage.
 	 */
-	public function store(Request $request)
+	public function store(StoreCitizenRequest $StoreCitizenRequest)
 	{
-		//
+		try {
+			DB::transaction(function () use ($StoreCitizenRequest) {
+				$this->citizenService->createCitizens($StoreCitizenRequest->citizens, $StoreCitizenRequest->id_kk);
+			}, 3);
+
+			return response()->json(['message' => 'Successfully created citizens'], 201);
+
+		} catch (\Exception $e) {
+
+			return response()->json([
+				'status' => 'error',
+				'message' => $e->getMessage()
+			], 400);
+
+		}
 	}
 
 	/**

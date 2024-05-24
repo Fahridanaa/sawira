@@ -18,15 +18,16 @@ class KKModel extends Model
 	 * @var array
 	 */
 	protected $fillable = [
+		'id_user',
 		'no_kk',
 		'alamat',
 		'kode_pos',
-		'id_akun',
 		'id_provinsi',
 		'id_kabupaten',
 		'id_kecamatan',
 		'id_kelurahan',
 		'id_rt',
+		'tanggal_masuk'
 	];
 
 	/**

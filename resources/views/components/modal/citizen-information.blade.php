@@ -43,10 +43,10 @@
                     $('#nik').html("<span class='font-weight-bolder'>NIK</span>&ensp;: " + data.nik);
                     $('#nama_lengkap').html("<span class='font-weight-bolder'>Nama Lengkap</span>&ensp;: " + data.nama_lengkap);
                     $('#no_telp').html("<span class='font-weight-bolder'>No Telp</span>&ensp;: " + data.no_telp);
-                    $('#ttl').html("<span class='font-weight-bolder'>Tempat, dan Tanggal Lahir</span>&ensp;: " + data.asal_kota + ", " + data.tanggal_lahir);
+                    $('#ttl').html("<span class='font-weight-bolder'>Tempat, dan Tanggal Lahir</span>&ensp;: " + data.asal_tempat + ", " + data.tanggal_lahir);
                     $('#agama').html("<span class='font-weight-bolder'>Agama</span>&ensp;: " + data.agama);
                     $('#pendidikan').html("<span class='font-weight-bolder'>Pendidikan Terakhir</span>&ensp;: " + data.pendidikan_terakhir);
-                    $('#pekerjaan').html("<span class='font-weight-bolder'>Pekerjaan</span>&ensp;: " + data.jenis_pekerjaan);
+                    $('#pekerjaan').html("<span class='font-weight-bolder'>Pekerjaan</span>&ensp;: " + data.pekerjaan);
                 }
             });
         });

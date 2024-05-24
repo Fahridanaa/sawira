@@ -33,10 +33,10 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
 	Route::get('/penduduk', [ManageCitizens::class, 'index'])->name('penduduk')->middleware('can:manager');
 	Route::get('/history', [historyCitizensController::class, 'index'])->name('history')->middleware('can:manager');
 
-	Route::prefix('tab-content')->group(function () {
-		Route::resource('family-heads', FamilyHeadController::class);
-		Route::resource('citizens', CitizenController::class);
-	})->middleware('can:manager');
+	Route::middleware('can:manager')->group(function () {
+		Route::resource('tab-content/family-heads', FamilyHeadController::class);
+		Route::resource('tab-content/citizens', CitizenController::class);
+	});
 
 	Route::get('/details/{id}', [FamilyInformationController::class, 'show']);
 

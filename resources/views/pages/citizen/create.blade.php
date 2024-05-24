@@ -49,7 +49,7 @@
                             </form>
                         </div>
                     </div>
-                    <x-citizens.family-member-form
+                    <x-forms.family-member-form
                             id="familyMember"
                             status="familyMember"
                             iteration=0

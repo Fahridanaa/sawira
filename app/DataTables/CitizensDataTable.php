@@ -71,7 +71,7 @@ class CitizensDataTable extends DataTable
 				[
 					'text' => 'Tambah Warga',
 					'action' => 'function ( e, dt, node, config ) {
-										window.location.href = "/citizens/create";
+										window.location.href = "' . route('citizens.create') . '";
 									 }',
 					'className' => 'btn btn-primary',
 				]
@@ -88,7 +88,7 @@ class CitizensDataTable extends DataTable
 	{
 		$columns = [
 			Column::make('nama_lengkap'),
-			Column::make('asal_kota'),
+			Column::make('asal_tempat'),
 			Column::make('tanggal_lahir'),
 			Column::make('no_telp'),
 		];

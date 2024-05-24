@@ -81,7 +81,7 @@ class FamilyInformationDataTable extends DataTable
 			Column::make('nama_lengkap'),
 			Column::make('nik'),
 			Column::make('hubungan'),
-			Column::make('asal_kota'),
+			Column::make('asal_tempat'),
 			Column::make('tanggal_lahir'),
 			Column::make('no_telp'),
 			Column::computed('show')

@@ -22,14 +22,14 @@ class CitizensModel extends Model
 		'nama_lengkap',
 		'no_telp',
 		'jenis_kelamin',
-		'asal_kota',
+		'asal_tempat',
 		'tanggal_lahir',
 		'agama',
 		'pendidikan_terakhir',
-		'jenis_pekerjaan',
+		'pekerjaan',
 		'tanggal_masuk',
 		'id_kk',
-		'status_hubungan_warga_id',
+		'id_hubungan',
 	];
 
 	/**
