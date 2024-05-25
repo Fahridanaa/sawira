@@ -4,12 +4,14 @@
         <div class="section-header justify-content-between">
             <h1>Menambah Kartu Keluarga</h1>
             <div class="btn-group p-1">
-                <a href="{{ route('penduduk.index') }}">
+                <a href="{{ route('penduduk') }}">
                     <button class="btn btn-danger mr-2">
                         Batal
                     </button>
                 </a>
-                <button class="btn btn-primary ml-2">Simpan</button>
+                <button class="btn btn-primary ml-2"
+                        id="add-btn">Simpan
+                </button>
             </div>
         </div>
         <div class="section-body">
@@ -20,13 +22,18 @@
                             <h4>Masukkan Data Keluarga</h4>
                         </div>
                         <div class="card-body">
-                            <form>
+                            <form method="post"
+                                  action="{{ route('family-heads.store') }}"
+                                  id="family-form">
+                                @csrf
                                 <div class="row">
                                     <div class="col-6">
                                         <div class="form-group">
-                                            <label>No. KK</label>
+                                            <label for="no_kk">No. KK</label>
                                             <input type="text"
                                                    class="form-control"
+                                                   name="no_kk"
+                                                   id="no_kk"
                                                    required>
                                         </div>
                                     </div>
@@ -37,10 +44,10 @@
                                     </div>
                                     <div class="col-6">
                                         <div class="form-group">
-                                            <label>Provinsi</label>
+                                            <label for="id_provinsi">Provinsi</label>
                                             <select class="form-control"
-                                                    name="province"
-                                                    id="province"
+                                                    name="id_provinsi"
+                                                    id="id_provinsi"
                                                     required>
                                                 @if(isset($provinces))
                                                     <option disabled
@@ -56,10 +63,10 @@
                                     </div>
                                     <div class="col-6">
                                         <div class="form-group">
-                                            <label>Kabupaten/Kota</label>
+                                            <label for="id_kabupaten">Kabupaten/Kota</label>
                                             <select class="form-control"
-                                                    name="cities"
-                                                    id="cities"
+                                                    name="id_kabupaten"
+                                                    id="id_kabupaten"
                                                     required>
                                             </select>
                                         </div>
@@ -68,20 +75,20 @@
                                 <div class="row">
                                     <div class="col-6">
                                         <div class="form-group">
-                                            <label>Kecamatan</label>
+                                            <label for="id_kecamatan">Kecamatan</label>
                                             <select class="form-control"
-                                                    name="districts"
-                                                    id="districts"
+                                                    name="id_kecamatan"
+                                                    id="id_kecamatan"
                                                     required>
                                             </select>
                                         </div>
                                     </div>
                                     <div class="col-6">
                                         <div class="form-group">
-                                            <label>Desa/Kelurahan</label>
+                                            <label for="id_kelurahan">Desa/Kelurahan</label>
                                             <select class="form-control"
-                                                    name="villages"
-                                                    id="villages"
+                                                    name="id_kelurahan"
+                                                    id="id_kelurahan"
                                                     required>
                                             </select>
                                         </div>
@@ -90,9 +97,11 @@
                                 <div class="row">
                                     <div class="col-6">
                                         <div class="form-group">
-                                            <label>Kode Pos</label>
+                                            <label for="kode_pos">Kode Pos</label>
                                             <input type="text"
                                                    class="form-control"
+                                                   name="kode_pos"
+                                                   id="kode_pos"
                                                    required>
                                         </div>
                                     </div>
@@ -100,9 +109,11 @@
                                 <div class="row">
                                     <div class="col-12">
                                         <div class="form-group">
-                                            <label>Alamat</label>
+                                            <label for="alamat">Alamat</label>
                                             <input type="text"
                                                    class="form-control"
+                                                   name="alamat"
+                                                   id="alamat"
                                                    required>
                                         </div>
                                     </div>
@@ -110,9 +121,9 @@
                             </form>
                         </div>
                     </div>
-                    <x-citizens.family-member-form id="headFamily"
-                                                   status="headFamily"
-                                                   iteration=0
+                    <x-forms.family-member-form id="headFamily"
+                                                status="headFamily"
+                                                iteration=0
                     />
                     <div class="row pb-5">
                         <div class="col-12 d-flex justify-content-center">
@@ -129,18 +140,8 @@
 @push('js')
     <script type="module">
         $(document).ready(() => {
-            let i = 1;
-            $("#add-member").click(function () {
-                const newCard = `<x-citizens.family-member-form id="familyMember-${i}" status="familyMember" iteration="${i}"/>`;
-
-                $(this).closest('.row').before(newCard);
-                $("button#delete-family-member-card").click(function () {
-                    const dataForm = $(this).data('form');
-                    $(`#familyMember-${dataForm}`).remove();
-                });
-                i += 1;
-            });
-
+            let familyCardId;
+            let ajaxRequestPromises = [];
 
             function onChangeSelect(url, id, name) {
                 $.ajax({
@@ -163,15 +164,83 @@
                 });
             }
 
-            $('#province').on('change', function () {
-                onChangeSelect('{{ route("cities") }}', $(this).val(), 'cities');
+            $('#id_provinsi').on('change', function () {
+                onChangeSelect('{{ route("cities") }}', $(this).val(), 'id_kabupaten');
             });
-            $('#cities').on('change', function () {
-                onChangeSelect('{{ route("districts") }}', $(this).val(), 'districts');
+            $('#id_kabupaten').on('change', function () {
+                onChangeSelect('{{ route("districts") }}', $(this).val(), 'id_kecamatan');
             })
-            $('#districts').on('change', function () {
-                onChangeSelect('{{ route("villages") }}', $(this).val(), 'villages');
+            $('#id_kecamatan').on('change', function () {
+                onChangeSelect('{{ route("villages") }}', $(this).val(), 'id_kelurahan');
             })
+
+            $('#add-btn').click(function (e) {
+                e.preventDefault();
+
+                $('#family-form').trigger('submit');
+            });
+
+            $('.citizen-form-class').on('submit', function (e) {
+                e.preventDefault();
+            });
+
+            $('#family-form').submit(function (e) {
+                e.preventDefault();
+
+                let familyData = {};
+                let citizens = [];
+
+                $(this).serializeArray().map(function (x) {
+                    familyData[x.name] = x.value;
+                });
+
+                $('.citizen-form-class').each(function () {
+                    let form = $(this);
+                    let citizenData = {};
+
+                    let inputs = form.serializeArray();
+                    $.each(inputs, function (i, input) {
+                        citizenData[input.name] = input.value;
+                    });
+
+                    citizens.push(citizenData);
+                });
+
+                const postData = {
+                    family: familyData,
+                    citizens: citizens,
+                    _token: "{{ csrf_token() }}"
+                };
+
+                $.ajax({
+                    type: 'POST',
+                    url: '{{ route('family-heads.store') }}',
+                    data: {
+                        _token: "{{ csrf_token() }}",
+                        ...postData,
+                    },
+                    success: function () {
+                        window.location.href = '{{ route('penduduk') }}';
+                    },
+                    error: function (xhr, status, error) {
+                        console.log('error: ', xhr.responseText);
+                    }
+                });
+            });
+
+            function addClickHandlerToDeleteButton(iteration) {
+                $(`#familyMember-${iteration}`).find("button#delete-family-member-card").click(function () {
+                    $(`#familyMember-${iteration}`).remove();
+                });
+            }
+
+            $("#add-member").click(function () {
+                const iteration = $("[id^=familyMember-]").length;
+                const newCard = `<x-forms.family-member-form id="familyMember-${iteration}" status="familyMember" iteration="${iteration}" />`;
+
+                $(this).closest('.row').before(newCard);
+                addClickHandlerToDeleteButton(iteration);
+            });
         });
     </script>
 @endpush

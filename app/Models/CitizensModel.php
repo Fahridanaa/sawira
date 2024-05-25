@@ -22,14 +22,14 @@ class CitizensModel extends Model
 		'nama_lengkap',
 		'no_telp',
 		'jenis_kelamin',
-		'asal_kota',
+		'asal_tempat',
 		'tanggal_lahir',
 		'agama',
 		'pendidikan_terakhir',
-		'jenis_pekerjaan',
+		'pekerjaan',
 		'tanggal_masuk',
 		'id_kk',
-		'status_hubungan_warga_id',
+		'id_hubungan',
 	];
 
 	/**
@@ -39,7 +39,7 @@ class CitizensModel extends Model
 	 */
 	protected $casts = [
 		'id_warga' => 'integer',
-		'tanggal_lahir' => 'date',
+		'tanggal_lahir' => 'date:Y-m-d',
 		'tanggal_masuk' => 'date',
 		'id_kk' => 'integer',
 		'id_hubungan' => 'integer',
@@ -53,6 +53,6 @@ class CitizensModel extends Model
 
 	public function statusHubunganWarga(): BelongsTo
 	{
-		return $this->belongsTo(StatusHubunganWargaModel::class);
+		return $this->belongsTo(StatusHubunganWargaModel::class, 'id_hubungan', 'id_hubungan');
 	}
 }

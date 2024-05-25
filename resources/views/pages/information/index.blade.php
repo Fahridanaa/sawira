@@ -6,7 +6,7 @@
         </div>
         <div class="section-body">
             <h2 class="section-title">Kartu Keluarga</h2>
-            <p class="section-lead"><span>No. KK: </span>169463869098143</p>
+            <p class="section-lead"><span>No. KK: </span>{{ $no_kk }}</p>
             <div class="row">
                 <div class="col-12">
                     <div class="card">
@@ -32,10 +32,6 @@
                     cell.innerHTML = i + 1;
                 });
             }).draw();
-            // $("#modal-2").click((e) => {
-            //     e.stopPropagation();
-            //     $('body').classList.add('modal-open');
-            // });
         });
     </script>
 @endpush

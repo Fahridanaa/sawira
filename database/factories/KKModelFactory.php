@@ -36,6 +36,7 @@ class KKModelFactory extends Factory
 			'id_rt' => RTModel::inRandomOrder()->first()->id_rt,
 			'alamat' => $this->faker->address(),
 			'kode_pos' => $this->faker->numerify('#####'),
+			'tanggal_masuk' => $this->faker->date(),
 		];
 	}
 }

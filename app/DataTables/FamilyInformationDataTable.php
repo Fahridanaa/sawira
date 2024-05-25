@@ -33,8 +33,11 @@ class FamilyInformationDataTable extends DataTable
 			->addColumn('No', function ($row) {
 				return '';
 			})
-			->addColumn('show', function () {
-				return '<button class="btn btn-primary trigger--fire-modal-2" id="modal-2">Detail</button>';
+			->addColumn('hubungan', function ($row) {
+				return $row->statusHubunganWarga->nama_hubungan;
+			})
+			->addColumn('show', function ($row) {
+				return '<button class="btn btn-primary detail-btn" data-toggle="modal" data-id=' . "$row->id_warga" . ' data-target="#detailModal">Detail</button>';
 			})
 			->rawColumns(['show']);
 	}
@@ -45,7 +48,7 @@ class FamilyInformationDataTable extends DataTable
 	public function query(CitizensModel $model): QueryBuilder
 	{
 		return $model->newQuery()
-			->with(['kk:id_kk,no_kk', 'statusHubunganWarga:nama_hubungan'])
+			->with(['kk:id_kk,no_kk'])
 			->select('semua_warga.*')
 			->where('semua_warga.id_kk', $this->id_kk);
 	}
@@ -77,7 +80,8 @@ class FamilyInformationDataTable extends DataTable
 			Column::make('No'),
 			Column::make('nama_lengkap'),
 			Column::make('nik'),
-			Column::make('asal_kota'),
+			Column::make('hubungan'),
+			Column::make('asal_tempat'),
 			Column::make('tanggal_lahir'),
 			Column::make('no_telp'),
 			Column::computed('show')

@@ -37,22 +37,28 @@
                                 <div class="col-12 col-sm-12 col-md-8 col-xl-10">
                                     <div class="tab-content no-padding"
                                          id="myTab2Content">
-                                         <div class="row">
-                                             <div class="col-md-12">
-                                                 <div class="form-group row">
-                                                     <label class="col-1 control-label col-form-label">Filter:</label>
-                                                     <div class="col-3">
-                                                         <select class="form-control" name="id_rt" id="id_rt" required>
-                                                             <option disabled hidden selected>- RT -</option>
-                                                             @foreach ($rw as $id_rt)
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="form-group row">
+                                                    <label class="col-1 control-label col-form-label">Filter:</label>
+                                                    <div class="col-3">
+                                                        <select class="form-control"
+                                                                name="id_rt"
+                                                                id="id_rt"
+                                                                required>
+                                                            <option disabled
+                                                                    hidden
+                                                                    selected>- RT -
+                                                            </option>
+                                                            @foreach ($rw as $id_rt)
                                                                 <option value="{{ $id_rt }}">{{ $id_rt }}</option>
                                                             @endforeach
-                                                         </select>
-                                                         <small class="form-text text-muted">Pilih Berdasarkan RT</small>
-                                                     </div>
-                                                 </div>
-                                             </div>
-                                         </div>
+                                                        </select>
+                                                        <small class="form-text text-muted">Pilih Berdasarkan RT</small>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                         <div class="tab-pane fade"
                                              id="family-heads"
                                              role="tabpanel"
@@ -73,6 +79,7 @@
             </div>
         </div>
     </section>
+    <x-modal.citizen-information/>
 @endsection
 @push('css')
     <style>
@@ -96,8 +103,13 @@
 @push('js')
     {{--    <script src="{{ asset('assets/js/page/modules-datatables.js') }}"></script>--}}
     <script type="module">
-        const tableIds = ['#citizens-table', '#family-heads-table'];
+        var citizensEditUrl = "{{ route('citizens.edit', ['citizen' => '__id__']) }}";
+        $(document).on('click', '.edit-btn', function () {
+            let id = $(this).parent().data('id');
+            window.location.href = citizensEditUrl.replace('__id__', id);
+        });
         $(document).ready(() => {
+            const tableIds = ['#citizens-table', '#family-heads-table'];
             $('#citizens-table').removeClass('table-bordered');
             $('#citizens-table_processing').empty();
 
@@ -130,7 +142,7 @@
             if (activeTab) {
                 setActiveTabAndUpdateContent(activeTab);
             } else {
-                setActiveTabAndUpdateContent('family-heads'); // Default tab
+                setActiveTabAndUpdateContent('family-heads');
             }
 
             function loadTabContent(tabId) {
@@ -163,17 +175,18 @@
                     }
                 });
             }
-            $('#id_rt').change(function() {
-            var id_rt = $(this).val();
+
+            $('#id_rt').change(function () {
+                var id_rt = $(this).val();
                 if (id_rt) {
                     $.ajax({
-                        url: "{{ route('citizen.index') }}", // Menggunakan route yang tepat
+                        url: "{{ route('citizens.index') }}", // Menggunakan route yang tepat
                         type: "GET",
                         data: {id_rt: id_rt},
-                        success: function(data) {
+                        success: function (data) {
                             $('#citizens').html(data);
                         },
-                        error: function(xhr) {
+                        error: function (xhr) {
                             console.log("Error loading table:", xhr);
                         }
                     });
@@ -182,10 +195,10 @@
                         url: "{{ route('family-heads.index') }}",
                         type: "GET",
                         data: {id_rt: id_rt},
-                        success: function(data) {
+                        success: function (data) {
                             $('#family-heads').html(data);
                         },
-                        error: function(xhr) {
+                        error: function (xhr) {
                             console.log("Error loading family heads table:", xhr);
                         }
                     });

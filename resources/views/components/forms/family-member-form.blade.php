@@ -21,15 +21,17 @@
         @endif
     </div>
     <div class="card-body">
-        <form>
+        <form class="citizen-form-class">
             <div class="row">
-                <div class="col-3">
+                <div class="col-12 col-lg-6">
                     <div class="form-group">
                         <label>Status Hubungan Keluarga</label>
                         <select class="form-control"
                                 @if($isHeadFamily)
                                     disabled
-                                @endif>
+                                @endif
+                                name="id_hubungan"
+                                id="id_hubungan">
                             <option disabled
                                     hidden
                                     @if($isFamilyMember)
@@ -38,19 +40,26 @@
                             </option>
                             <option @if($isHeadFamily)
                                         selected
+                                    value="1"
                                     @endif
                                     hidden>Kepala Keluarga
                             </option>
-                            <option>Istri</option>
-                            <option>Anak</option>
+                            <option value="2">Istri</option>
+                            <option value="3">Anak</option>
                         </select>
+                        @if($isHeadFamily)
+                            <input type="hidden"
+                                   name="id_hubungan"
+                                   id="id_hubungan"
+                                   value="1">
+                        @endif
                     </div>
                 </div>
             </div>
             <div class="row">
-                <div class="col-6">
+                <div class="col-12 col-lg-6">
                     <div class="form-group">
-                        <label>NIK</label>
+                        <label for="nik">NIK</label>
                         <div class="input-group">
                             <div class="input-group-prepend">
                                 <div class="input-group-text">
@@ -59,14 +68,16 @@
                             </div>
                             <input type="text"
                                    class="form-control"
+                                   name="nik"
+                                   id="nik"
                                    required>
                         </div>
 
                     </div>
                 </div>
-                <div class="col-6">
+                <div class="col-12 col-lg-6">
                     <div class="form-group">
-                        <label>Nama Lengkap</label>
+                        <label for="nama_lengkap">Nama Lengkap</label>
                         <div class="input-group">
                             <div class="input-group-prepend">
                                 <div class="input-group-text">
@@ -75,15 +86,17 @@
                             </div>
                             <input type="text"
                                    class="form-control"
+                                   name="nama_lengkap"
+                                   id="nama_lengkap"
                                    required>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="row">
-                <div class="col-6">
+                <div class="col-12 col-lg-6">
                     <div class="form-group">
-                        <label>No. Telp</label>
+                        <label for="no_telp">No. Telp</label>
                         <div class="input-group">
                             <div class="input-group-prepend">
                                 <div class="input-group-text">
@@ -91,77 +104,103 @@
                                 </div>
                             </div>
                             <input type="text"
-                                   class="form-control phone-number">
+                                   class="form-control phone-number"
+                                   name="no_telp"
+                                   id="no_telp">
                         </div>
                     </div>
                 </div>
-                <div class="col-6">
+                <div class="col-12 col-lg-6">
                     <div class="form-group">
-                        <label>Agama</label>
+                        <label for="agama">Agama</label>
                         <div class="input-group">
                             <div class="input-group-prepend">
                                 <div class="input-group-text">
                                     <i class="fas fa-users"></i>
                                 </div>
                             </div>
-                            <select class="form-control">
+                            <select class="form-control"
+                                    id="agama"
+                                    name="agama">
                                 <option disabled
                                         hidden
                                         selected>Pilih Agama
                                 </option>
-                                <option>Islam</option>
-                                <option>Kristen Protestan</option>
-                                <option>Katolik</option>
-                                <option>Hindu</option>
-                                <option>Buddha</option>
-                                <option>Khonghucu</option>
+                                <option value="Islam">Islam</option>
+                                <option value="Kristen Protestan">Kristen Protestan</option>
+                                <option value="Katolik">Katolik</option>
+                                <option value="Hindu">Hindu</option>
+                                <option value="Buddha">Buddha</option>
+                                <option value="Konghucu">Konghucu</option>
                             </select>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="row">
-                <div class="col-6">
+                <div class="col-12 col-lg-6">
                     <div class="form-group">
-                        <label class="form-label">Jenis Kelamin</label>
+                        <label class="form-label"
+                               for="jenis_kelamin">Jenis Kelamin</label>
                         <div class="selectgroup selectgroup-pills">
-                            <label class="selectgroup-item">
+                            <label class="selectgroup-item"
+                                   id="jenis_kelamin">
                                 <input type="radio"
-                                       name="icon-input"
-                                       value="1"
+                                       name="jenis_kelamin"
+                                       value="L"
                                        class="selectgroup-input"
                                        checked="">
                                 <span class="selectgroup-button selectgroup-button-icon"><i class="fas fa-mars"></i></span>
                             </label>
                             <label class="selectgroup-item">
                                 <input type="radio"
-                                       name="icon-input"
-                                       value="2"
+                                       name="jenis_kelamin"
+                                       value="P"
                                        class="selectgroup-input">
                                 <span class="selectgroup-button selectgroup-button-icon"><i class="fas fa-venus"></i></span>
                             </label>
                         </div>
                     </div>
                 </div>
-                <div class="col-6">
+            </div>
+            <div class="row">
+                <div class="col-12 col-lg-6">
                     <div class="form-group">
-                        <label>Tempat, Tanggal Lahir</label>
+                        <label for="asal_tempat">Asal Tempat</label>
                         <div class="input-group">
                             <div class="input-group-prepend">
                                 <div class="input-group-text">
-                                    <i class="fa fa-address-card"></i>
+                                    <i class="fa fa-home"></i>
                                 </div>
                             </div>
                             <input type="text"
-                                   class="form-control">
+                                   class="form-control"
+                                   name="asal_tempat"
+                                   id="asal_tempat">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-lg-6">
+                    <div class="form-group">
+                        <label for="tanggal_lahir">Tanggal Lahir</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text">
+                                    <i class="fa fa-calendar"></i>
+                                </div>
+                            </div>
+                            <input type="date"
+                                   class="form-control datepicker"
+                                   name="tanggal_lahir"
+                                   id="tanggal_lahir">
                         </div>
                     </div>
                 </div>
             </div>
             <div class="row">
-                <div class="col-6">
+                <div class="col-12 col-lg-6">
                     <div class="form-group">
-                        <label>Pendidikan Terakhir</label>
+                        <label for="pendidikan_terakhir">Pendidikan Terakhir</label>
                         <div class="input-group">
                             <div class="input-group-prepend">
                                 <div class="input-group-text">
@@ -169,13 +208,15 @@
                                 </div>
                             </div>
                             <input type="text"
-                                   class="form-control">
+                                   class="form-control"
+                                   name="pendidikan_terakhir"
+                                   id="pendidikan_terakhir">
                         </div>
                     </div>
                 </div>
-                <div class="col-6">
+                <div class="col-12 col-lg-6">
                     <div class="form-group">
-                        <label>Pekerjaan</label>
+                        <label for="pekerjaan">Pekerjaan</label>
                         <div class="input-group">
                             <div class="input-group-prepend">
                                 <div class="input-group-text">
@@ -183,7 +224,9 @@
                                 </div>
                             </div>
                             <input type="text"
-                                   class="form-control">
+                                   class="form-control"
+                                   name="pekerjaan"
+                                   id="pekerjaan">
                         </div>
                     </div>
                 </div>

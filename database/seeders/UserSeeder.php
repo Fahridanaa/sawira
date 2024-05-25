@@ -20,7 +20,6 @@ class UserSeeder extends Seeder
 		foreach ($userList as $user) {
 			UsersModel::create($user);
 		}
-		UsersModel::factory(25)->create();
 	}
 
 	/**

@@ -18,17 +18,17 @@ class ChartService
 		'Lansia' => PHP_INT_MAX
 	];
 
-	public function countCitizensByEntryDate($citizens)
+	public function countCitizensByEntryDate($KK): array
 	{
-		return $this->countCitizensByDate($citizens, 'tanggal_masuk');
+		return $this->countFamilyMembersByDate($KK, 'tanggal_masuk');
 	}
 
-	public function countCitizensByExitDate($citizensHistory, $movingCitizensHistory)
+	public function countCitizensByExitDate($citizensHistory, $movingCitizensHistory): array
 	{
-		return $this->countCitizensByDate($citizensHistory, 'tanggal') + $this->countFamilyMembersByDate($movingCitizensHistory, 'tanggal');
+		return $this->countFamilyMembersByDate($movingCitizensHistory, 'tanggal');
 	}
 
-	public function categorizeCitizensByAge($citizens)
+	public function categorizeCitizensByAge($citizens): array
 	{
 		$citizensCountByAgeCategory = array_fill_keys(array_keys(self::AGE_CATEGORIES), 0);
 
@@ -46,7 +46,7 @@ class ChartService
 		return $citizensCountByAgeCategory;
 	}
 
-	public function getIndonesianMonths()
+	public function getIndonesianMonths(): array
 	{
 		return [
 			'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni',
@@ -54,7 +54,7 @@ class ChartService
 		];
 	}
 
-	public function sortDataByMonth($data, $labels)
+	public function sortDataByMonth($data, $labels): array
 	{
 		$sortedData = [];
 
@@ -65,17 +65,17 @@ class ChartService
 		return array_values($sortedData);
 	}
 
-	public function countCitizens()
+	public function countCitizens(): int
 	{
 		return $this->getCountFromModel(new CitizensModel(), 'id_warga');
 	}
 
-	public function countKKs()
+	public function countKKs(): int
 	{
 		return $this->getCountFromModel(new KKModel(), 'id_kk');
 	}
 
-	public function countRTs()
+	public function countRTs(): int
 	{
 		return $this->getCountFromModel(new RTModel(), 'id_rt');
 	}

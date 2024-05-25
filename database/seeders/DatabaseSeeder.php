@@ -48,7 +48,6 @@ class DatabaseSeeder extends Seeder
 		KetuaRTModel::factory(18)->create();
 		RiwayatWargaModel::factory(100)->create();
 		RiwayatPindahModel::factory(50)->create();
-		NotifikasiModel::factory(25)->create();
 		RiwayatSuratModel::factory(5)->create();
 		MustahikModel::factory(25)->create();
 		VerifikasiMustahikModel::factory(15)->create();

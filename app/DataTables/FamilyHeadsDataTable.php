@@ -78,9 +78,9 @@ class FamilyHeadsDataTable extends DataTable
 				[
 					'text' => 'Tambah Kartu Keluarga',
 					'action' => 'function ( e, dt, node, config ) {
-										window.location.href = "/family-heads/create";
+										window.location.href = "' . route('family-heads.create') . '";
 									 }',
-					'className' => 'btn btn-primary',
+					'className' => 'btn btn-primary col-3 col-md-12 mt-2',
 				]
 			]);
 		};
