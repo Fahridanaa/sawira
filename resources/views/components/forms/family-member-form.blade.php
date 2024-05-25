@@ -21,10 +21,7 @@
         @endif
     </div>
     <div class="card-body">
-        <form method="POST"
-              action="{{ route('citizens.store') }}"
-              class="citizen-form-class">
-            @csrf
+        <form class="citizen-form-class">
             <div class="row">
                 <div class="col-12 col-lg-6">
                     <div class="form-group">

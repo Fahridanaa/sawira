@@ -32,25 +32,37 @@ class CitizenController extends Controller
 	 */
 	public function create()
 	{
-		$id_rt = 4;
-		$no_kk = KKModel::where('id_rt', $id_rt)->get(['no_kk']);
-		return view('pages.citizen.create', ['no_kk' => $no_kk]);
+		$roleUser = auth()->user()->role;
+		$rt = preg_replace("/[^0-9]/", "", $roleUser);
+
+		$kkRecords = KKModel::with(['citizens' => function ($query) {
+			$query->where('id_hubungan', 1);
+		}])->where('id_rt', $rt)->get();
+
+		$headFamilyRecords = $kkRecords->mapWithKeys(function ($kkRecord) {
+			return [$kkRecord['id_kk'] => $kkRecord->citizens->first()->nama_lengkap];
+		});
+
+		return view('pages.citizen.create', ['kkRecords' => $kkRecords, 'headFamilyRecords' => json_encode($headFamilyRecords)]);
 	}
 
 	/**
 	 * Store a newly created resource in storage.
 	 */
-	public function store(StoreCitizenRequest $StoreCitizenRequest)
+	public function store(Request $request)
 	{
 		try {
-			DB::transaction(function () use ($StoreCitizenRequest) {
-				$this->citizenService->createCitizens($StoreCitizenRequest->citizens, $StoreCitizenRequest->id_kk);
+			$citizensData = $request->input('citizens');
+			$id_kk = $request->input('id_kk');
+
+			validator($citizensData, (new StoreCitizenRequest)->rules());
+
+			DB::transaction(function () use ($citizensData, $id_kk) {
+				$this->citizenService->createCitizens($citizensData, $id_kk);
 			}, 3);
 
 			return response()->json(['message' => 'Successfully created citizens'], 201);
-
 		} catch (\Exception $e) {
-
 			return response()->json([
 				'status' => 'error',
 				'message' => $e->getMessage()
