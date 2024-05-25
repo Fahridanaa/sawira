@@ -10,6 +10,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\historyCitizensController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\FamilyInformationController;
+use App\Http\Controllers\MustahikSubmissionController;
 
 /*
 |--------------------------------------------------------------------------
@@ -37,7 +38,9 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
 		Route::resource('tab-content/family-heads', FamilyHeadController::class);
 		Route::resource('tab-content/citizens', CitizenController::class);
 	});
-	
+
+	Route::resource('/submission', MustahikSubmissionController::class);
+
 	Route::get('cities', [DependantDropdownController::class, 'cities'])->name('cities')->middleware('can:manager');
 	Route::get('districts', [DependantDropdownController::class, 'districts'])->name('districts')->middleware('can:manager');
 	Route::get('villages', [DependantDropdownController::class, 'villages'])->name('villages')->middleware('can:manager');

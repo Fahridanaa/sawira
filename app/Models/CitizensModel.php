@@ -10,7 +10,7 @@ class CitizensModel extends Model
 {
 	use HasFactory;
 
-	protected $table = 'semua_warga';
+	protected $table = 'warga';
 	protected $primaryKey = 'id_warga';
 	/**
 	 * The attributes that are mass assignable.
@@ -54,5 +54,20 @@ class CitizensModel extends Model
 	public function statusHubunganWarga(): BelongsTo
 	{
 		return $this->belongsTo(StatusHubunganWargaModel::class, 'id_hubungan', 'id_hubungan');
+	}
+
+	public function rt(): BelongsTo
+	{
+		return $this->belongsTo(RTModel::class, 'id_rt', 'id_rt');
+	}
+
+	public function mustahik()
+	{
+		return $this->hasOne(MustahikModel::class, 'id_warga', 'id_warga');
+	}
+
+	public function pengajuanMustahik()
+	{
+		return $this->hasOne(PengajuanMustahikModel::class, 'id_warga', 'id_warga');
 	}
 }

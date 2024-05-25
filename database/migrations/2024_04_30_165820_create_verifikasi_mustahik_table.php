@@ -10,11 +10,14 @@ return new class extends Migration {
 	 */
 	public function up(): void
 	{
-		Schema::create('pengajuan_mustahik', function (Blueprint $table) {
-			$table->id('id_pengajuan');
+		Schema::create('verifikasi_mustahik', function (Blueprint $table) {
+			$table->id('id_verifikasi');
+			$table->unsignedBigInteger('id_pengajuan_mustahik')->index();
 			$table->boolean('verifikasi_amil');
 			$table->string('alasan_ditolak', 255)->nullable();
 			$table->timestamps();
+
+			$table->foreign('id_pengajuan_mustahik')->references('id_pengajuan_mustahik')->on('pengajuan_mustahik');
 		});
 	}
 

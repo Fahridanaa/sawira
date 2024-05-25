@@ -17,7 +17,7 @@ return new class extends Migration {
 			$table->date('tanggal');
 			$table->timestamps();
 
-			$table->foreign('id_warga')->references('id_warga')->on('semua_warga');
+			$table->foreign('id_warga')->references('id_warga')->on('warga');
 		});
 	}
 

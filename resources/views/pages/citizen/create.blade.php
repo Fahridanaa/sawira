@@ -1,6 +1,5 @@
 @extends('layouts.app')
 @section('content')
-    .
     <section class="section">
         <div class="section-header justify-content-between">
             <h1>Menambah Penduduk</h1>

@@ -21,9 +21,10 @@
                    href="{{ route('history') }}"><i class="fas fa-history"></i> <span>Riwayat Penduduk</span></a>
             </li>
             @if(!\App\Helpers\SidebarHelper::hasAnyRole(['warga', 'amil', 'rw']))
-                <li>
+                <li class="{{ Request::is('submission') ? 'active' : '' }}">
                     <a class="nav-link"
-                       href="{{ route('dashboard') }}"><i class="fas fa-handshake"></i> <span>Pengajuan Mustahik</span></a>
+                       href="{{ route('submission.index') }}"><i class="fas fa-handshake"></i>
+                        <span>Pengajuan Mustahik</span></a>
                 </li>
             @endif
         @endif

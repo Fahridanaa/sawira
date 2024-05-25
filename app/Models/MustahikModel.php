@@ -24,6 +24,7 @@ class MustahikModel extends Model
 		'jumlah_hutang',
 		'verifikasi',
 		'id_kategori',
+		'id_warga'
 	];
 
 	/**
@@ -35,15 +36,11 @@ class MustahikModel extends Model
 		'id_mustahik' => 'integer',
 		'verifikasi' => 'boolean',
 		'id_kategori' => 'integer',
+		'id_warga' => 'integer'
 	];
 
 	public function kategoriMustahik(): BelongsTo
 	{
-		return $this->belongsTo(KategoriMustahikModel::class);
-	}
-
-	public function pengajuanMustahik(): BelongsTo
-	{
-		return $this->belongsTo(PengajuanMustahikModel::class);
+		return $this->belongsTo(KategoriMustahikModel::class, 'id_kategori', 'id_kategori');
 	}
 }

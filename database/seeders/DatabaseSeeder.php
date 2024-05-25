@@ -43,13 +43,12 @@ class DatabaseSeeder extends Seeder
 		KKModel::factory(25)->create();
 		TemplateSuratModel::factory(3)->create();
 		$this->call(KategoriMustahikSeeder::class);
-		PengajuanMustahikModel::factory(5)->create();
 		CitizensModel::factory(250)->create();
-		KetuaRTModel::factory(18)->create();
+		PengajuanMustahikModel::factory(5)->create();
 		RiwayatWargaModel::factory(100)->create();
 		RiwayatPindahModel::factory(50)->create();
 		RiwayatSuratModel::factory(5)->create();
 		MustahikModel::factory(25)->create();
-		VerifikasiMustahikModel::factory(15)->create();
+		VerifikasiMustahikModel::factory(25)->create();
 	}
 }

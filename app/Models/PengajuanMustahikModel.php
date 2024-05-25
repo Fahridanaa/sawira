@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class PengajuanMustahikModel extends Model
 {
@@ -17,8 +18,13 @@ class PengajuanMustahikModel extends Model
 	 * @var array
 	 */
 	protected $fillable = [
-		'verifikasi_amil',
-		'alasan_ditolak',
+		'kondisi_rumah',
+		'pendapatan_bulanan',
+		'pengeluaran_bulanan',
+		'jumlah_hutang',
+		'verifikasi',
+		'id_kategori',
+		'id_warga'
 	];
 
 	/**
@@ -27,7 +33,19 @@ class PengajuanMustahikModel extends Model
 	 * @var array
 	 */
 	protected $casts = [
-		'id_pengajuan' => 'integer',
-		'verifikasi_amil' => 'boolean',
+		'id_mustahik' => 'integer',
+		'verifikasi' => 'boolean',
+		'id_kategori' => 'integer',
+		'id_warga' => 'integer'
 	];
+
+	public function kategoriMustahik(): BelongsTo
+	{
+		return $this->belongsTo(KategoriMustahikModel::class, 'id_kategori', 'id_kategori');
+	}
+
+	public function warga(): BelongsTo
+	{
+		return $this->belongsTo(CitizensModel::class, 'id_warga', 'id_warga');
+	}
 }
