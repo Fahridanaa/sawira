@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\DataTables\FamilyHeadAccountDataTable;
 use App\DataTables\FamilyHeadsDataTable;
 use App\DataTables\FamilyInformationDataTable;
 use App\Http\Requests\StoreCitizenRequest;
@@ -10,12 +9,9 @@ use App\Http\Requests\StoreFamilyCardRequest;
 use App\Models\CitizensModel;
 use App\Models\KKModel;
 use App\Models\UsersModel;
-use App\Services\CitizenService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 
@@ -24,9 +20,17 @@ class FamilyHeadController extends Controller
 	/**
 	 * Display a listing of the resource.
 	 */
-	public function index(FamilyHeadsDataTable $familyHeadDataTable)
+	public function index(FamilyHeadsDataTable $familyHeadDataTable, Request $request)
 	{
-		return $familyHeadDataTable->render('components.tables.family-heads');
+		if ($request->has('id_rt')) {
+			$id_rt = $request->input('id_rt');
+			$familyHeads = KKModel::where('id_rt', $id_rt)->get();
+		} else {
+			// Handle case where no id_rt is provided (optional)
+			$familyHeads = KKModel::all(); // Or fetch all family heads if no filter is applied
+		}
+
+		return $familyHeadDataTable->render('components.tables.family-heads', compact('familyHeads'));
 	}
 
 	/**
@@ -120,6 +124,7 @@ class FamilyHeadController extends Controller
 	 */
 	public function update(Request $request, string $id)
 	{
+		//
 	}
 
 	/**
