@@ -13,6 +13,7 @@ use Yajra\DataTables\Html\Column;
 use Yajra\DataTables\Html\Editor\Editor;
 use Yajra\DataTables\Html\Editor\Fields;
 use Yajra\DataTables\Services\DataTable;
+use Illuminate\Http\Request;
 
 class FamilyHeadsDataTable extends DataTable
 {
@@ -40,15 +41,20 @@ class FamilyHeadsDataTable extends DataTable
 	/**
 	 * Get the query source of dataTable.
 	 */
-	public function query(KKModel $model): QueryBuilder
+	public function query(KKModel $model, Request $request): QueryBuilder
 	{
 		$role = auth()->user()->role;
-		$query = $model->newQuery()->with('user', 'citizens');
+		$query = $model->newQuery()->with('user', 'citizens', 'rt');
 
 
 		if ($role !== 'rw') {
 			$rt = str_replace('rt', '', $role);
 			$query->where('id_rt', $rt);
+		}
+		
+		if ($request->has('id_rt')) {
+			$id_rt = $request->input('id_rt');
+			$query->where('id_rt', $id_rt);
 		}
 
 		return $query;

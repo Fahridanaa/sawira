@@ -43,6 +43,7 @@ class CitizensModel extends Model
 		'tanggal_masuk' => 'date',
 		'id_kk' => 'integer',
 		'id_hubungan' => 'integer',
+		'id_rt' => 'integer'
 	];
 
 	public function kk(): belongsTo

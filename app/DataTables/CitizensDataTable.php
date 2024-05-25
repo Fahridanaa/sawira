@@ -50,6 +50,13 @@ class CitizensDataTable extends DataTable
 			});
 		}
 
+		// Tambahkan filter berdasarkan id_rt dari request
+		if (request()->has('id_rt') && request('id_rt') != '') {
+			$query->whereHas('kk', function ($query) {
+				$query->where('id_rt', request('id_rt'));
+			});
+		}
+	
 		return $query;
 	}
 
@@ -59,7 +66,7 @@ class CitizensDataTable extends DataTable
 	public function html(): HtmlBuilder
 	{
 		$html = $this->builder()
-			->setTableId('family-heads-table')
+			->setTableId('citizens-table')
 			->columns($this->getColumns())
 			->minifiedAjax()
 			->orderBy(1)
