@@ -50,14 +50,13 @@ class FamilyHeadController extends Controller
 	 */
 	public function store(Request $request)
 	{
-		// Extracting family data and citizens data
-		$familyData = $request->input('family');
-		$citizensData = $request->input('citizens');
-
-		validator($familyData, (new StoreFamilyCardRequest)->rules());
-		validator($citizensData, (new StoreCitizenRequest)->rules());
-
 		try {
+			// Extracting family data and citizens data
+			$familyData = $request->input('family');
+			$citizensData = $request->input('citizens');
+
+			validator($familyData, (new StoreFamilyCardRequest)->rules());
+			validator($citizensData, (new StoreCitizenRequest)->rules());
 			DB::transaction(function () use ($familyData, $citizensData) {
 				$roleUser = auth()->user()->role;
 				$rt = preg_replace("/[^0-9]/", "", $roleUser);
