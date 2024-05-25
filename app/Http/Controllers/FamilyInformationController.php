@@ -18,10 +18,4 @@ class FamilyInformationController extends Controller
 		$dataTable->id_kk = $id_kk;
 		return $dataTable->render('pages.information.index', ['no_kk' => $no_kk]);
 	}
-
-	public function show($id)
-	{
-		$citizen = CitizensModel::find($id);
-		return response()->json($citizen);
-	}
 }

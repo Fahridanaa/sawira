@@ -23,16 +23,16 @@ class StoreCitizenRequest extends FormRequest
 	{
 		return [
 			'id_kk' => 'required|numeric',
-			'*.id_hubungan' => 'required|in:1,2,3',
-			'*.nik' => 'required|string|size:16',
-			'*.nama_lengkap' => 'required|string|max:255',
-			'*.no_telp' => 'required|string|min:8|max:15',
-			'*.agama' => 'required|in:Islam,Kristen Protestan,Katolik,Hindu,Buddha,Konghucu',
-			'*.jenis_kelamin' => 'required|in:L,P',
-			'*.asal_tempat' => 'required|string|max:255',
-			'*.tanggal_lahir' => 'required|date',
-			'*.pendidikan_terakhir' => 'required|string|max:255',
-			'*.pekerjaan' => 'required|string|max:255',
+			'id_hubungan' => 'required|in:1,2,3',
+			'nik' => 'required|string|size:16',
+			'nama_lengkap' => 'required|string|max:255',
+			'no_telp' => 'required|string|min:8|max:15',
+			'agama' => 'required|in:Islam,Kristen Protestan,Katolik,Hindu,Buddha,Konghucu',
+			'jenis_kelamin' => 'required|in:L,P',
+			'asal_tempat' => 'required|string|max:255',
+			'tanggal_lahir' => 'required|date',
+			'pendidikan_terakhir' => 'required|string|max:255',
+			'pekerjaan' => 'required|string|max:255',
 		];
 	}
 }

@@ -21,13 +21,6 @@ use Illuminate\Support\Str;
 
 class FamilyHeadController extends Controller
 {
-	protected $citizenService;
-
-	public function __construct(CitizenService $citizenService)
-	{
-		$this->citizenService = $citizenService;
-	}
-
 	/**
 	 * Display a listing of the resource.
 	 */
@@ -51,13 +44,19 @@ class FamilyHeadController extends Controller
 	public function store(Request $request)
 	{
 		try {
-			// Extracting family data and citizens data
-			$familyData = $request->input('family');
-			$citizensData = $request->input('citizens');
+			$familyValidator = Validator::make($request->family, (new StoreFamilyCardRequest)->rules());
 
-			validator($familyData, (new StoreFamilyCardRequest)->rules());
-			validator($citizensData, (new StoreCitizenRequest)->rules());
-			DB::transaction(function () use ($familyData, $citizensData) {
+			if ($familyValidator->fails()) {
+				return response()->json([
+					'status' => 'error',
+					'message' => $familyValidator->errors()
+				], 400);
+			}
+			$familyData = $familyValidator->validated();
+
+			$citizens = $request->citizens;
+
+			DB::transaction(function () use ($familyData, $citizens) {
 				$roleUser = auth()->user()->role;
 				$rt = preg_replace("/[^0-9]/", "", $roleUser);
 				$tanggalHariIni = Carbon::now();
@@ -76,8 +75,18 @@ class FamilyHeadController extends Controller
 					'tanggal_masuk' => $tanggalHariIni
 				]));
 
-				// Create citizens
-				$this->citizenService->createCitizens($citizensData, $newFamily->id_kk);
+				foreach ($citizens as $citizen) {
+					$citizenValidator = Validator::make(array_merge($citizen, [
+						'id_kk' => $newFamily->id_kk,
+					]), (new StoreCitizenRequest)->rules());
+					if ($citizenValidator->fails()) {
+						return response()->json([
+							'status' => 'error',
+							'message' => $citizenValidator->errors()
+						], 400);
+					}
+					CitizensModel::create($citizenValidator->validated());
+				}
 			}, 3);
 
 			return response()->json(['message' => 'Successfully created family-card'], 201);

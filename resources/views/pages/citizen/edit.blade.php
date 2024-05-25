@@ -1,17 +1,16 @@
 @extends('layouts.app')
 @section('content')
-    .
     <section class="section">
         <div class="section-header justify-content-between">
-            <h1>Menambah Penduduk</h1>
-            <div class="btn-group p-1">
+            <h1>Edit Data Warga</h1>
+            <div class="btn-group">
                 <a href="{{ route('penduduk') }}">
                     <button class="btn btn-danger mr-2">
                         Batal
                     </button>
                 </a>
                 <button class="btn btn-primary ml-2"
-                        id="add-btn">Simpan
+                        id="submit-button">Simpan
                 </button>
             </div>
         </div>
@@ -23,10 +22,9 @@
                             <h4>Pilih Data No. KK</h4>
                         </div>
                         <div class="card-body">
-                            <form method="post"
-                                  action="{{ route('citizens.store') }}"
-                                  id="family-member-form">
+                            <form id="no-kk-form">
                                 @csrf
+                                {!! method_field('PUT') !!}
                                 <div class="row">
                                     <div class="col-6">
                                         <div class="form-group">
@@ -40,7 +38,8 @@
                                                         selected>Pilih No. KK
                                                 </option>
                                                 @foreach($kkRecords as $no_kk)
-                                                    <option value="{{ $no_kk->id_kk }}">
+                                                    <option value="{{ $no_kk->id_kk }}"
+                                                            @if($citizen->id_kk) selected @endif>
                                                         {{ $no_kk->no_kk }}
                                                     </option>
                                                 @endforeach
@@ -61,11 +60,23 @@
                             </form>
                         </div>
                     </div>
-                    <x-forms.family-member-form
-                            id="familyMember"
-                            status="familyMember"
-                            iteration=0
-                    />
+                    <div class="card">
+                        <div class="card-body">
+                            <x-forms.edit-citizen-form
+                                    :citizen_id="$citizen->id_warga"
+                                    :id_hubungan="$citizen->id_hubungan"
+                                    :nik="$citizen->nik"
+                                    :name="$citizen->nama_lengkap"
+                                    :no_telp="$citizen->no_telp"
+                                    :agama="$citizen->agama"
+                                    :kelamin="$citizen->jenis_kelamin"
+                                    :asal_tempat="$citizen->asal_tempat"
+                                    :tanggal_lahir="$citizen->tanggal_lahir"
+                                    :pendidikan="$citizen->pendidikan_terakhir"
+                                    :pekerjaan="$citizen->pekerjaan"
+                            />
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -76,45 +87,39 @@
         $(document).ready(function () {
             const headFamilyRecords = JSON.parse('{!! $headFamilyRecords !!}');
 
-            $('#id_kk').change(function () {
-                const selectedId = $(this).val();
+            function setHeadFamilyName() {
+                const selectedId = $('#id_kk').val();
                 const headFamilyName = headFamilyRecords[selectedId];
                 $('#kepala_keluarga').val(headFamilyName);
-            });
+            }
 
-            $('#add-btn').click(function (e) {
-                e.preventDefault();
-                $('#family-member-form').trigger('submit');
-            });
+            setHeadFamilyName();
+            $('#id_kk').change(setHeadFamilyName);
 
-            $('#family-member-form').on('submit', function (e) {
+            $('#submit-button').click(function (e) {
                 e.preventDefault();
 
-                let citizenData = {};
+                // Get data from the first form
+                const formData1 = $('#no-kk-form').serializeArray();
 
-                $(this).serializeArray().map(function (x) {
-                    citizenData[x.name] = x.value;
-                });
+                // Get data from the second form
+                const formData2 = $('#edit-citizen-form').serializeArray();
 
-                $('.citizen-form-class').each(function () {
-                    let form = $(this);
-                    let data = {};
+                // Merge both data
+                const mergedData = $.extend(formData1, formData2);
+                var requestData = mergedData.reduce(function (obj, item) {
+                    obj[item.name] = item.value;
+                    return obj;
+                }, {});
+                requestData.id_kk = $('#id_kk').val();
 
-                    let inputs = form.serializeArray();
-                    $.each(inputs, function (i, input) {
-                        data[input.name] = input.value;
-                    });
+                console.log('requestData: ', requestData);
 
-                    citizenData = {...citizenData, ...data};
-                });
-
+                // Send the merged data
                 $.ajax({
                     type: 'POST',
-                    url: '{{ route('citizens.store') }}',
-                    data: {
-                        _token: "{{ csrf_token() }}",
-                        ...citizenData,
-                    },
+                    url: '{{ route('citizens.update', $citizen->id_warga) }}',
+                    data: requestData,
                     success: function (data) {
                         window.location.href = '{{ route('penduduk') }}';
                     },

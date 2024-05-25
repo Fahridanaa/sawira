@@ -39,12 +39,12 @@ class ManageCitizens extends Controller
 	/**
 	 * Display the specified resource.
 	 */
-	public function show(string $id, FamilyInformationDataTable $dataTable)
-	{
-		$dataTable->id_kk = $id;
-		$penduduk = CitizensModel::with(['kk:id_kk'])->where('id_kk', $dataTable->id_kk)->get();
-		return $dataTable->render('pages.manageCitizens.show', ['penduduk' => $penduduk]);
-	}
+//	public function show(string $id, FamilyInformationDataTable $dataTable)
+//	{
+//		$dataTable->id_kk = $id;
+//		$penduduk = CitizensModel::with(['kk:id_kk'])->where('id_kk', $dataTable->id_kk)->get();
+//		return $dataTable->render('pages.manageCitizens.show', ['penduduk' => $penduduk]);
+//	}
 
 	/**
 	 * Show the form for editing the specified resource.

@@ -81,8 +81,13 @@
 @push('js')
     {{--    <script src="{{ asset('assets/js/page/modules-datatables.js') }}"></script>--}}
     <script type="module">
-        const tableIds = ['#citizens-table', '#family-heads-table'];
+        var citizensEditUrl = "{{ route('citizens.edit', ['citizen' => '__id__']) }}";
+        $(document).on('click', '.edit-btn', function () {
+            let id = $(this).parent().data('id');
+            window.location.href = citizensEditUrl.replace('__id__', id);
+        });
         $(document).ready(() => {
+            const tableIds = ['#citizens-table', '#family-heads-table'];
             $('#citizens-table').removeClass('table-bordered');
             $('#citizens-table_processing').empty();
 

@@ -6,17 +6,17 @@ use App\Http\Requests\StoreCitizenRequest;
 use App\Models\CitizensModel;
 use App\Models\KKModel;
 use App\DataTables\CitizensDataTable;
-use App\Services\CitizenService;
+use App\Services\FamilyService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class CitizenController extends Controller
 {
-	protected $citizenService;
+	protected FamilyService $familyService;
 
-	public function __construct(CitizenService $citizenService)
+	public function __construct()
 	{
-		$this->citizenService = $citizenService;
+		$this->familyService = new FamilyService();
 	}
 
 	/**
@@ -35,13 +35,10 @@ class CitizenController extends Controller
 		$roleUser = auth()->user()->role;
 		$rt = preg_replace("/[^0-9]/", "", $roleUser);
 
-		$kkRecords = KKModel::with(['citizens' => function ($query) {
-			$query->where('id_hubungan', 1);
-		}])->where('id_rt', $rt)->get();
+		$records = $this->familyService->getKKRecords($rt);
 
-		$headFamilyRecords = $kkRecords->mapWithKeys(function ($kkRecord) {
-			return [$kkRecord['id_kk'] => $kkRecord->citizens->first()->nama_lengkap];
-		});
+		$kkRecords = $records['kkRecords'];
+		$headFamilyRecords = $records['headFamilyRecords'];
 
 		return view('pages.citizen.create', ['kkRecords' => $kkRecords, 'headFamilyRecords' => json_encode($headFamilyRecords)]);
 	}
@@ -49,25 +46,18 @@ class CitizenController extends Controller
 	/**
 	 * Store a newly created resource in storage.
 	 */
-	public function store(Request $request)
+	public function store(StoreCitizenRequest $storeCitizenRequest)
 	{
 		try {
-			$citizensData = $request->input('citizens');
-			$id_kk = $request->input('id_kk');
-
-			validator($citizensData, (new StoreCitizenRequest)->rules());
-
-			DB::transaction(function () use ($citizensData, $id_kk) {
-				$this->citizenService->createCitizens($citizensData, $id_kk);
+			DB::transaction(function () use ($storeCitizenRequest) {
+				CitizensModel::create($storeCitizenRequest->validated());
 			}, 3);
-
 			return response()->json(['message' => 'Successfully created citizens'], 201);
 		} catch (\Exception $e) {
 			return response()->json([
 				'status' => 'error',
 				'message' => $e->getMessage()
 			], 400);
-
 		}
 	}
 
@@ -76,7 +66,8 @@ class CitizenController extends Controller
 	 */
 	public function show(string $id)
 	{
-		//
+		$citizen = CitizensModel::find($id);
+		return response()->json($citizen);
 	}
 
 	/**
@@ -84,15 +75,24 @@ class CitizenController extends Controller
 	 */
 	public function edit(string $id)
 	{
-		//
+		$citizen = CitizensModel::findOrFail($id);
+		$roleUser = auth()->user()->role;
+		$rt = preg_replace("/[^0-9]/", "", $roleUser);
+
+		$records = $this->familyService->getKKRecords($rt);
+
+		$kkRecords = $records['kkRecords'];
+		$headFamilyRecords = $records['headFamilyRecords'];
+		return view('pages.citizen.edit', ['citizen' => $citizen, 'kkRecords' => $kkRecords, 'headFamilyRecords' => json_encode($headFamilyRecords)]);
 	}
 
 	/**
 	 * Update the specified resource in storage.
 	 */
-	public function update(Request $request, string $id)
+	public function update(StoreCitizenRequest $request, string $id)
 	{
-		//
+		CitizensModel::find($id)->update($request->validated());
+		return response()->json(['message' => 'Successfully updated citizens'], 201);
 	}
 
 	/**

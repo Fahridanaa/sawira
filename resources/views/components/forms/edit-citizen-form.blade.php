@@ -1,58 +1,42 @@
-@php
-    $isHeadFamily = $status === 'headFamily';
-    $isFamilyMember = $status === 'familyMember';
-@endphp
+@props(['citizen_id' => 0, 'id_hubungan' => 0, 'nik' => '', 'name' => '', 'no_telp' => '', 'agama' => '', 'kelamin' => '',
+'asal_tempat' => '', 'tanggal_lahir' => '', 'pendidikan' => '', 'pekerjaan' => ''])
 
-<div class="card"
-     id="{{ $id }}">
+<div class="card">
     <div class="card-header justify-content-between">
-        <h4>Masukkan Data @if($isHeadFamily)
-            Kepala Keluarga
-            @else
-            Anggota Keluarga
-            @endif</h4>
-        @if($isFamilyMember && url()->current() === route('family-heads.create'))
-            <div class="btn-group p-1">
-                <button class="btn btn-danger mr-2"
-                        id="delete-family-member-card"
-                        data-form="{{ $iteration }}">Hapus
-                </button>
-            </div>
-        @endif
+        <h4>Edit Data Warga</h4>
     </div>
     <div class="card-body">
-        <form class="citizen-form-class">
+        <form id="edit-citizen-form">
+            @csrf
+            {!! method_field('PUT') !!}
             <div class="row">
                 <div class="col-12 col-lg-6">
                     <div class="form-group">
                         <label>Status Hubungan Keluarga</label>
                         <select class="form-control"
-                                @if($isHeadFamily)
-                                    disabled
-                                @endif
-                                name="id_hubungan"
-                                id="id_hubungan">
+                                name="id_hubungan_select"
+                                id="id_hubungan_select"
+                                @if($id_hubungan === 1) disabled @endif>
                             <option disabled
                                     hidden
-                                    @if($isFamilyMember)
-                                        selected
-                                    @endif>Status Hubungan Keluarga
+                                    selected>Status Hubungan Keluarga
                             </option>
-                            <option @if($isHeadFamily)
-                                        selected
-                                    value="1"
-                                    @endif
-                                    hidden>Kepala Keluarga
+                            <option value="1"
+                                    hidden
+                                    disabled
+                                    @if($id_hubungan === 1) selected @endif>Kepala Keluarga
                             </option>
-                            <option value="2">Istri</option>
-                            <option value="3">Anak</option>
+                            <option value="2"
+                                    @if($id_hubungan === 2) selected @endif>Istri
+                            </option>
+                            <option value="3"
+                                    @if($id_hubungan === 3) selected @endif>Anak
+                            </option>
                         </select>
-                        @if($isHeadFamily)
-                            <input type="hidden"
-                                   name="id_hubungan"
-                                   id="id_hubungan"
-                                   value="1">
-                        @endif
+                        <input type="hidden"
+                               name="id_hubungan"
+                               id="id_hubungan"
+                               value="{{$id_hubungan === 1}}">
                     </div>
                 </div>
             </div>
@@ -70,6 +54,7 @@
                                    class="form-control"
                                    name="nik"
                                    id="nik"
+                                   value="{{ $nik }}"
                                    required>
                         </div>
 
@@ -88,6 +73,7 @@
                                    class="form-control"
                                    name="nama_lengkap"
                                    id="nama_lengkap"
+                                   value="{{ $name }}"
                                    required>
                         </div>
                     </div>
@@ -105,6 +91,7 @@
                             </div>
                             <input type="text"
                                    class="form-control phone-number"
+                                   value="{{ $no_telp }}"
                                    name="no_telp"
                                    id="no_telp">
                         </div>
@@ -126,12 +113,24 @@
                                         hidden
                                         selected>Pilih Agama
                                 </option>
-                                <option value="Islam">Islam</option>
-                                <option value="Kristen Protestan">Kristen Protestan</option>
-                                <option value="Katolik">Katolik</option>
-                                <option value="Hindu">Hindu</option>
-                                <option value="Buddha">Buddha</option>
-                                <option value="Konghucu">Konghucu</option>
+                                <option value="Islam"
+                                        @if($agama === "Islam") selected @endif>Islam
+                                </option>
+                                <option value="Kristen Protestan"
+                                        @if($agama === "Kristen Protestan") selected @endif>Kristen Protestan
+                                </option>
+                                <option value="Katolik"
+                                        @if($agama === "Katolik") selected @endif>Katolik
+                                </option>
+                                <option value="Hindu"
+                                        @if($agama === "Hindu") selected @endif>Hindu
+                                </option>
+                                <option value="Buddha"
+                                        @if($agama === "Buddha") selected @endif>Buddha
+                                </option>
+                                <option value="Konghucu"
+                                        @if($agama === "Konghucu") selected @endif>Konghucu
+                                </option>
                             </select>
                         </div>
                     </div>
@@ -149,14 +148,15 @@
                                        name="jenis_kelamin"
                                        value="L"
                                        class="selectgroup-input"
-                                       checked="">
+                                       @if($kelamin !== "P") checked @endif>
                                 <span class="selectgroup-button selectgroup-button-icon"><i class="fas fa-mars"></i></span>
                             </label>
                             <label class="selectgroup-item">
                                 <input type="radio"
                                        name="jenis_kelamin"
                                        value="P"
-                                       class="selectgroup-input">
+                                       class="selectgroup-input"
+                                       @if($kelamin === "P") checked @endif>
                                 <span class="selectgroup-button selectgroup-button-icon"><i class="fas fa-venus"></i></span>
                             </label>
                         </div>
@@ -175,6 +175,7 @@
                             </div>
                             <input type="text"
                                    class="form-control"
+                                   value="{{ $asal_tempat }}"
                                    name="asal_tempat"
                                    id="asal_tempat">
                         </div>
@@ -189,8 +190,12 @@
                                     <i class="fa fa-calendar"></i>
                                 </div>
                             </div>
+                            @php
+                                $date = new DateTime($tanggal_lahir);
+                            @endphp
                             <input type="date"
                                    class="form-control datepicker"
+                                   value="{{ $date->format('Y-m-d') }}"
                                    name="tanggal_lahir"
                                    id="tanggal_lahir">
                         </div>
@@ -209,6 +214,7 @@
                             </div>
                             <input type="text"
                                    class="form-control"
+                                   value="{{ $pendidikan }}"
                                    name="pendidikan_terakhir"
                                    id="pendidikan_terakhir">
                         </div>
@@ -225,6 +231,7 @@
                             </div>
                             <input type="text"
                                    class="form-control"
+                                   value="{{ $pekerjaan }}"
                                    name="pekerjaan"
                                    id="pekerjaan">
                         </div>
@@ -234,3 +241,10 @@
         </form>
     </div>
 </div>
+@push('js')
+    <script type="module">
+        $('#id_hubungan_select').change(function () {
+            $('#id_hubungan').val($(this).val());
+        });
+    </script>
+@endpush

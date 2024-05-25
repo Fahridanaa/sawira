@@ -35,10 +35,12 @@
 
 @push('js')
     <script type="module">
+        var citizensShowUrl = "{{ route('citizens.show', ['citizen' => '__id__']) }}";
         $(document).on('click', '.detail-btn', function () {
-            let id = $(this).data('id');
+            let id = $(this).parent().data('id');
+            let url = citizensShowUrl.replace('__id__', id);
             $.ajax({
-                url: '/details/' + id,
+                url: url,
                 success: function (data) {
                     $('#nik').html("<span class='font-weight-bolder'>NIK</span>&ensp;: " + data.nik);
                     $('#nama_lengkap').html("<span class='font-weight-bolder'>Nama Lengkap</span>&ensp;: " + data.nama_lengkap);
