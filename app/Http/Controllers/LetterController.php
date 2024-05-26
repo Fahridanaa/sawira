@@ -4,14 +4,14 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-class MailController extends Controller
+class LetterController extends Controller
 {
 	/**
 	 * Display a listing of the resource.
 	 */
 	public function index()
 	{
-		return view('pages.mail.index');
+		return view('pages.letter.index');
 	}
 
 	/**
