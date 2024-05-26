@@ -31,6 +31,8 @@ class CitizensModelFactory extends Factory
 			'asal_tempat' => $this->faker->city(),
 			'tanggal_lahir' => $this->faker->date(),
 			'agama' => $this->faker->randomElement(["Islam", "Kristen Protestan", "Katolik", "Hindu", "Buddha", "Konghucu"]),
+			'status_perkawinan' => $this->faker->randomElement(["Kawin", "Belum Kawin", "Cerai Hidup", "Cerai Mati"]),
+			'kewarganegaraan' => $this->faker->randomElement(["WNI", "WNA"]),
 			'pendidikan_terakhir' => $this->faker->randomElement(["TK", "SD", "SMP", "SMA", "D1", "D2", "D3", "S1/D4", "S2", "S3"]),
 			'pekerjaan' => $this->faker->jobTitle(),
 			'id_kk' => KKModel::inRandomOrder()->first()->id_kk,

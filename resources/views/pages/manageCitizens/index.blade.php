@@ -37,28 +37,31 @@
                                 <div class="col-12 col-sm-12 col-md-8 col-xl-10">
                                     <div class="tab-content no-padding"
                                          id="myTab2Content">
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <div class="form-group row">
-                                                    <label class="col-1 control-label col-form-label">Filter:</label>
-                                                    <div class="col-3">
-                                                        <select class="form-control"
-                                                                name="id_rt"
-                                                                id="id_rt"
-                                                                required>
-                                                            <option disabled
-                                                                    hidden
-                                                                    selected>- RT -
-                                                            </option>
-                                                            @foreach ($rw as $id_rt)
-                                                                <option value="{{ $id_rt }}">{{ $id_rt }}</option>
-                                                            @endforeach
-                                                        </select>
-                                                        <small class="form-text text-muted">Pilih Berdasarkan RT</small>
+                                        @if(\App\Helpers\SidebarHelper::hasAnyRole(['rw']))
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div class="form-group row">
+                                                        <label class="col-1 control-label col-form-label">Filter:</label>
+                                                        <div class="col-3">
+                                                            <select class="form-control"
+                                                                    name="id_rt"
+                                                                    id="id_rt"
+                                                                    required>
+                                                                <option disabled
+                                                                        hidden
+                                                                        selected>- RT -
+                                                                </option>
+                                                                @foreach ($rw as $id_rt)
+                                                                    <option value="{{ $id_rt }}">{{ $id_rt }}</option>
+                                                                @endforeach
+                                                            </select>
+                                                            <small class="form-text text-muted">Pilih Berdasarkan
+                                                                                                RT</small>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
+                                        @endif
                                         <div class="tab-pane fade"
                                              id="family-heads"
                                              role="tabpanel"

@@ -25,6 +25,8 @@ class CitizensModel extends Model
 		'asal_tempat',
 		'tanggal_lahir',
 		'agama',
+		'status_perkawinan',
+		'kewarganegaraan',
 		'pendidikan_terakhir',
 		'pekerjaan',
 		'tanggal_masuk',

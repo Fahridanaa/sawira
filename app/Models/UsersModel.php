@@ -49,7 +49,7 @@ class UsersModel extends Authenticatable
 
 	public function kk(): HasOne
 	{
-		return $this->hasOne(KKModel::class, 'id_akun', 'id_akun');
+		return $this->hasOne(KKModel::class, 'id_user', 'id_user');
 	}
 
 	public function hasRole($role)

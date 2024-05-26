@@ -21,6 +21,8 @@ return new class extends Migration {
 			$table->string('asal_tempat', 50);
 			$table->date('tanggal_lahir');
 			$table->enum('agama', ['Islam', 'Kristen Protestan', 'Katolik', 'Hindu', 'Buddha', 'Konghucu']);
+			$table->enum('status_perkawinan', ['Kawin', 'Belum Kawin', 'Cerai Hidup', 'Cerai Mati']);
+			$table->enum('kewarganegaraan', ['WNI', 'WNA']);
 			$table->string('pendidikan_terakhir', 20);
 			$table->string('pekerjaan', 255);
 			$table->timestamps();

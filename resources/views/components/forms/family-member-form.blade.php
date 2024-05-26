@@ -200,6 +200,54 @@
             <div class="row">
                 <div class="col-12 col-lg-6">
                     <div class="form-group">
+                        <label for="status_perkawinan">Status Perkawinan</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text">
+                                    <i class="fas fa-child"></i>
+                                </div>
+                            </div>
+                            <select class="form-control"
+                                    id="status_perkawinan"
+                                    name="status_perkawinan">
+                                <option disabled
+                                        hidden
+                                        selected>Pilih Status
+                                </option>
+                                <option value="Kawin">Kawin</option>
+                                <option value="Belum Kawin">Belum Kawin</option>
+                                <option value="Cerai Hidup">Cerai Hidup</option>
+                                <option value="Cerai Mati">Cerai Mati</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-lg-6">
+                    <div class="form-group">
+                        <label for="kewarganegaraan">Kewarganegaraan</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text">
+                                    <i class="fas fa-flag"></i>
+                                </div>
+                            </div>
+                            <select class="form-control"
+                                    id="kewarganegaraan"
+                                    name="kewarganegaraan">
+                                <option disabled
+                                        hidden
+                                        selected>Pilih Kewarganegaraan
+                                </option>
+                                <option value="WNI">WNI</option>
+                                <option value="WNA">WNA</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12 col-lg-6">
+                    <div class="form-group">
                         <label for="pendidikan_terakhir">Pendidikan Terakhir</label>
                         <div class="input-group">
                             <div class="input-group-prepend">

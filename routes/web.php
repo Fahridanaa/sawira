@@ -34,12 +34,15 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
 	Route::get('/penduduk', [ManageCitizens::class, 'index'])->name('penduduk')->middleware('can:manager');
 	Route::get('/history', [historyCitizensController::class, 'index'])->name('history')->middleware('can:manager');
 
-	Route::middleware('can:manager')->group(function () {
-		Route::resource('tab-content/family-heads', FamilyHeadController::class);
-		Route::resource('tab-content/citizens', CitizenController::class);
-	});
+//	Route::middleware('can:manager')->group(function () {
+	Route::resource('tab-content/family-heads', FamilyHeadController::class);
+	Route::resource('tab-content/citizens', CitizenController::class);
+//	});
 
 	Route::resource('/submission', MustahikSubmissionController::class);
+	Route::get('/settings', [AuthController::class, 'settings'])->name('settings');
+	Route::post('/settings', [AuthController::class, 'updatePassword'])->name('auth.update.password');
+	Route::post('/settings/username', [AuthController::class, 'updateUsername'])->name('auth.update.username');
 
 	Route::get('cities', [DependantDropdownController::class, 'cities'])->name('cities')->middleware('can:manager');
 	Route::get('districts', [DependantDropdownController::class, 'districts'])->name('districts')->middleware('can:manager');

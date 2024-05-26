@@ -35,10 +35,6 @@
             </li>
         @endif
         @if(\App\Helpers\SidebarHelper::hasAnyRole(['amil']))
-            <li class="{{ Request::is('penduduk') || Request::is('tab-content*') ? 'active' : '' }}">
-                <a class="nav-link"
-                   href="/penduduk"><i class="fas fa-columns"></i> <span>Kelola Penduduk</span></a>
-            </li>~
             <li class="{{ Request::is('submission*') ? 'active' : '' }}">
                 <a class="nav-link"
                    href="{{ route('submission.index') }}"><i class="fas fa-handshake"></i>
@@ -46,6 +42,12 @@
             </li>
         @endif
         <div class="flex-grow-1"></div>
+        @if(\App\Helpers\SidebarHelper::hasAnyRole(['warga']))
+            <li class="{{ Request::is('settings') ? 'active' : '' }}">
+                <a class="nav-link"
+                   href="{{ route('settings') }}"><i class="fas fa-cog"></i> <span>Pengaturan Akun</span></a>
+            </li>
+        @endif
         <li class="mb-2">
             <form id="logoutForm"
                   method="POST"

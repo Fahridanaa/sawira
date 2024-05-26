@@ -6,6 +6,7 @@ use App\Models\CitizensModel;
 use App\Models\KartuKeluarga;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder as QueryBuilder;
+use Illuminate\Support\Facades\Log;
 use Yajra\DataTables\EloquentDataTable;
 use Yajra\DataTables\Html\Builder as HtmlBuilder;
 use Yajra\DataTables\Html\Button;
@@ -36,10 +37,13 @@ class FamilyInformationDataTable extends DataTable
 			->addColumn('hubungan', function ($row) {
 				return $row->statusHubunganWarga->nama_hubungan;
 			})
-			->addColumn('show', function ($row) {
-				return '<button class="btn btn-primary detail-btn" data-toggle="modal" data-id=' . "$row->id_warga" . ' data-target="#detailModal">Detail</button>';
+			->addColumn('action', function ($row) {
+				$buttonHTML = '<div class="btn-group" data-id="' . $row->id_warga . '">';
+				$buttonHTML .= '<button class="btn btn-primary detail-btn" data-toggle="modal"  data-target="#detailModal">Detail</button>';
+				$buttonHTML .= '</div>';
+				return $buttonHTML;
 			})
-			->rawColumns(['show']);
+			->rawColumns(['action']);
 	}
 
 	/**
@@ -47,10 +51,21 @@ class FamilyInformationDataTable extends DataTable
 	 */
 	public function query(CitizensModel $model): QueryBuilder
 	{
+		$user = auth()->user();
+
+		if ($user->role !== 'warga') {
+			return $model->newQuery()
+				->with(['kk:id_kk,no_kk'])
+				->select('warga.*')
+				->where('warga.id_kk', $this->id_kk);
+		}
+		$id_user = $user->id_user;
 		return $model->newQuery()
-			->with(['kk:id_kk,no_kk'])
+			->with(['kk', 'kk.user'])
 			->select('warga.*')
-			->where('warga.id_kk', $this->id_kk);
+			->whereHas('kk', function ($query) use ($id_user) {
+				$query->where('id_user', $id_user);
+			});
 	}
 
 	/**
@@ -84,7 +99,7 @@ class FamilyInformationDataTable extends DataTable
 			Column::make('asal_tempat'),
 			Column::make('tanggal_lahir'),
 			Column::make('no_telp'),
-			Column::computed('show')
+			Column::computed('action')
 				->exportable(false)
 				->printable(false)
 				->width(90)

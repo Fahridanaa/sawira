@@ -72,6 +72,8 @@
                                     :kelamin="$citizen->jenis_kelamin"
                                     :asal_tempat="$citizen->asal_tempat"
                                     :tanggal_lahir="$citizen->tanggal_lahir"
+                                    :status_perkawinan="$citizen->status_perkawinan"
+                                    :kewarganegaraan="$citizen->kewarganegaraan"
                                     :pendidikan="$citizen->pendidikan_terakhir"
                                     :pekerjaan="$citizen->pekerjaan"
                             />
