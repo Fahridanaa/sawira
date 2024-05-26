@@ -28,4 +28,9 @@ class RTModel extends Model
 	protected $casts = [
 		'id_rt' => 'integer',
 	];
+
+	public function warga()
+	{
+		return $this->hasMany(CitizensModel::class, 'id_rt', 'id_rt');
+	}
 }

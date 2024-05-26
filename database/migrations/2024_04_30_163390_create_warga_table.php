@@ -10,7 +10,7 @@ return new class extends Migration {
 	 */
 	public function up(): void
 	{
-		Schema::create('semua_warga', function (Blueprint $table) {
+		Schema::create('warga', function (Blueprint $table) {
 			$table->id('id_warga');
 			$table->unsignedBigInteger('id_kk')->index();
 			$table->unsignedBigInteger('id_hubungan')->index();
@@ -21,6 +21,8 @@ return new class extends Migration {
 			$table->string('asal_tempat', 50);
 			$table->date('tanggal_lahir');
 			$table->enum('agama', ['Islam', 'Kristen Protestan', 'Katolik', 'Hindu', 'Buddha', 'Konghucu']);
+			$table->enum('status_perkawinan', ['Kawin', 'Belum Kawin', 'Cerai Hidup', 'Cerai Mati']);
+			$table->enum('kewarganegaraan', ['WNI', 'WNA']);
 			$table->string('pendidikan_terakhir', 20);
 			$table->string('pekerjaan', 255);
 			$table->timestamps();
@@ -35,6 +37,6 @@ return new class extends Migration {
 	 */
 	public function down(): void
 	{
-		Schema::dropIfExists('semua_warga');
+		Schema::dropIfExists('warga');
 	}
 };

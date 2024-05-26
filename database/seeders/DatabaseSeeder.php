@@ -11,13 +11,14 @@ use App\Models\NotifikasiModel;
 use App\Models\PengajuanMustahikModel;
 use App\Models\RiwayatPindahModel;
 use App\Models\RiwayatWargaModel;
-use App\Models\RiwayatSuratModel;
+use App\Models\ArsipSuratModel;
 use App\Models\RTModel;
 use App\Models\CitizensModel;
 use App\Models\StatusHubunganWargaModel;
 use App\Models\SuratPindahModel;
 use App\Models\TemplateSuratModel;
 use App\Models\VerifikasiMustahikModel;
+use Database\Factories\ArsipSuratModelFactory;
 use Illuminate\Database\Seeder;
 use Laravolt\Indonesia\Seeds\CitiesSeeder;
 use Laravolt\Indonesia\Seeds\DistrictsSeeder;
@@ -41,15 +42,14 @@ class DatabaseSeeder extends Seeder
 		$this->call(RTSeeder::class);
 		$this->call(StatusHubunganWargaSeeder::class);
 		KKModel::factory(25)->create();
-		TemplateSuratModel::factory(3)->create();
+		$this->call(TemplateSuratSeeder::class);
+		ArsipSuratModel::factory(10)->create();
 		$this->call(KategoriMustahikSeeder::class);
-		PengajuanMustahikModel::factory(5)->create();
 		CitizensModel::factory(250)->create();
-		KetuaRTModel::factory(18)->create();
+		PengajuanMustahikModel::factory(5)->create();
 		RiwayatWargaModel::factory(100)->create();
 		RiwayatPindahModel::factory(50)->create();
-		RiwayatSuratModel::factory(5)->create();
 		MustahikModel::factory(25)->create();
-		VerifikasiMustahikModel::factory(15)->create();
+		VerifikasiMustahikModel::factory(25)->create();
 	}
 }

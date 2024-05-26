@@ -6,11 +6,11 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class RiwayatSuratModel extends Model
+class ArsipSuratModel extends Model
 {
 	use HasFactory;
 
-	protected $table = 'riwayat_surat';
+	protected $table = 'arsip_surat';
 
 	/**
 	 * The attributes that are mass assignable.
@@ -19,7 +19,7 @@ class RiwayatSuratModel extends Model
 	 */
 	protected $fillable = [
 		'data_surat',
-		'template_surat_id',
+		'tanggal_pengajuan',
 	];
 
 	/**
@@ -28,12 +28,18 @@ class RiwayatSuratModel extends Model
 	 * @var array
 	 */
 	protected $casts = [
-		'id_riwayatSurat' => 'integer',
-		'id_surat' => 'integer',
+		'id_arsip_surat' => 'integer',
+		'id_template_surat' => 'integer',
+		'id_user' => 'integer',
 	];
 
 	public function templateSurat(): BelongsTo
 	{
-		return $this->belongsTo(TemplateSuratModel::class);
+		return $this->belongsTo(TemplateSuratModel::class, 'id_template_surat', 'id_template_surat');
+	}
+
+	public function user(): BelongsTo
+	{
+		return $this->belongsTo(User::class, 'id_user', 'id_user');
 	}
 }

@@ -28,6 +28,8 @@ class StoreCitizenRequest extends FormRequest
 			'nama_lengkap' => 'required|string|max:255',
 			'no_telp' => 'required|string|min:8|max:15',
 			'agama' => 'required|in:Islam,Kristen Protestan,Katolik,Hindu,Buddha,Konghucu',
+			'status_perkawinan' => 'required|in:Kawin,Belum Kawin,Cerai Hidup,Cerai Mati',
+			'kewarganegaraan' => 'required|in:WNI,WNA',
 			'jenis_kelamin' => 'required|in:L,P',
 			'asal_tempat' => 'required|string|max:255',
 			'tanggal_lahir' => 'required|date',

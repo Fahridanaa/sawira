@@ -64,12 +64,11 @@ class FamilyHeadController extends Controller
 				$roleUser = auth()->user()->role;
 				$rt = preg_replace("/[^0-9]/", "", $roleUser);
 				$tanggalHariIni = Carbon::now();
-				$randomUsername = Str::random(10);
-				$randomPassword = Str::random(8);
+				$randomUsername = Str::random(8);
 
 				$user = UsersModel::create([
 					'username' => $randomUsername,
-					'password' => bcrypt($randomPassword),
+					'password' => bcrypt($randomUsername),
 					'role' => 'warga',
 				]);
 

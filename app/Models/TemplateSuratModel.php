@@ -17,12 +17,8 @@ class TemplateSuratModel extends Model
 	 * @var array
 	 */
 	protected $fillable = [
-		'kode_surat',
+		'no_registrasi',
 		'nama_surat',
-		'deskripsi_surat',
-		'var_surat',
-		'tgl_pembuatan',
-		'isActive',
 	];
 
 	/**
@@ -31,8 +27,11 @@ class TemplateSuratModel extends Model
 	 * @var array
 	 */
 	protected $casts = [
-		'id_surat' => 'integer',
-		'tgl_pembuatan' => 'datetime',
-		'isActive' => 'boolean',
+		'id_template_surat' => 'integer',
 	];
+
+	public function arsipSurat()
+	{
+		return $this->hasMany(ArsipSuratModel::class, 'id_template_surat', 'id_template_surat');
+	}
 }

@@ -2,11 +2,10 @@
 
 namespace Database\Factories;
 
+use App\Models\VerifikasiMustahikModel;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
-use App\Models\MustahikModel;
 use App\Models\PengajuanMustahikModel;
-use App\Models\VerifikasiMustahikModel;
 
 class VerifikasiMustahikModelFactory extends Factory
 {
@@ -23,8 +22,9 @@ class VerifikasiMustahikModelFactory extends Factory
 	public function definition(): array
 	{
 		return [
-			'id_mustahik' => MustahikModel::factory(),
-			'id_pengajuan' => PengajuanMustahikModel::factory(),
+			'verifikasi_amil' => $verifikasiAmil = $this->faker->boolean,
+			'alasan_ditolak' => $verifikasiAmil ? null : $this->faker->text(),
+			'id_pengajuan_mustahik' => PengajuanMustahikModel::inRandomOrder()->first()->id_pengajuan_mustahik,
 		];
 	}
 }

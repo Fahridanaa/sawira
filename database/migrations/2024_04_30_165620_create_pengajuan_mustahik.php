@@ -10,8 +10,8 @@ return new class extends Migration {
 	 */
 	public function up(): void
 	{
-		Schema::create('mustahik', function (Blueprint $table) {
-			$table->id('id_mustahik');
+		Schema::create('pengajuan_mustahik', function (Blueprint $table) {
+			$table->id('id_pengajuan_mustahik');
 			$table->unsignedBigInteger('id_warga')->index();
 			$table->unsignedBigInteger('id_kategori')->index();
 			$table->enum('kondisi_rumah', [1, 2, 3, 4, 5]);
@@ -30,6 +30,6 @@ return new class extends Migration {
 	 */
 	public function down(): void
 	{
-		Schema::dropIfExists('mustahik');
+		Schema::dropIfExists('pengajuan_mustahik');
 	}
 };

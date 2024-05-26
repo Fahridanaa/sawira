@@ -30,12 +30,13 @@ class CitizensDataTable extends DataTable
 				return $row->kk->id_rt;
 			})
 			->addColumn('action', function ($row) {
-				return <<<HTML
-            <div class="btn-group" data-id="$row->id_warga">
-                <button class="btn btn-primary detail-btn" data-toggle="modal"  data-target="#detailModal">Detail</button>
-                <button class="btn btn-warning edit-btn ml-1">Edit</button>
-            </div>
-            HTML;
+				$buttonHTML = '<div class="btn-group" data-id="' . $row->id_warga . '">';
+				$buttonHTML .= '<button class="btn btn-primary detail-btn" data-toggle="modal"  data-target="#detailModal">Detail</button>';
+				if (auth()->user()->role !== 'rw') {
+					$buttonHTML .= '<button class="btn btn-warning edit-btn ml-1">Edit</button>';
+				}
+				$buttonHTML .= '</div>';
+				return $buttonHTML;
 			})
 			->setRowId('id');
 	}
@@ -61,7 +62,7 @@ class CitizensDataTable extends DataTable
 				$query->where('id_rt', request('id_rt'));
 			});
 		}
-	
+
 		return $query;
 	}
 
@@ -103,21 +104,16 @@ class CitizensDataTable extends DataTable
 			Column::make('asal_tempat'),
 			Column::make('tanggal_lahir'),
 			Column::make('no_telp'),
-			Column::computed('action')
-				->exportable(false)
-				->printable(false)
-				->width(60)
-				->addClass('text-center'),
 		];
 		if (auth()->user()->role === 'rw') {
 			$columns[] = Column::make('id_rt')->title('RT');
 		}
 
-//		$columns[] = Column::computed('action')
-//			->exportable(false)
-//			->printable(false)
-//			->width(60)
-//			->addClass('text-center');
+		$columns[] = Column::computed('action')
+			->exportable(false)
+			->printable(false)
+			->width(60)
+			->addClass('text-center');
 
 		return $columns;
 	}

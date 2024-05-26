@@ -4,13 +4,13 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class VerifikasiMustahikModel extends Model
 {
 	use HasFactory;
 
 	protected $table = 'verifikasi_mustahik';
+	protected $primaryKey = 'id_verifikasi';
 
 	/**
 	 * The attributes that are mass assignable.
@@ -18,8 +18,9 @@ class VerifikasiMustahikModel extends Model
 	 * @var array
 	 */
 	protected $fillable = [
-		'mustahik_id',
-		'pengajuan_mustahik_id',
+		'verifikasi_amil',
+		'alasan_ditolak',
+		'id_pengajuan_mustahik',
 	];
 
 	/**
@@ -28,18 +29,8 @@ class VerifikasiMustahikModel extends Model
 	 * @var array
 	 */
 	protected $casts = [
-		'id' => 'integer',
-		'id_mustahik' => 'integer',
 		'id_pengajuan' => 'integer',
+		'verifikasi_amil' => 'boolean',
+		'id_pengajuan_mustahik' => 'integer',
 	];
-
-	public function mustahik(): BelongsTo
-	{
-		return $this->belongsTo(MustahikModel::class);
-	}
-
-	public function pengajuanMustahik(): BelongsTo
-	{
-		return $this->belongsTo(PengajuanMustahikModel::class);
-	}
 }

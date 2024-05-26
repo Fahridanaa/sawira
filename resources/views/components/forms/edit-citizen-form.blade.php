@@ -1,5 +1,5 @@
 @props(['citizen_id' => 0, 'id_hubungan' => 0, 'nik' => '', 'name' => '', 'no_telp' => '', 'agama' => '', 'kelamin' => '',
-'asal_tempat' => '', 'tanggal_lahir' => '', 'pendidikan' => '', 'pekerjaan' => ''])
+'asal_tempat' => '', 'tanggal_lahir' => '', 'pendidikan' => '', 'pekerjaan' => '', 'status_perkawinan' => '', 'kewarganegaraan' => ''])
 
 <div class="card">
     <div class="card-header justify-content-between">
@@ -198,6 +198,66 @@
                                    value="{{ $date->format('Y-m-d') }}"
                                    name="tanggal_lahir"
                                    id="tanggal_lahir">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12 col-lg-6">
+                    <div class="form-group">
+                        <label for="status_perkawinan">Status Perkawinan</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text">
+                                    <i class="fas fa-child"></i>
+                                </div>
+                            </div>
+                            <select class="form-control"
+                                    id="status_perkawinan"
+                                    name="status_perkawinan">
+                                <option disabled
+                                        hidden
+                                        selected>Pilih Status
+                                </option>
+                                <option value="Kawin"
+                                        @if($status_perkawinan === "Kawin") selected @endif>Kawin
+                                </option>
+                                <option value="Belum Kawin"
+                                        @if($status_perkawinan === "Belum Kawin") selected @endif>Belum Kawin
+                                </option>
+                                <option value="Cerai Hidup"
+                                        @if($status_perkawinan === "Cerai Hidup") selected @endif>Cerai Hidup
+                                </option>
+                                <option value="Cerai Mati"
+                                        @if($status_perkawinan === "Cerai Mati") selected @endif>Cerai Mati
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-lg-6">
+                    <div class="form-group">
+                        <label for="kewarganegaraan">Kewarganegaraan</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text">
+                                    <i class="fas fa-flag"></i>
+                                </div>
+                            </div>
+                            <select class="form-control"
+                                    id="kewarganegaraan"
+                                    name="kewarganegaraan">
+                                <option disabled
+                                        hidden
+                                        selected>Pilih Kewarganegaraan
+                                </option>
+                                <option value="WNI"
+                                        @if($kewarganegaraan === "WNI") selected @endif>WNI
+                                </option>
+                                <option value="WNA"
+                                        @if($kewarganegaraan === "WNA") selected @endif>WNA
+                                </option>
+                            </select>
                         </div>
                     </div>
                 </div>
