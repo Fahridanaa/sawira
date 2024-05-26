@@ -4,7 +4,17 @@
         <a href="#">Sawira</a>
     </div>
     <div class="sidebar-brand sidebar-brand-sm">
-        <a href="#">Sw</a>
+        <a href="#">
+            <div class="login-brand">
+                <style>.login-brand img{
+                    margin-top: -30px;
+                }
+                </style>
+                <img src="{{ asset('assets/img/logo-01.svg') }}"
+                    alt="logo"
+                    width="30">
+            </div>
+        </a>
     </div>
     <ul class="sidebar-menu d-flex flex-column h-100">
         <li class="{{ Request::is('dashboard') ? 'active' : '' }}">
