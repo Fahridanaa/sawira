@@ -11,6 +11,7 @@ use App\Http\Controllers\historyCitizensController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\FamilyInformationController;
 use App\Http\Controllers\MustahikSubmissionController;
+use App\Http\Controllers\MailController;
 
 /*
 |--------------------------------------------------------------------------
@@ -38,6 +39,8 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
 	Route::resource('tab-content/family-heads', FamilyHeadController::class);
 	Route::resource('tab-content/citizens', CitizenController::class);
 //	});
+
+	Route::resource('/mail', MailController::class);
 
 	Route::resource('/submission', MustahikSubmissionController::class);
 	Route::get('/settings', [AuthController::class, 'settings'])->name('settings');

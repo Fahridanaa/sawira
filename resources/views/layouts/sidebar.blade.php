@@ -33,6 +33,10 @@
                 <a class="nav-link"
                    href="/family"><i class="fas fa-address-card"></i> <span>Informasi Pribadi</span></a>
             </li>
+            <li class="{{ Request::is('mail*') ? 'active' : '' }}">
+                <a class="nav-link"
+                   href="{{ route('mail.index') }}"><i class="fas fa-mail-bulk"></i> <span>Surat</span></a>
+            </li>
         @endif
         @if(\App\Helpers\SidebarHelper::hasAnyRole(['amil']))
             <li class="{{ Request::is('submission*') ? 'active' : '' }}">
