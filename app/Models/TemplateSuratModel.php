@@ -29,4 +29,9 @@ class TemplateSuratModel extends Model
 	protected $casts = [
 		'id_template_surat' => 'integer',
 	];
+
+	public function arsipSurat()
+	{
+		return $this->hasMany(ArsipSuratModel::class, 'id_template_surat', 'id_template_surat');
+	}
 }

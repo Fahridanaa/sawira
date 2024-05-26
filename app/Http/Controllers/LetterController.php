@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\DataTables\LetterDataTable;
 use Illuminate\Http\Request;
 
 class LetterController extends Controller
@@ -9,9 +10,9 @@ class LetterController extends Controller
 	/**
 	 * Display a listing of the resource.
 	 */
-	public function index()
+	public function index(LetterDataTable $letterDataTable)
 	{
-		return view('pages.letter.index');
+		return $letterDataTable->render('pages.letter.index');
 	}
 
 	/**
