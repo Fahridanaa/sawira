@@ -29,7 +29,6 @@ class CitizenController extends Controller
 			$citizens = CitizensModel::whereHas('kk', function ($query) use ($id_rt) {
 				$query->where('id_rt', $id_rt);
 			})->get();
-
 			return $citizensDataTable->render('components.tables.citizens', compact('citizens'));
 		}
 		return $citizensDataTable->render('components.tables.citizens');

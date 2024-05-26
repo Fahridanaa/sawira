@@ -2,12 +2,14 @@
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ManageHistoryController;
 use App\Http\Controllers\ManageCitizens;
 use App\Http\Controllers\CitizenController;
 use App\Http\Controllers\FamilyHeadController;
 use App\Http\Controllers\DependantDropdownController;
 use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\historyCitizensController;
+use App\Http\Controllers\CitizensHistoryController;
+use App\Http\Controllers\MoveHistoryController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\FamilyInformationController;
 use App\Http\Controllers\MustahikSubmissionController;
@@ -38,6 +40,8 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
 //	Route::middleware('can:manager')->group(function () {
 	Route::resource('tab-content/family-heads', FamilyHeadController::class);
 	Route::resource('tab-content/citizens', CitizenController::class);
+  Route::get('/tab-content/citizens-history', [CitizensHistoryController::class, 'index'])->name('citizens-history.index');
+	Route::get('/tab-content/move-history', [MoveHistoryController::class, 'index'])->name('move-history.index');
 //	});
 
 	Route::resource('/letter', LetterController::class);

@@ -62,7 +62,7 @@ class CitizensDataTable extends DataTable
 				$query->where('id_rt', request('id_rt'));
 			});
 		}
-
+    
 		return $query;
 	}
 

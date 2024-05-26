@@ -178,7 +178,7 @@
                     }
                 });
             }
-
+            
             $('#id_rt').change(function () {
                 var id_rt = $(this).val();
                 if (id_rt) {
