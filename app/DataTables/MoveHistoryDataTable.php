@@ -2,7 +2,7 @@
 
 namespace App\DataTables;
 
-use App\Models\RiwayatWargaModel;
+use App\Models\RiwayatPindahModel;
 use Illuminate\Database\Eloquent\Builder as QueryBuilder;
 use Illuminate\Support\Carbon;
 use Yajra\DataTables\EloquentDataTable;
@@ -13,7 +13,7 @@ use Yajra\DataTables\Html\Editor\Editor;
 use Yajra\DataTables\Html\Editor\Fields;
 use Yajra\DataTables\Services\DataTable;
 
-class CitizensHistoryDataTable extends DataTable
+class MoveHistoryDataTable extends DataTable
 {
     /**
      * Build the DataTable class.
@@ -23,39 +23,39 @@ class CitizensHistoryDataTable extends DataTable
     public function dataTable(QueryBuilder $query): EloquentDataTable
     {
         return (new EloquentDataTable($query))
-            ->addColumn('action', 'citizenshistory.action')
-            ->addColumn('nama_lengkap', function ($row) {
-                return $row->warga->nama_lengkap;
-            })
+            ->addColumn('action', 'movehistory.action')
             ->editColumn('tanggal', function ($row) {
 				return $row->tanggal ? with(new Carbon($row->tanggal))->format('d/m/Y') : '';
 			})
-            ->addColumn('id_rt', function ($row) {
-				return $row->warga->kk->id_rt;
+            ->addColumn('no_kk', function ($nokk) {
+				return $nokk->KK->no_kk ?? 'N/A';
 			})
-            ->rawColumns(['nama_warga'])
+            ->addColumn('nama_lengkap', function ($nama) {
+				return $nama->KK->citizens->first()->nama_lengkap ?? 'N/A';
+			})
+            ->addColumn('id_rt', function ($row) {
+				return $row->kk->id_rt;
+			})
             ->setRowId('id');
     }
 
     /**
      * Get the query source of dataTable.
      */
-    public function query(RiwayatWargaModel $model): QueryBuilder
+    public function query(RiwayatPindahModel $model): QueryBuilder
     {
         $role = auth()->user()->role;
-        $query = $model->newQuery()->with('warga');
+        $query = $model->newQuery()->with('KK', 'citizens', 'suratPindah');
 
         if ($role !== 'rw') {
 			$rt = str_replace('rt', '', $role);
-			$query->whereHas('warga.kk', function ($query) use ($rt) {
+			$query->whereHas('kk', function ($query) use ($rt) {
 				$query->where('id_rt', $rt);
 			});
 		}
 
         return $model->newQuery()
-        ->with(['warga'])
-        ->select(['riwayat_warga.*'])
-        ->whereHas('warga.kk', function ($query) {
+        ->whereHas('KK', function ($query) {
             if (request()->has('id_rt') && request('id_rt') != '') {
                 $query->where('id_rt', request('id_rt'));
             }
@@ -67,14 +67,15 @@ class CitizensHistoryDataTable extends DataTable
      */
     public function html(): HtmlBuilder
     {
-        return $this->builder()
-                    ->setTableId('citizens-history-table')
-                    ->columns($this->getColumns())
-                    ->minifiedAjax()
-                    //->dom('Bfrtip')
-                    ->orderBy(1)
-                    ->selectStyleSingle()
-                    ->dom('lrtip'); // Exclude 'B' for buttons
+        $html = $this->builder()
+			->setTableId('move-history-table')
+			->columns($this->getColumns())
+			->minifiedAjax()
+			->orderBy(1)
+			->selectStyleSingle()
+			->buttons('l');
+
+        return $html;
     }
 
     /**
@@ -83,10 +84,11 @@ class CitizensHistoryDataTable extends DataTable
     public function getColumns(): array
     {
         $columns = [
-			Column::make('nama_lengkap'),
-            Column::make('kategori_riwayat'),
-            Column::make('tanggal'),
-            Column::computed('action')
+			Column::make('no_kk')->title('No. KK'),
+			Column::make('nama_lengkap')->title('Kepala Keluarga'),
+			Column::make('tanggal')->title('Tanggal'),
+			Column::make('alamat_tujuan')->title('Pindah Ke'),
+			Column::make('alasan_keluar')->title('Pesan Keluar'),
 		];
 
 		if (auth()->user()->role === 'rw') {
@@ -107,6 +109,6 @@ class CitizensHistoryDataTable extends DataTable
      */
     protected function filename(): string
     {
-        return 'CitizensHistory_' . date('YmdHis');
+        return 'MoveHistory_' . date('YmdHis');
     }
 }

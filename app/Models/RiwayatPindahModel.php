@@ -12,6 +12,8 @@ class RiwayatPindahModel extends Model
 
 	protected $table = 'riwayat_pindah';
 
+	protected $primaryKey = 'id_riwayatPindahan';
+
 	/**
 	 * The attributes that are mass assignable.
 	 *
@@ -46,5 +48,10 @@ class RiwayatPindahModel extends Model
 	public function suratPindah(): BelongsTo
 	{
 		return $this->belongsTo(SuratPindahModel::class);
+	}
+
+	public function citizens()
+	{
+		return $this->hasMany(CitizensModel::class, 'id_warga', 'id_warga');
 	}
 }
