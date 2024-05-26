@@ -21,6 +21,7 @@ return new class extends Migration {
 			$table->string('no_kk', 16)->unique();
 			$table->string('alamat', 255)->nullable();
 			$table->string('kode_pos', 5)->nullable();
+			$table->date('tanggal_masuk');
 			$table->timestamps();
 
 			$table->foreign('id_user')->references('id_user')->on('users');

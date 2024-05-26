@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Hash;
 
 class UserSeeder extends Seeder
 {
-	public const ROLES = ['rw', 'rt1', 'rt2', 'rt3', 'rt4', 'rt5', 'rt6', 'rt7', 'rt8', 'rt9', 'rt10', 'rt11', 'rt12', 'rt13', 'rt14', 'rt15', 'rt16', 'rt17', 'rt18', 'amil', 'warga'];
+	public const ROLES = ['rw', 'rt1', 'rt2', 'rt3', 'rt4', 'rt5', 'rt6', 'rt7', 'rt8', 'rt9', 'rt10', 'rt11', 'rt12', 'rt13', 'rt14', 'rt15', 'rt16', 'rt17', 'rt18', 'amil'];
 
 	/**
 	 * Run the database seeds.
@@ -20,7 +20,6 @@ class UserSeeder extends Seeder
 		foreach ($userList as $user) {
 			UsersModel::create($user);
 		}
-		UsersModel::factory(25)->create();
 	}
 
 	/**

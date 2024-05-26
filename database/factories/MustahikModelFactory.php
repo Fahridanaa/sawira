@@ -27,8 +27,8 @@ class MustahikModelFactory extends Factory
 			'pendapatan_bulanan' => $this->faker->numberBetween(0, 1000000),
 			'pengeluaran_bulanan' => $this->faker->numberBetween(0, 1000000),
 			'jumlah_hutang' => $this->faker->numberBetween(0, 1000000),
-			'id_pengajuan' => PengajuanMustahikModel::inRandomOrder()->first()->id_pengajuan,
 			'id_kategori' => KategoriMustahikModel::inRandomOrder()->first()->id_kategori,
+			'id_warga' => $this->faker->unique()->numberBetween(1, 250),
 		];
 	}
 }

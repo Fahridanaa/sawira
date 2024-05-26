@@ -27,4 +27,14 @@ class KategoriMustahikModel extends Model
 	protected $casts = [
 		'id_kategori' => 'integer',
 	];
+
+	public function mustahik()
+	{
+		return $this->hasMany(MustahikModel::class, 'id_kategori', 'id_kategori');
+	}
+
+	public function pengajuanMustahik()
+	{
+		return $this->hasMany(PengajuanMustahikModel::class, 'id_kategori', 'id_kategori');
+	}
 }

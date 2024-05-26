@@ -11,6 +11,9 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\CitizensHistoryController;
 use App\Http\Controllers\MoveHistoryController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\FamilyInformationController;
+use App\Http\Controllers\MustahikSubmissionController;
+use App\Http\Controllers\LetterController;
 
 /*
 |--------------------------------------------------------------------------
@@ -29,17 +32,28 @@ Route::get('/', function () {
 Route::get('/login', [AuthController::class, 'index'])->name('login');
 
 Route::middleware(['auth:sanctum', 'verified'])->group(function () {
+
 	Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
-	Route::get('/penduduk', [ManageCitizens::class, 'index'])->name('penduduk.index')->middleware('can:manage-citizens');
-	Route::get('/history', [ManageHistoryController::class, 'index'])->name('history');
-	Route::get('/tab-content/citizens-history', [CitizensHistoryController::class, 'index'])->name('citizens-history.index');
+	Route::get('/penduduk', [ManageCitizens::class, 'index'])->name('penduduk')->middleware('can:manager');
+	Route::get('/history', [historyCitizensController::class, 'index'])->name('history')->middleware('can:manager');
+
+//	Route::middleware('can:manager')->group(function () {
+	Route::resource('tab-content/family-heads', FamilyHeadController::class);
+	Route::resource('tab-content/citizens', CitizenController::class);
+  Route::get('/tab-content/citizens-history', [CitizensHistoryController::class, 'index'])->name('citizens-history.index');
 	Route::get('/tab-content/move-history', [MoveHistoryController::class, 'index'])->name('move-history.index');
-	Route::get('/tab-content/family-heads', [FamilyHeadController::class, 'index'])->name('family-heads.index');
-	Route::get('/family-heads/create', [FamilyHeadController::class, 'create'])->name('family-heads.create');
-	Route::get('/family-heads/{id}', [FamilyHeadController::class, 'show'])->name('family-heads.show');
-	Route::get('/tab-content/citizens', [CitizenController::class, 'index'])->name('citizen.index');
-	Route::get('/citizen/create', [CitizenController::class, 'create'])->name('citizen.create');
-	Route::get('cities', [DependantDropdownController::class, 'cities'])->name('cities');
-	Route::get('districts', [DependantDropdownController::class, 'districts'])->name('districts');
-	Route::get('villages', [DependantDropdownController::class, 'villages'])->name('villages');
+//	});
+
+	Route::resource('/letter', LetterController::class);
+
+	Route::resource('/submission', MustahikSubmissionController::class);
+	Route::get('/settings', [AuthController::class, 'settings'])->name('settings');
+	Route::post('/settings', [AuthController::class, 'updatePassword'])->name('auth.update.password');
+	Route::post('/settings/username', [AuthController::class, 'updateUsername'])->name('auth.update.username');
+
+	Route::get('cities', [DependantDropdownController::class, 'cities'])->name('cities')->middleware('can:manager');
+	Route::get('districts', [DependantDropdownController::class, 'districts'])->name('districts')->middleware('can:manager');
+	Route::get('villages', [DependantDropdownController::class, 'villages'])->name('villages')->middleware('can:manager');
+
+	Route::get('/family', [FamilyInformationController::class, 'index'])->name('family')->middleware('can:user');
 });

@@ -10,7 +10,7 @@ class CitizensModel extends Model
 {
 	use HasFactory;
 
-	protected $table = 'semua_warga';
+	protected $table = 'warga';
 	protected $primaryKey = 'id_warga';
 	/**
 	 * The attributes that are mass assignable.
@@ -22,14 +22,16 @@ class CitizensModel extends Model
 		'nama_lengkap',
 		'no_telp',
 		'jenis_kelamin',
-		'asal_kota',
+		'asal_tempat',
 		'tanggal_lahir',
 		'agama',
+		'status_perkawinan',
+		'kewarganegaraan',
 		'pendidikan_terakhir',
-		'jenis_pekerjaan',
+		'pekerjaan',
 		'tanggal_masuk',
 		'id_kk',
-		'status_hubungan_warga_id',
+		'id_hubungan',
 	];
 
 	/**
@@ -39,7 +41,7 @@ class CitizensModel extends Model
 	 */
 	protected $casts = [
 		'id_warga' => 'integer',
-		'tanggal_lahir' => 'date',
+		'tanggal_lahir' => 'date:Y-m-d',
 		'tanggal_masuk' => 'date',
 		'id_kk' => 'integer',
 		'id_hubungan' => 'integer',
@@ -53,6 +55,21 @@ class CitizensModel extends Model
 
 	public function statusHubunganWarga(): BelongsTo
 	{
-		return $this->belongsTo(StatusHubunganWargaModel::class);
+		return $this->belongsTo(StatusHubunganWargaModel::class, 'id_hubungan', 'id_hubungan');
+	}
+
+	public function rt(): BelongsTo
+	{
+		return $this->belongsTo(RTModel::class, 'id_rt', 'id_rt');
+	}
+
+	public function mustahik()
+	{
+		return $this->hasOne(MustahikModel::class, 'id_warga', 'id_warga');
+	}
+
+	public function pengajuanMustahik()
+	{
+		return $this->hasOne(PengajuanMustahikModel::class, 'id_warga', 'id_warga');
 	}
 }

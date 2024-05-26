@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\CitizensModel;
+use App\Models\KKModel;
 use App\Models\RiwayatPindahModel;
 use App\Models\RiwayatWargaModel;
 use App\Services\ChartService;
@@ -11,11 +12,12 @@ class DashboardController extends Controller
 {
 	public function index(ChartService $chartService)
 	{
+		$KK = KKModel::all();
 		$citizens = CitizensModel::all();
 		$citizensHistory = RiwayatWargaModel::all();
 		$movingCitizensHistory = RiwayatPindahModel::all();
 
-		$citizensByEntryMonth = $chartService->countCitizensByEntryDate($citizens);
+		$citizensByEntryMonth = $chartService->countCitizensByEntryDate($KK);
 		$citizensByExitMonth = $chartService->countCitizensByExitDate($citizensHistory, $movingCitizensHistory);
 		$ageGroupCount = $chartService->categorizeCitizensByAge($citizens);
 

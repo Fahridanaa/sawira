@@ -10,14 +10,16 @@ return new class extends Migration {
 	 */
 	public function up(): void
 	{
-		Schema::create('notifikasi', function (Blueprint $table) {
-			$table->id('id_notifikasi');
+		Schema::create('arsip_surat', function (Blueprint $table) {
+			$table->id('id_arsip_surat');
 			$table->unsignedBigInteger('id_user')->index();
-			$table->enum('jenis_notifikasi', ['danger', 'warning', 'success']);
-			$table->dateTime('tanggal_notifikasi');
+			$table->unsignedBigInteger('id_template_surat')->index();
+			$table->date('tanggal_pengajuan');
+			$table->string('data_surat', 255);
 			$table->timestamps();
 
 			$table->foreign('id_user')->references('id_user')->on('users');
+			$table->foreign('id_template_surat')->references('id_template_surat')->on('template_surat');
 		});
 	}
 
@@ -26,6 +28,6 @@ return new class extends Migration {
 	 */
 	public function down(): void
 	{
-		Schema::dropIfExists('notifikasi');
+		Schema::dropIfExists('riwayat_surat');
 	}
 };

@@ -29,8 +29,14 @@ class CitizensDataTable extends DataTable
 			->addColumn('id_rt', function ($row) {
 				return $row->kk->id_rt;
 			})
-			->addColumn('action', function () {
-				return '<button class="btn btn-primary trigger--fire-modal-2" id="modal-2">Detail</button>';
+			->addColumn('action', function ($row) {
+				$buttonHTML = '<div class="btn-group" data-id="' . $row->id_warga . '">';
+				$buttonHTML .= '<button class="btn btn-primary detail-btn" data-toggle="modal"  data-target="#detailModal">Detail</button>';
+				if (auth()->user()->role !== 'rw') {
+					$buttonHTML .= '<button class="btn btn-warning edit-btn ml-1">Edit</button>';
+				}
+				$buttonHTML .= '</div>';
+				return $buttonHTML;
 			})
 			->setRowId('id');
 	}
@@ -56,7 +62,7 @@ class CitizensDataTable extends DataTable
 				$query->where('id_rt', request('id_rt'));
 			});
 		}
-	
+    
 		return $query;
 	}
 
@@ -76,11 +82,11 @@ class CitizensDataTable extends DataTable
 		if (auth()->user()->role !== 'rw') {
 			$html->buttons([
 				[
-					'text' => 'Tambah Kartu Keluarga',
+					'text' => 'Tambah Warga',
 					'action' => 'function ( e, dt, node, config ) {
-										window.location.href = "/family-heads/create";
+										window.location.href = "' . route('citizens.create') . '";
 									 }',
-					'className' => 'btn btn-primary',
+					'className' => 'btn btn-primary col-3 col-md-12 mt-2',
 				]
 			]);
 		};
@@ -95,8 +101,7 @@ class CitizensDataTable extends DataTable
 	{
 		$columns = [
 			Column::make('nama_lengkap'),
-			Column::make('nik'),
-			Column::make('asal_kota'),
+			Column::make('asal_tempat'),
 			Column::make('tanggal_lahir'),
 			Column::make('no_telp'),
 		];

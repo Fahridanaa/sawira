@@ -6,6 +6,7 @@ use App\Models\CitizensModel;
 use App\Models\KartuKeluarga;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder as QueryBuilder;
+use Illuminate\Support\Facades\Log;
 use Yajra\DataTables\EloquentDataTable;
 use Yajra\DataTables\Html\Builder as HtmlBuilder;
 use Yajra\DataTables\Html\Button;
@@ -33,10 +34,16 @@ class FamilyInformationDataTable extends DataTable
 			->addColumn('No', function ($row) {
 				return '';
 			})
-			->addColumn('show', function () {
-				return '<button class="btn btn-primary trigger--fire-modal-2" id="modal-2">Detail</button>';
+			->addColumn('hubungan', function ($row) {
+				return $row->statusHubunganWarga->nama_hubungan;
 			})
-			->rawColumns(['show']);
+			->addColumn('action', function ($row) {
+				$buttonHTML = '<div class="btn-group" data-id="' . $row->id_warga . '">';
+				$buttonHTML .= '<button class="btn btn-primary detail-btn" data-toggle="modal"  data-target="#detailModal">Detail</button>';
+				$buttonHTML .= '</div>';
+				return $buttonHTML;
+			})
+			->rawColumns(['action']);
 	}
 
 	/**
@@ -44,10 +51,21 @@ class FamilyInformationDataTable extends DataTable
 	 */
 	public function query(CitizensModel $model): QueryBuilder
 	{
+		$user = auth()->user();
+
+		if ($user->role !== 'warga') {
+			return $model->newQuery()
+				->with(['kk:id_kk,no_kk'])
+				->select('warga.*')
+				->where('warga.id_kk', $this->id_kk);
+		}
+		$id_user = $user->id_user;
 		return $model->newQuery()
-			->with(['kk:id_kk,no_kk', 'statusHubunganWarga:nama_hubungan'])
-			->select('semua_warga.*')
-			->where('semua_warga.id_kk', $this->id_kk);
+			->with(['kk', 'kk.user'])
+			->select('warga.*')
+			->whereHas('kk', function ($query) use ($id_user) {
+				$query->where('id_user', $id_user);
+			});
 	}
 
 	/**
@@ -77,10 +95,11 @@ class FamilyInformationDataTable extends DataTable
 			Column::make('No'),
 			Column::make('nama_lengkap'),
 			Column::make('nik'),
-			Column::make('asal_kota'),
+			Column::make('hubungan'),
+			Column::make('asal_tempat'),
 			Column::make('tanggal_lahir'),
 			Column::make('no_telp'),
-			Column::computed('show')
+			Column::computed('action')
 				->exportable(false)
 				->printable(false)
 				->width(90)

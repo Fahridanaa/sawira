@@ -12,16 +12,16 @@ return new class extends Migration {
 	{
 		Schema::create('mustahik', function (Blueprint $table) {
 			$table->id('id_mustahik');
+			$table->unsignedBigInteger('id_warga')->index();
 			$table->unsignedBigInteger('id_kategori')->index();
-			$table->unsignedBigInteger('id_pengajuan')->index();
 			$table->enum('kondisi_rumah', [1, 2, 3, 4, 5]);
 			$table->integer('pendapatan_bulanan');
 			$table->integer('pengeluaran_bulanan');
 			$table->integer('jumlah_hutang');
 			$table->timestamps();
 
+			$table->foreign('id_warga')->references('id_warga')->on('warga');
 			$table->foreign('id_kategori')->references('id_kategori')->on('kategori_mustahik');
-			$table->foreign('id_pengajuan')->references('id_pengajuan')->on('pengajuan_mustahik');
 		});
 	}
 
