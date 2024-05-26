@@ -49,8 +49,8 @@ class FamilyInformationDataTable extends DataTable
 	{
 		return $model->newQuery()
 			->with(['kk:id_kk,no_kk'])
-			->select('semua_warga.*')
-			->where('semua_warga.id_kk', $this->id_kk);
+			->select('warga.*')
+			->where('warga.id_kk', $this->id_kk);
 	}
 
 	/**
