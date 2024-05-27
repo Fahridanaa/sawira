@@ -23,7 +23,10 @@ class LetterDataTable extends DataTable
 	public function dataTable(QueryBuilder $query): EloquentDataTable
 	{
 		return (new EloquentDataTable($query))
-			->addColumn('action', 'letter.action')
+			->addColumn('action', function ($row) {
+				$btn = '<a href="#" class="edit btn btn-success btn-sm">Download</a>';
+				return $btn;
+			})
 			->addColumn('No', function ($row) {
 				return '';
 			})
