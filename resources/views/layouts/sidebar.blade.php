@@ -6,13 +6,13 @@
     <div class="sidebar-brand sidebar-brand-sm">
         <a href="#">
             <div class="login-brand">
-                <style>.login-brand img{
-                    margin-top: -30px;
-                }
+                <style>.login-brand img {
+                        margin-top: -30px;
+                    }
                 </style>
                 <img src="{{ asset('assets/img/logo-01.svg') }}"
-                    alt="logo"
-                    width="30">
+                     alt="logo"
+                     width="30">
             </div>
         </a>
     </div>
@@ -49,11 +49,16 @@
             </li>
         @endif
         @if(\App\Helpers\SidebarHelper::hasAnyRole(['amil']))
-            <li class="{{ Request::is('submission*') ? 'active' : '' }}">
+            <li class="{{ Request::is('zakat*') ? 'active' : '' }}">
                 <a class="nav-link"
-                   href="{{ route('submission.index') }}"><i class="fas fa-handshake"></i>
-                    <span>List Pengajuan</span></a>
+                   href="{{ route('zakat.index') }}"><i class="fas fa-shopping-basket"></i>
+                    <span>Pembagian Zakat</span></a>
             </li>
+            {{--            <li class="{{ Request::is('submission*') ? 'active' : '' }}">--}}
+            {{--                <a class="nav-link"--}}
+            {{--                   href="{{ route('submission.index') }}"><i class="fas fa-handshake"></i>--}}
+            {{--                    <span>List Pengajuan</span></a>--}}
+            {{--            </li>--}}
         @endif
         <div class="flex-grow-1"></div>
         @if(\App\Helpers\SidebarHelper::hasAnyRole(['warga']))

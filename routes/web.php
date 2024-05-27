@@ -51,6 +51,8 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
 	Route::post('/settings', [AuthController::class, 'updatePassword'])->name('auth.update.password');
 	Route::post('/settings/username', [AuthController::class, 'updateUsername'])->name('auth.update.username');
 
+	Route::resource('zakat', \App\Http\Controllers\ManageZakatController::class);
+
 	Route::get('cities', [DependantDropdownController::class, 'cities'])->name('cities')->middleware('can:manager');
 	Route::get('districts', [DependantDropdownController::class, 'districts'])->name('districts')->middleware('can:manager');
 	Route::get('villages', [DependantDropdownController::class, 'villages'])->name('villages')->middleware('can:manager');
