@@ -16,41 +16,60 @@
                     <span aria-hidden="true">×</span>
                 </button>
             </div>
-            <div class="modal-body">
-                <div class="row">
-                    <div class="col-12">
-                        <div id="nik"></div>
-                        <div id="nama_lengkap"></div>
-                        <div id="no_telp"></div>
-                        <div id="ttl"></div>
-                        <div id="agama"></div>
-                        <div id="pendidikan"></div>
-                        <div id="pekerjaan"></div>
+            <form action="">
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-12 col-lg-6">
+                            <div class="form-group">
+                                <label for="nama_lengkap">Nama Lengkap</label>
+                                <input type="text"
+                                       class="form-control datepicker"
+                                       name="nama_lengkap"
+                                       id="nama_lengkap">
+                            </div>
+                        </div>
+                        <div class="col-12 col-lg-6">
+                            <div class="form-group">
+                                <label for="nik">NIK</label>
+                                <input type="text"
+                                       class="form-control datepicker"
+                                       name="nik"
+                                       id="nik">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12 col-lg-6">
+                            <div class="form-group">
+                                <label for="ttl">Tempat, Tanggal Lahir</label>
+                                <input type="text"
+                                       class="form-control datepicker"
+                                       name="ttl"
+                                       id="ttl">
+                            </div>
+                        </div>
+                        <div class="col-12 col-lg-6">
+                            <div class="form-group">
+                                <label for="agama">Agama</label>
+                                <input type="text"
+                                       class="form-control datepicker"
+                                       name="agama"
+                                       id="agama">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="form-group">
+                                <label for="alamat">Alamat</label>
+                                <input name="alamat"
+                                       id="alamat"
+                                       class="form-control">
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div>
+            </form>
         </div>
     </div>
 </div>
-
-@push('js')
-    <script type="module">
-        var citizensShowUrl = "{{ route('citizens.show', ['citizen' => '__id__']) }}";
-        $(document).on('click', '.detail-btn', function () {
-            let id = $(this).parent().data('id');
-            let url = citizensShowUrl.replace('__id__', id);
-            $.ajax({
-                url: url,
-                success: function (data) {
-                    $('#nik').html("<span class='font-weight-bolder'>NIK</span>&ensp;: " + data.nik);
-                    $('#nama_lengkap').html("<span class='font-weight-bolder'>Nama Lengkap</span>&ensp;: " + data.nama_lengkap);
-                    $('#no_telp').html("<span class='font-weight-bolder'>No Telp</span>&ensp;: " + data.no_telp);
-                    $('#ttl').html("<span class='font-weight-bolder'>Tempat, dan Tanggal Lahir</span>&ensp;: " + data.asal_tempat + ", " + data.tanggal_lahir);
-                    $('#agama').html("<span class='font-weight-bolder'>Agama</span>&ensp;: " + data.agama);
-                    $('#pendidikan').html("<span class='font-weight-bolder'>Pendidikan Terakhir</span>&ensp;: " + data.pendidikan_terakhir);
-                    $('#pekerjaan').html("<span class='font-weight-bolder'>Pekerjaan</span>&ensp;: " + data.pekerjaan);
-                }
-            });
-        });
-    </script>
-@endpush
