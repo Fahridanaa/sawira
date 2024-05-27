@@ -35,12 +35,12 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
 
 	Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 	Route::get('/penduduk', [ManageCitizens::class, 'index'])->name('penduduk')->middleware('can:manager');
-	Route::get('/history', [historyCitizensController::class, 'index'])->name('history')->middleware('can:manager');
+	Route::get('/history', [ManageHistoryController::class, 'index'])->name('history')->middleware('can:manager');
 
 //	Route::middleware('can:manager')->group(function () {
 	Route::resource('tab-content/family-heads', FamilyHeadController::class);
 	Route::resource('tab-content/citizens', CitizenController::class);
-  Route::get('/tab-content/citizens-history', [CitizensHistoryController::class, 'index'])->name('citizens-history.index');
+	Route::get('/tab-content/citizens-history', [CitizensHistoryController::class, 'index'])->name('citizens-history.index');
 	Route::get('/tab-content/move-history', [MoveHistoryController::class, 'index'])->name('move-history.index');
 //	});
 
