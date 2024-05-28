@@ -59,12 +59,12 @@ class LetterController extends Controller
 				$newSurat = ArsipSuratModel::create([
 					'id_user' => $id_user,
 					'id_template_surat' => $request->jenis_surat,
+					'id_warga' => $request->warga,
 					'tanggal_pengajuan' => $dateToday,
 					'data_surat' => $dataSurat
 				]);
 
-				$letterData = array_merge($request->all(), $newSurat->toArray());
-				return $this->letterService->storeLetter($letterData); // Return the response from the transaction
+				return $this->letterService->storeLetter($newSurat); // Return the response from the transaction
 			});
 
 			return $response; // Return the response from the storeLetter method

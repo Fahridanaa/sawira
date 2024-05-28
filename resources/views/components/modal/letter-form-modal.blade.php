@@ -88,9 +88,6 @@
                             </div>
                         </div>
                     </div>
-                    <input type="hidden"
-                           name="jenis_kelamin"
-                           id="jenis_kelamin">
                     <div class="row">
                         <div class="col-12">
                             <div class="form-group">
@@ -108,15 +105,6 @@
                         </div>
                     </div>
                     <div class="row">
-                        {{--                        <div class="col-12 col-lg-6">--}}
-                        {{--                            <div class="form-group">--}}
-                        {{--                                <label for="tahun">Tahun</label>--}}
-                        {{--                                <input type="text"--}}
-                        {{--                                       class="form-control datepicker"--}}
-                        {{--                                       name="tahun"--}}
-                        {{--                                       id="tahun">--}}
-                        {{--                            </div>--}}
-                        {{--                        </div>--}}
                         <div class="col-12">
                             <div class="form-group">
                                 <label for="data_surat[keperluan]">Keperluan</label>
@@ -159,16 +147,11 @@
                         $('#ttl').val(data.asal_tempat + ', ' + dateFormat(data.tanggal_lahir));
                         $('#agama').val(data.agama);
                         $('#alamat').val(data.alamat);
-                        $('#jenis_kelamin').val(jenisKelaminExtend(data.jenis_kelamin));
                     },
                     error: function (data) {
                         console.log(data);
                     }
                 });
-            }
-
-            function jenisKelaminExtend(jenisKelamin) {
-                return jenisKelamin === 'L' ? 'Laki-laki' : 'Perempuan';
             }
 
             function dateFormat(date) {

@@ -92,8 +92,8 @@ class LetterService
 	private function SuratKeteranganTidakMampu($data)
 	{
 		$templateProcessor = new TemplateProcessor($this->searchDocx($data['id_template_surat']));
-		$citizen = $this->searchCitizenById($data['warga']);
-		$RT = $this->searchRTbyCitizen($data['warga']);
+		$citizen = $this->searchCitizenById($data['id_warga']);
+		$RT = $this->searchRTbyCitizen($data['id_warga']);
 
 		$templateProcessor->setValues([
 			'nama' => $citizen->nama_lengkap,
@@ -101,7 +101,7 @@ class LetterService
 			'jenis_kelamin' => $this->extendsGender($citizen->jenis_kelamin),
 			'no_ktp' => $citizen->nik,
 			'agama' => $citizen->agama,
-			'alamat' => $this->searchAlamatByCitizen($data['warga']),
+			'alamat' => $this->searchAlamatByCitizen($data['id_warga']),
 			'rt' => $RT,
 			'rt_rom' => $this->numberToRomans($RT),
 			'keperluan' => explode(';', $data['data_surat'])[0],
