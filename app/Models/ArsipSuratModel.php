@@ -18,6 +18,8 @@ class ArsipSuratModel extends Model
 	 * @var array
 	 */
 	protected $fillable = [
+		'id_user',
+		'id_template_surat',
 		'data_surat',
 		'tanggal_pengajuan',
 	];
