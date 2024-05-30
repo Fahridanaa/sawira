@@ -18,9 +18,6 @@ class ArsipSuratModel extends Model
 	 * @var array
 	 */
 	protected $fillable = [
-		'id_user',
-		'id_template_surat',
-		'id_warga',
 		'data_surat',
 		'tanggal_pengajuan',
 	];
@@ -34,7 +31,6 @@ class ArsipSuratModel extends Model
 		'id_arsip_surat' => 'integer',
 		'id_template_surat' => 'integer',
 		'id_user' => 'integer',
-		'id_warga' => 'integer',
 	];
 
 	public function templateSurat(): BelongsTo

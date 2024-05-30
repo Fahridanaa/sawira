@@ -14,14 +14,12 @@ return new class extends Migration {
 			$table->id('id_arsip_surat');
 			$table->unsignedBigInteger('id_user')->index();
 			$table->unsignedBigInteger('id_template_surat')->index();
-			$table->unsignedBigInteger('id_warga')->index();
 			$table->date('tanggal_pengajuan');
 			$table->string('data_surat', 255);
 			$table->timestamps();
 
 			$table->foreign('id_user')->references('id_user')->on('users');
 			$table->foreign('id_template_surat')->references('id_template_surat')->on('template_surat');
-			$table->foreign('id_warga')->references('id_warga')->on('warga');
 		});
 	}
 

@@ -36,7 +36,6 @@
                             <form action="{{ route('auth.update.password') }}"
                                   method="POST">
                                 @csrf
-                                {!! method_field('PUT') !!}
                                 <div class="row">
                                     <div class="col-12">
                                         <div class="form-group">
@@ -103,7 +102,6 @@
                 <div class="modal-body">
                     <form action="{{ route('auth.update.username') }}"
                           method="POST">
-                        {!! method_field('PUT') !!}
                         @csrf
                         <div class="row">
                             <div class="col-12">
