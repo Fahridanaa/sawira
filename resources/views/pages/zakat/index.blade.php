@@ -46,7 +46,7 @@
                                      id="ahp"
                                      role="tabpanel"
                                      aria-labelledby="ahp-tab">
-                                    AHP KONTOL
+                                    AHP
                                 </div>
                                 <div class="tab-pane fade active show"
                                      id="saw"

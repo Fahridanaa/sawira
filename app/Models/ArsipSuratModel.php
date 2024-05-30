@@ -11,6 +11,7 @@ class ArsipSuratModel extends Model
 	use HasFactory;
 
 	protected $table = 'arsip_surat';
+	protected $primaryKey = 'id_arsip_surat';
 
 	/**
 	 * The attributes that are mass assignable.

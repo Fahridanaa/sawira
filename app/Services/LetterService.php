@@ -126,7 +126,7 @@ class LetterService
 		return $semicolonString;
 	}
 
-	public function storeLetter($data)
+	public function downloadLetter($data)
 	{
 		$templateName = $this->searchTemplateLetter($data['id_template_surat']);
 		$templateFunction = str_replace(' ', '', $templateName);
