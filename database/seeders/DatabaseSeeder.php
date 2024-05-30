@@ -43,7 +43,6 @@ class DatabaseSeeder extends Seeder
 		$this->call(StatusHubunganWargaSeeder::class);
 		KKModel::factory(25)->create();
 		$this->call(TemplateSuratSeeder::class);
-		ArsipSuratModel::factory(10)->create();
 		$this->call(KategoriMustahikSeeder::class);
 		CitizensModel::factory(250)->create();
 		PengajuanMustahikModel::factory(5)->create();
