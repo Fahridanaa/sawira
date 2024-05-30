@@ -64,7 +64,7 @@ class LetterController extends Controller
 					'data_surat' => $dataSurat
 				]);
 
-				return $this->letterService->storeLetter($newSurat); // Return the response from the transaction
+				return $this->letterService->downloadLetter($newSurat); // Return the response from the transaction
 			});
 
 			return $response; // Return the response from the storeLetter method
@@ -81,7 +81,9 @@ class LetterController extends Controller
 	 */
 	public function show(string $id)
 	{
-		//
+		$letter = ArsipSuratModel::findOrfail($id);
+
+		return $this->letterService->downloadLetter($letter);
 	}
 
 	/**
