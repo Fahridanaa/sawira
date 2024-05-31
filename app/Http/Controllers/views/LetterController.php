@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\views;
 
 use App\DataTables\LetterDataTable;
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 class LetterController extends Controller

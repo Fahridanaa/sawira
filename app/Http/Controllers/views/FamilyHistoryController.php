@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\views;
 
 use App\DataTables\FamilyHistoryDataTable;
+use App\Http\Controllers\Controller;
 use App\Models\RiwayatKKModel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;

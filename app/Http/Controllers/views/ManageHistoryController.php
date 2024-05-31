@@ -1,14 +1,12 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\views;
 
 use App\DataTables\CitizensHistoryDataTable;
 use App\DataTables\FamilyHistoryDataTable;
-use App\Models\CitizensModel;
+use App\Http\Controllers\Controller;
 use App\Models\RTModel;
 use Illuminate\Http\Request;
-use App\Models\RiwayatWargaModel;
-use App\Models\RiwayatKKModel;
 
 class ManageHistoryController extends Controller
 {

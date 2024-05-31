@@ -18,7 +18,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 
-class FamilyHeadController extends Controller
+class FamilyController extends Controller
 {
 	/**
 	 * Display a listing of the resource.

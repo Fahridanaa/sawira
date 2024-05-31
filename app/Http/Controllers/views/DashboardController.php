@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\views;
 
+use App\Http\Controllers\Controller;
 use App\Models\CitizensModel;
 use App\Models\KKModel;
 use App\Models\RiwayatKKModel;
