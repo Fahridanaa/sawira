@@ -26,10 +26,14 @@ class FamilyHeadsDataTable extends DataTable
 	{
 		return (new EloquentDataTable($query))
 			->addColumn('action', function ($row) {
-				return '<a class="edit btn btn-info btn-sm" href="' . route("family-heads.show", $row->id_kk) . '">Tampilkan</a>';
+				$buttonHTML = '<div class="btn-group" data-id="' . $row->id_kk . '">';
+				$buttonHTML .= '<button class="edit btn btn-info btn-sm">Tampilkan</button>';
+				$buttonHTML .= '<button class="btn btn-danger delete-btn ml-2" data-toggle="modal" data-target="#delete-modal">Hapus</button>';
+				$buttonHTML .= '</div>';
+				return $buttonHTML;
 			})
-			->addColumn('nama_lengkap', function ($kk) {
-				return $kk->citizens->first()->nama_lengkap ?? 'N/A';
+			->addColumn('nama_lengkap', function ($row) {
+				return $row->citizens->where('id_hubungan', 1)->first()->nama_lengkap ?? 'N/A';
 			})
 			->addColumn('id_rt', function ($row) {
 				return $row->id_rt;
@@ -44,14 +48,14 @@ class FamilyHeadsDataTable extends DataTable
 	public function query(KKModel $model, Request $request): QueryBuilder
 	{
 		$role = auth()->user()->role;
-		$query = $model->newQuery()->with('user', 'citizens', 'rt');
+		$query = $model->newQuery()->with(['user', 'citizens', 'rt']);
 
 
 		if ($role !== 'rw') {
 			$rt = str_replace('rt', '', $role);
 			$query->where('id_rt', $rt);
 		}
-		
+
 		if ($request->has('id_rt')) {
 			$id_rt = $request->input('id_rt');
 			$query->where('id_rt', $id_rt);

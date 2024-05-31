@@ -3,22 +3,23 @@
 namespace App\Http\Controllers;
 
 use App\DataTables\CitizensHistoryDataTable;
-use App\DataTables\MoveHistoryDataTable;
+use App\DataTables\FamilyHistoryDataTable;
 use App\Models\CitizensModel;
+use App\Models\RTModel;
 use Illuminate\Http\Request;
 use App\Models\RiwayatWargaModel;
-use App\Models\RiwayatPindahModel;
+use App\Models\RiwayatKKModel;
 
 class ManageHistoryController extends Controller
 {
 	public function index(Request $request)
 	{
-		// Mengambil semua id_rt dari tabel kk melalui relasi citizens tanpa duplikat
-		$rw = RiwayatPindahModel::with('kk')->get()->pluck('kk.id_rt')->filter()->unique()->sort();
+//		$rw = RiwayatKKModel::with('kk')->get()->pluck('kk.id_rt')->filter()->unique()->sort();
+		$rts = RTModel::all();
 
 		if ($request->ajax()) {
 			$citizensHistory = new CitizensHistoryDataTable();
-			$moveHistory = new MoveHistoryDataTable();
+			$moveHistory = new FamilyHistoryDataTable();
 			$data = [
 				'citizensTable' => $citizensHistory->render('components.tables.citizens-history'),
 				'familyHeadsTable' => $moveHistory->render('components.tables.move-history'),
@@ -27,6 +28,6 @@ class ManageHistoryController extends Controller
 		}
 
 		$breadcrumb = 'Riwayat Penduduk';
-		return view('pages.history.citizens.RT', ['breadcrumb' => $breadcrumb], compact('rw'));
+		return view('pages.history.index', ['breadcrumb' => $breadcrumb], compact('rts'));
 	}
 }

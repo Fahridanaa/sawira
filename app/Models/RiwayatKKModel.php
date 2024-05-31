@@ -2,17 +2,18 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class RiwayatPindahModel extends Model
+class RiwayatKKModel extends Model
 {
 	use HasFactory;
 
-	protected $table = 'riwayat_pindah';
+	protected $table = 'riwayat_kk';
 
-	protected $primaryKey = 'id_riwayatPindahan';
+	protected $primaryKey = 'id_riwayatKK';
 
 	/**
 	 * The attributes that are mass assignable.
@@ -21,11 +22,9 @@ class RiwayatPindahModel extends Model
 	 */
 	protected $fillable = [
 		'id_kk',
-		'id_suratPindah',
 		'tanggal',
-		'surat_pindah',
-		'alamat_tujuan',
-		'alasan_keluar'
+		'file_surat',
+		'status',
 	];
 
 	/**
@@ -36,8 +35,8 @@ class RiwayatPindahModel extends Model
 	protected $casts = [
 		'id_riwayatPindahan' => 'integer',
 		'id_kk' => 'integer',
-		'id_suratPindah' => 'integer',
-		'tanggal' => 'date'
+		'tanggal' => 'date',
+		'status' => 'string',
 	];
 
 	public function KK(): BelongsTo
@@ -45,13 +44,16 @@ class RiwayatPindahModel extends Model
 		return $this->belongsTo(KKModel::class, 'id_kk', 'id_kk');
 	}
 
-	public function suratPindah(): BelongsTo
-	{
-		return $this->belongsTo(SuratPindahModel::class);
-	}
 
 	public function citizens()
 	{
 		return $this->hasMany(CitizensModel::class, 'id_warga', 'id_warga');
 	}
+
+//	protected function file_surat(): Attribute
+//	{
+//		return Attribute::make(
+//			get: fn($file_surat) => url("/storage/surat/" . $file_surat),
+//		);
+//	}
 }

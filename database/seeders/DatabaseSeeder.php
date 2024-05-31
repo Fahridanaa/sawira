@@ -9,7 +9,7 @@ use App\Models\KKModel;
 use App\Models\MustahikModel;
 use App\Models\NotifikasiModel;
 use App\Models\PengajuanMustahikModel;
-use App\Models\RiwayatPindahModel;
+use App\Models\RiwayatKKModel;
 use App\Models\RiwayatWargaModel;
 use App\Models\ArsipSuratModel;
 use App\Models\RTModel;
@@ -48,7 +48,6 @@ class DatabaseSeeder extends Seeder
 		CitizensModel::factory(250)->create();
 		PengajuanMustahikModel::factory(5)->create();
 		RiwayatWargaModel::factory(100)->create();
-		RiwayatPindahModel::factory(50)->create();
 		MustahikModel::factory(25)->create();
 		VerifikasiMustahikModel::factory(25)->create();
 	}

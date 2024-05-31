@@ -26,19 +26,20 @@ class CitizensDataTable extends DataTable
 			->editColumn('tanggal_lahir', function ($row) {
 				return $row->tanggal_lahir ? with(new Carbon($row->tanggal_lahir))->format('d/m/Y') : '';
 			})
-			->addColumn('id_rt', function ($row) {
-				return $row->kk->id_rt;
-			})
 			->addColumn('action', function ($row) {
 				$buttonHTML = '<div class="btn-group" data-id="' . $row->id_warga . '">';
 				$buttonHTML .= '<button class="btn btn-primary detail-btn" data-toggle="modal"  data-target="#detailModal">Detail</button>';
 				if (auth()->user()->role !== 'rw') {
 					$buttonHTML .= '<button class="btn btn-warning edit-btn ml-1">Edit</button>';
 				}
+				$buttonHTML .= '<button class="btn btn-danger detail-btn ml-1" data-toggle="modal"  data-target="#detailModal">Hapus</button>';
 				$buttonHTML .= '</div>';
 				return $buttonHTML;
 			})
-			->setRowId('id');
+			->addColumn('id_rt', function ($row) {
+				return $row->kk->id_rt ?? 'N/A';
+			});
+//			->setRowId('id');
 	}
 
 	/**
@@ -47,7 +48,9 @@ class CitizensDataTable extends DataTable
 	public function query(CitizensModel $model): QueryBuilder
 	{
 		$role = auth()->user()->role;
-		$query = $model->newQuery()->with('kk');
+		$query = $model->newQuery()->with(['kk' => function ($query) {
+			$query->withTrashed();
+		}]);
 
 		if ($role !== 'rw') {
 			$rt = str_replace('rt', '', $role);
@@ -62,7 +65,7 @@ class CitizensDataTable extends DataTable
 				$query->where('id_rt', request('id_rt'));
 			});
 		}
-    
+
 		return $query;
 	}
 

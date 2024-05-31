@@ -51,8 +51,8 @@
                                                                         hidden
                                                                         selected>- RT -
                                                                 </option>
-                                                                @foreach ($rw as $id_rt)
-                                                                    <option value="{{ $id_rt }}">{{ $id_rt }}</option>
+                                                                @foreach ($rts as $rt)
+                                                                    <option value="{{ $rt->id_rt }}">{{ $rt->no_rt }}</option>
                                                                 @endforeach
                                                             </select>
                                                             <small class="form-text text-muted">Pilih Berdasarkan
@@ -83,6 +83,7 @@
         </div>
     </section>
     <x-modal.citizen-information/>
+    <x-modal.delete-confirmation/>
 @endsection
 @push('css')
     <style>
@@ -111,6 +112,14 @@
             let id = $(this).parent().data('id');
             window.location.href = citizensEditUrl.replace('__id__', id);
         });
+
+        var familyShowUrl = "{{ route('family-heads.show', ['family_head' => '__id__']) }}";
+
+        $(document).on('click', '.btn-info', function () {
+            let id = $(this).parent().data('id');
+            window.location.href = familyShowUrl.replace('__id__', id);
+        });
+
         $(document).ready(() => {
             const tableIds = ['#citizens-table', '#family-heads-table'];
             $('#citizens-table').removeClass('table-bordered');
@@ -178,7 +187,7 @@
                     }
                 });
             }
-            
+
             $('#id_rt').change(function () {
                 var id_rt = $(this).val();
                 if (id_rt) {

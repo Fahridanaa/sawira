@@ -16,11 +16,11 @@
                                         role="tablist">
                                         <li class="nav-item mb-1">
                                             <a class="nav-link"
-                                               id="move-history-tab"
+                                               id="family-history-tab"
                                                data-toggle="tab"
-                                               href="#move-history"
+                                               href="#family-history"
                                                role="tab"
-                                               aria-controls="move-history"
+                                               aria-controls="family-history"
                                                aria-selected="true">Keluarga</a>
                                         </li>
                                         <li class="nav-item">
@@ -36,17 +36,23 @@
                                 </div>
                                 <div class="col-12 col-sm-12 col-md-8 col-xl-10">
                                     <div class="tab-content no-padding"
-                                        id="myTab2Content">
+                                         id="myTab2Content">
                                         <div class="row">
                                             <div class="col-md-12">
                                                 <div class="form-group row">
                                                     <label class="col-1 control-label col-form-label">Filter:</label>
                                                     <div class="col-3">
-                                                        <select class="form-control" name="id_rt" id="id_rt" required>
-                                                            <option disabled hidden selected>- RT -</option>
-                                                            @foreach ($rw as $id_rt)
-                                                               <option value="{{ $id_rt }}">{{ $id_rt }}</option>
-                                                           @endforeach
+                                                        <select class="form-control"
+                                                                name="id_rt"
+                                                                id="id_rt"
+                                                                required>
+                                                            <option disabled
+                                                                    hidden
+                                                                    selected>- RT -
+                                                            </option>
+                                                            @foreach ($rts as $rt)
+                                                                <option value="{{ $rt->id_rt }}">{{ $rt->no_rt }}</option>
+                                                            @endforeach
                                                         </select>
                                                         <small class="form-text text-muted">Pilih Berdasarkan RT</small>
                                                     </div>
@@ -54,7 +60,7 @@
                                             </div>
                                         </div>
                                         <div class="tab-pane fade"
-                                             id="move-history"
+                                             id="family-history"
                                              role="tabpanel"
                                              aria-labelledby="kk-tab">
                                         </div>
@@ -73,6 +79,7 @@
             </div>
         </div>
     </section>
+    <x-modal.upload-file/>
 @endsection
 @push('css')
     <style>
@@ -96,7 +103,7 @@
 @push('js')
     {{--    <script src="{{ asset('assets/js/page/modules-datatables.js') }}"></script>--}}
     <script type="module">
-        const tableIds = ['#citizens-history-table', '#move-history-table'];
+        const tableIds = ['#citizens-history-table', '#family-history-table'];
         $(document).ready(() => {
             $('#citizens-history-table').removeClass('table-bordered');
             $('#citizens-history-table_processing').empty();
@@ -130,7 +137,7 @@
             if (activeTab) {
                 setActiveTabAndUpdateContent(activeTab);
             } else {
-                setActiveTabAndUpdateContent('move-history'); // Default tab
+                setActiveTabAndUpdateContent('family-history'); // Default tab
             }
 
             function loadTabContent(tabId) {
@@ -163,35 +170,36 @@
                     }
                 });
             }
-            $('#id_rt').change(function() {
-            var id_rt = $(this).val();
+
+            $('#id_rt').change(function () {
+                var id_rt = $(this).val();
                 if (id_rt) {
                     $.ajax({
                         url: "{{ route('citizens-history.index') }}", // Menggunakan route yang tepat
                         type: "GET",
                         data: {id_rt: id_rt},
-                        success: function(data) {
+                        success: function (data) {
                             $('#citizens-history').html(data);
                         },
-                        error: function(xhr) {
+                        error: function (xhr) {
                             console.log("Error loading table:", xhr);
                         }
                     });
 
                     $.ajax({
-                        url: "{{ route('move-history.index') }}",
+                        url: "{{ route('family-history.index') }}",
                         type: "GET",
                         data: {id_rt: id_rt},
-                        success: function(data) {
-                            $('#move-history').html(data);
+                        success: function (data) {
+                            $('#family-history').html(data);
                         },
-                        error: function(xhr) {
+                        error: function (xhr) {
                             console.log("Error loading family heads table:", xhr);
                         }
                     });
                 } else {
                     $('#citizens-history').html(''); // Kosongkan tabel jika tidak ada RT yang dipilih
-                    $('#move-history').html(''); // Kosongkan tabel Family Heads jika tidak ada RT yang dipilih
+                    $('#family-history').html(''); // Kosongkan tabel Family Heads jika tidak ada RT yang dipilih
                 }
             });
         });

@@ -26,6 +26,7 @@ return new class extends Migration {
 			$table->string('pendidikan_terakhir', 20);
 			$table->string('pekerjaan', 255);
 			$table->timestamps();
+			$table->softDeletes();
 
 			$table->foreign('id_kk')->references('id_kk')->on('kk');
 			$table->foreign('id_hubungan')->references('id_hubungan')->on('status_hubungan_warga');
