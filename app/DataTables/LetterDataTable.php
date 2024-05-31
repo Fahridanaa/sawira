@@ -24,7 +24,7 @@ class LetterDataTable extends DataTable
 	{
 		return (new EloquentDataTable($query))
 			->addColumn('action', function ($row) {
-				$btn = '<a href="#" class="edit btn btn-success btn-sm">Download</a>';
+				$btn = '<a href="' . route('letter.show', $row->id_arsip_surat) . '" class="edit btn btn-success btn-sm">Download</a>';
 				return $btn;
 			})
 			->addColumn('No', function ($row) {

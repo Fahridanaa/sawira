@@ -25,7 +25,9 @@
             </div>
         </div>
     </section>
-    <x-modal.letter-form-modal/>
+    <x-modal.letter-form-modal
+            :citizens="$citizens"
+    />
 @endsection
 @push('js')
     {{ $dataTable->scripts() }}

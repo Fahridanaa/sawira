@@ -3,17 +3,39 @@
 namespace App\Http\Controllers\views;
 
 use App\DataTables\LetterDataTable;
+use App\Models\ArsipSuratModel;
+use App\Models\CitizensModel;
+use App\Services\LetterService;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class LetterController extends Controller
 {
+	protected LetterService $letterService;
+
+	/**
+	 * Create a new controller instance.
+	 */
+	public function __construct()
+	{
+		$this->letterService = new LetterService();
+	}
+
 	/**
 	 * Display a listing of the resource.
 	 */
 	public function index(LetterDataTable $letterDataTable)
 	{
-		return $letterDataTable->render('pages.letter.index');
+		$id_user = auth()->user()->id_user;
+
+		$citizens = (new CitizensModel())->with(['kk', 'kk.user'])->select('warga.*')
+			->whereHas('kk', function ($query) use ($id_user) {
+				$query->where('id_user', $id_user);
+			})->get();
+
+		return $letterDataTable->render('pages.letter.index', compact('citizens'));
 	}
 
 	/**
@@ -29,7 +51,30 @@ class LetterController extends Controller
 	 */
 	public function store(Request $request)
 	{
-		//
+		try {
+			$response = DB::transaction(function () use ($request) {
+				$id_user = auth()->user()->id_user;
+				$dateToday = date('Y-m-d');
+				$dataSurat = $this->letterService->semicolonArrayString($request->data_surat);
+
+				$newSurat = ArsipSuratModel::create([
+					'id_user' => $id_user,
+					'id_template_surat' => $request->jenis_surat,
+					'id_warga' => $request->warga,
+					'tanggal_pengajuan' => $dateToday,
+					'data_surat' => $dataSurat
+				]);
+
+				return $this->letterService->downloadLetter($newSurat); // Return the response from the transaction
+			});
+
+			return $response; // Return the response from the storeLetter method
+		} catch (\Exception $e) {
+			return response()->json([
+				'status' => 'error',
+				'message' => $e->getMessage()
+			], 400);
+		}
 	}
 
 	/**
@@ -37,7 +82,9 @@ class LetterController extends Controller
 	 */
 	public function show(string $id)
 	{
-		//
+		$letter = ArsipSuratModel::findOrfail($id);
+
+		return $this->letterService->downloadLetter($letter);
 	}
 
 	/**
