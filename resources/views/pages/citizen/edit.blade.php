@@ -39,7 +39,7 @@
                                                 </option>
                                                 @foreach($kkRecords as $no_kk)
                                                     <option value="{{ $no_kk->id_kk }}"
-                                                            @if($citizen->id_kk) selected @endif>
+                                                            @if($citizen->id_kk === $no_kk->id_kk) selected @endif>
                                                         {{ $no_kk->no_kk }}
                                                     </option>
                                                 @endforeach

@@ -41,9 +41,9 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
 		Route::resource('/family-heads', FamilyController::class);
 		Route::delete('family-heads/{family_head}', [FamilyController::class, 'softDeleteAndAddToHistory'])->name('family-heads.destroy');
 		Route::resource('citizens', CitizenController::class);
-		Route::get('citizens-history', [CitizensHistoryController::class, 'index'])->name('citizens-history.index');
-		Route::get('family-history', [FamilyHistoryController::class, 'index'])->name('family-history.index');
-		Route::get('family-history/download/{id}', [FamilyHistoryController::class, 'download'])->name('family-history.download');
+		Route::get('citizens-history', [ManageHistoryController::class, 'citizen'])->name('citizens-history.index');
+		Route::get('family-history', [ManageHistoryController::class, 'family'])->name('family-history.index');
+		Route::get('family-history/download/{id}', [ManageHistoryController::class, 'download'])->name('family-history.download');
 	});
 
 
