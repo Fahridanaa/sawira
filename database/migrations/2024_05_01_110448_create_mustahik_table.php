@@ -20,7 +20,7 @@ return new class extends Migration {
 			$table->integer('jumlah_hutang');
 			$table->timestamps();
 
-			$table->foreign('id_warga')->references('id_warga')->on('warga');
+			$table->foreign('id_warga')->references('id_warga')->on('warga')->onDelete('cascade');
 			$table->foreign('id_kategori')->references('id_kategori')->on('kategori_mustahik');
 		});
 	}

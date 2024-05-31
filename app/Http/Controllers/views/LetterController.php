@@ -1,11 +1,12 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\views;
 
 use App\DataTables\LetterDataTable;
 use App\Models\ArsipSuratModel;
 use App\Models\CitizensModel;
 use App\Services\LetterService;
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;

@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\views;
 
+use App\Http\Controllers\Controller;
 use App\Models\CitizensModel;
 use App\Models\KKModel;
-use App\Models\RiwayatPindahModel;
+use App\Models\RiwayatKKModel;
 use App\Models\RiwayatWargaModel;
 use App\Services\ChartService;
 
@@ -15,7 +16,7 @@ class DashboardController extends Controller
 		$KK = KKModel::all();
 		$citizens = CitizensModel::all();
 		$citizensHistory = RiwayatWargaModel::all();
-		$movingCitizensHistory = RiwayatPindahModel::all();
+		$movingCitizensHistory = RiwayatKKModel::all();
 
 		$citizensByEntryMonth = $chartService->countCitizensByEntryDate($KK);
 		$citizensByExitMonth = $chartService->countCitizensByExitDate($citizensHistory, $movingCitizensHistory);

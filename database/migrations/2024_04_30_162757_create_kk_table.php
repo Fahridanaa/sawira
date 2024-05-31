@@ -23,6 +23,7 @@ return new class extends Migration {
 			$table->string('kode_pos', 5)->nullable();
 			$table->date('tanggal_masuk');
 			$table->timestamps();
+			$table->softDeletes();
 
 			$table->foreign('id_user')->references('id_user')->on('users');
 			$table->foreign('id_provinsi')->references('id')->on('indonesia_provinces');

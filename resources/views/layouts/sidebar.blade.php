@@ -30,13 +30,6 @@
                 <a class="nav-link"
                    href="{{ route('history') }}"><i class="fas fa-history"></i> <span>Riwayat Penduduk</span></a>
             </li>
-            @if(!\App\Helpers\SidebarHelper::hasAnyRole(['rw']))
-                <li class="{{ Request::is('submission*') ? 'active' : '' }}">
-                    <a class="nav-link"
-                       href="{{ route('submission.create') }}"><i class="fas fa-handshake"></i>
-                        <span>Pengajuan Mustahik</span></a>
-                </li>
-            @endif
         @endif
         @if(\App\Helpers\SidebarHelper::hasAnyRole(['warga']))
             <li class="{{ Request::is('family')  ? 'active' : '' }}">
@@ -54,11 +47,6 @@
                    href="{{ route('zakat.index') }}"><i class="fas fa-shopping-basket"></i>
                     <span>Pembagian Zakat</span></a>
             </li>
-            {{--            <li class="{{ Request::is('submission*') ? 'active' : '' }}">--}}
-            {{--                <a class="nav-link"--}}
-            {{--                   href="{{ route('submission.index') }}"><i class="fas fa-handshake"></i>--}}
-            {{--                    <span>List Pengajuan</span></a>--}}
-            {{--            </li>--}}
         @endif
         <div class="flex-grow-1"></div>
         @if(\App\Helpers\SidebarHelper::hasAnyRole(['warga']))

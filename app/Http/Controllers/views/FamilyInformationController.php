@@ -1,12 +1,11 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\views;
 
 use App\DataTables\FamilyInformationDataTable;
-use App\Models\CitizensModel;
-use App\Models\KKModel;
-use Illuminate\Http\Request;
 use App\Helpers\DateHelper;
+use App\Http\Controllers\Controller;
+use App\Models\KKModel;
 
 class FamilyInformationController extends Controller
 {

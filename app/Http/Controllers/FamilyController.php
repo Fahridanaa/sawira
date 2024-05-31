@@ -6,16 +6,19 @@ use App\DataTables\FamilyHeadsDataTable;
 use App\DataTables\FamilyInformationDataTable;
 use App\Http\Requests\StoreCitizenRequest;
 use App\Http\Requests\StoreFamilyCardRequest;
+use App\Http\Requests\StoreFamilyHistoryRequest;
 use App\Models\CitizensModel;
 use App\Models\KKModel;
+use App\Models\RiwayatKKModel;
 use App\Models\UsersModel;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 
-class FamilyHeadController extends Controller
+class FamilyController extends Controller
 {
 	/**
 	 * Display a listing of the resource.
@@ -123,14 +126,39 @@ class FamilyHeadController extends Controller
 	 */
 	public function update(Request $request, string $id)
 	{
-		//
+		$request->validate([
+			'file_surat' => 'required|file',
+		]);
+
+		DB::transaction(function () use ($request, $id) {
+			$family = RiwayatKKModel::findOrFail($id);
+
+			$filePath = $request->file_surat->store('public/surat');
+
+			$family->update([
+				'file_surat' => $filePath,
+			]);
+		});
+
+		return redirect()->route('history');
 	}
 
 	/**
 	 * Remove the specified resource from storage.
 	 */
-	public function destroy(string $id)
+	public function softDeleteAndAddToHistory(StoreFamilyHistoryRequest $storeFamilyHistoryRequest, $id_kk)
 	{
-		//
+		DB::transaction(function () use ($storeFamilyHistoryRequest, $id_kk) {
+			$kk = KKModel::findOrFail($id_kk);
+
+			$kk->delete();
+
+			RiwayatKKModel::create([
+				'id_kk' => $id_kk,
+				'tanggal' => Carbon::now(),
+				'status' => $storeFamilyHistoryRequest->status,
+			]);
+		});
+		return redirect()->route('history');
 	}
 }
