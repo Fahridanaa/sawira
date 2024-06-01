@@ -2,11 +2,9 @@
 @section('content')
     <section class="section">
         <div class="section-header">
-            <h1>Informasi Keluarga</h1>
+            <h1>Informasi Anggota Keluarga</h1>
         </div>
         <div class="section-body">
-            <h2 class="section-title">Kartu Keluarga</h2>
-            <p class="section-lead"><span>No. KK: </span>{{ $no_kk }}</p>
             <div class="row">
                 <div class="col-12">
                     <div class="card">
