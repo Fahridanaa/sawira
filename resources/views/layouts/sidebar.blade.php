@@ -32,9 +32,13 @@
             </li>
         @endif
         @if(\App\Helpers\SidebarHelper::hasAnyRole(['warga']))
-            <li class="{{ Request::is('family')  ? 'active' : '' }}">
+            <li class="{{ Request::is('family*')  ? 'active' : '' }}">
                 <a class="nav-link"
-                   href="/family"><i class="fas fa-address-card"></i> <span>Informasi Pribadi</span></a>
+                   href="/family"><i class="fas fa-address-card"></i> <span>Informasi Anggota</span></a>
+            </li>
+            <li class="{{ Request::is('informasi-keluarga*') ? 'active' : '' }}">
+                <a href="{{ route('informasi-keluarga.index') }}"
+                   class="nav-link"><i class="fas fa-money-bill"></i> <span>Informasi Keluarga</span></a>
             </li>
             <li class="{{ Request::is('letter*') ? 'active' : '' }}">
                 <a class="nav-link"
@@ -42,19 +46,36 @@
             </li>
         @endif
         @if(\App\Helpers\SidebarHelper::hasAnyRole(['amil']))
-            <li class="{{ Request::is('zakat*') ? 'active' : '' }}">
-                <a class="nav-link"
-                   href="{{ route('zakat.index') }}"><i class="fas fa-shopping-basket"></i>
-                    <span>Pembagian Zakat</span></a>
+            <li class="dropdown {{ Request::is('zakat*') ? 'active' : '' }}">
+                <a href="#"
+                   class="nav-link has-dropdown"><i class="fas fa-th-large"></i> <span>Pembagian Zakat</span></a>
+                <ul class="dropdown-menu">
+                    <li>
+                        <a class="nav-link"
+                           href="#">
+                            <span>Perhitungan AHP</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="nav-link"
+                           href="{{ route('saw') }}">
+                            <span>Perhitungan SAW</span>
+                        </a>
+                    </li>
+                    <li class="{{ Request::is('zakat*') ? 'active' : '' }}">
+                        <a class="nav-link"
+                           href="{{ route('zakat.index') }}">
+                            <span>Hasil Perhitungan</span>
+                        </a>
+                    </li>
+                </ul>
             </li>
         @endif
         <div class="flex-grow-1"></div>
-        @if(\App\Helpers\SidebarHelper::hasAnyRole(['warga']))
-            <li class="{{ Request::is('settings') ? 'active' : '' }}">
-                <a class="nav-link"
-                   href="{{ route('settings') }}"><i class="fas fa-cog"></i> <span>Pengaturan Akun</span></a>
-            </li>
-        @endif
+        <li class="{{ Request::is('settings') ? 'active' : '' }}">
+            <a class="nav-link"
+               href="{{ route('settings') }}"><i class="fas fa-cog"></i> <span>Pengaturan Akun</span></a>
+        </li>
         <li class="mb-2">
             <form id="logoutForm"
                   method="POST"
