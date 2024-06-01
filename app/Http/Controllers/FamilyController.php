@@ -9,6 +9,7 @@ use App\Http\Requests\StoreFamilyCardRequest;
 use App\Http\Requests\StoreFamilyHistoryRequest;
 use App\Models\CitizensModel;
 use App\Models\KKModel;
+use App\Models\KondisiKeluargaModel;
 use App\Models\RiwayatKKModel;
 use App\Models\UsersModel;
 use Carbon\Carbon;
@@ -80,6 +81,10 @@ class FamilyController extends Controller
 					'id_rt' => $rt,
 					'tanggal_masuk' => $tanggalHariIni
 				]));
+
+				KondisiKeluargaModel::create([
+					'id_kk' => $newFamily->id_kk,
+				]);
 
 				foreach ($citizens as $citizen) {
 					$citizenValidator = Validator::make(array_merge($citizen, [
