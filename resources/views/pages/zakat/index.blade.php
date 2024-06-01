@@ -9,13 +9,9 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-body">
-                            <div class="row justify-content-end">
-                                <div class="btn-group mr-2">
-                                    <button class="btn btn-primary"
-                                            data-toggle="modal"
-                                            data-target="#beras-input-modal"
-                                            id="beras">Masukkan Jumlah Beras
-                                    </button>
+                            <div class="row mb-3">
+                                <div class="col-12">
+                                    <span>Jumlah Beras yang dibutuhkan: </span>
                                 </div>
                             </div>
                             <ul class="nav nav-tabs"
@@ -61,5 +57,4 @@
             </div>
         </div>
     </section>
-    <x-modal.beras-input/>
 @endsection
