@@ -5,6 +5,7 @@ use App\Http\Controllers\CitizenController;
 use App\Http\Controllers\DependantDropdownController;
 use App\Http\Controllers\FamilyController;
 use App\Http\Controllers\SAWController;
+use App\Http\Controllers\SMARTController;
 use App\Http\Controllers\views\DashboardController;
 use App\Http\Controllers\views\FamilyInformationController;
 use App\Http\Controllers\views\FamilyMemberInformationController;
@@ -60,6 +61,11 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
 	Route::get('saw/next', [SAWController::class, 'nextStep'])->name('nextSawStep');
 	Route::get('saw/prev', [SAWController::class, 'previousStep'])->name('prevSawStep');
 	Route::get('saw/step/{step}', [SAWController::class, 'changeStep'])->name('changeSawStep');
+
+	Route::get('smart', [SMARTController::class, 'index'])->name('smart');
+	Route::get('smart/next', [SMARTController::class, 'nextStep'])->name('nextSmartStep');
+	Route::get('smart/prev', [SMARTController::class, 'previousStep'])->name('prevSmartStep');
+	Route::get('smart/step/{step}', [SMARTController::class, 'changeStep'])->name('changeSmartStep');
 
 	Route::get('cities', [DependantDropdownController::class, 'cities'])->name('cities')->middleware('can:manager');
 	Route::get('districts', [DependantDropdownController::class, 'districts'])->name('districts')->middleware('can:manager');

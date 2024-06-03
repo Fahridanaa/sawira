@@ -57,4 +57,9 @@ class ManageZakatController extends Controller
 	{
 		return $SAWRankingDataTable->render('components.tables.saw');
 	}
+
+	public function smart()
+	{
+		// dataTables here
+	}
 }

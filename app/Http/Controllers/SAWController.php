@@ -29,7 +29,7 @@ class SAWController extends Controller
 
 		$sawStep = $request->session()->get('sawStep');
 
-		if (!$request->session()->has('alternativeSPK')) {
+		if (!$request->session()->has('alternativeSawSPK')) {
 			$alternativeSPK = $this->zakatService->getAlternative();
 			$request->session()->put('alternativeSPK', $alternativeSPK);
 
@@ -48,7 +48,7 @@ class SAWController extends Controller
 			$sawRank = $this->SAWService->saw($weighted);
 			$request->session()->put('sawRank', $sawRank);
 		} else {
-			$alternativeSPK = $request->session()->get('alternativeSPK');
+			$alternativeSPK = $request->session()->get('alternativeSawSPK');
 			$alternativeSPKConvert = $request->session()->get('alternativeSPKConvert');
 			$minMax = $request->session()->get('minMax');
 			$normalized = $request->session()->get('normalized');

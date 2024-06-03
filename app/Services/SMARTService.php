@@ -55,11 +55,13 @@ class SMARTService
 					$result[$key][$k] = $v;
 					continue;
 				}
+				$denominator = ($max[$k] - $min[$k]) != 0 ? ($max[$k] - $min[$k]) : 1;
 				if ($k === 1 || $k === 3) {
-					$result[$key][$k] = round(($max[$k] - $v) / ($max[$k] - $min[$k]), 3);
+					$result[$key][$k] = round((($max[$k] - $v) / $denominator) * 100, 3);
 				} else {
-					$result[$key][$k] = round(($v - $min[$k]) / ($max[$k] - $min[$k]), 3);
+					$result[$key][$k] = round((($v - $min[$k]) / $denominator) * 100, 3);
 				}
+				$result[$key][$k] = $result[$key][$k] / 100;
 			}
 		}
 		return $result;
