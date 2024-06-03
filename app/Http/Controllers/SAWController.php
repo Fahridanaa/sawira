@@ -1,9 +1,8 @@
 <?php
 
-namespace App\Http\Controllers\views;
+namespace App\Http\Controllers;
 
 use App\Helpers\BobotConvertHelper;
-use App\Http\Controllers\Controller;
 use App\Models\KondisiKeluargaModel;
 use App\Services\SAWService;
 use Illuminate\Http\Request;

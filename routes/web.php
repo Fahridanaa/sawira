@@ -4,16 +4,16 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CitizenController;
 use App\Http\Controllers\DependantDropdownController;
 use App\Http\Controllers\FamilyController;
+use App\Http\Controllers\SAWController;
 use App\Http\Controllers\views\DashboardController;
+use App\Http\Controllers\views\FamilyInformationController;
 use App\Http\Controllers\views\FamilyMemberInformationController;
 use App\Http\Controllers\views\LetterController;
 use App\Http\Controllers\views\ManageCitizens;
 use App\Http\Controllers\views\ManageHistoryController;
+use App\Http\Controllers\views\ManageZakatController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\views\FamilyInformationController;
-use App\Http\Controllers\views\ManageZakatController;
-use App\Http\Controllers\views\SAWController;
 
 /*
 |--------------------------------------------------------------------------
