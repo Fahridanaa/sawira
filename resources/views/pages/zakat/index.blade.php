@@ -10,22 +10,21 @@
                     <div class="card">
                         <div class="card-body">
                             <div class="row mb-3">
-                                <div class="col-12">
-                                    <span>Jumlah Beras yang dibutuhkan: </span>
+                                <div class="col-12 d-flex justify-content-end">
+                                    <form action="{{ route('zakat.store') }}"
+                                          method="POST">
+                                        @csrf
+                                        <div class="btn-group">
+                                            <button type="submit"
+                                                    class="btn btn-primary">Hitung
+                                            </button>
+                                        </div>
+                                    </form>
                                 </div>
                             </div>
                             <ul class="nav nav-tabs"
                                 id="myTab"
                                 role="tablist">
-                                <li class="nav-item">
-                                    <a class="nav-link"
-                                       id="ahp-tab"
-                                       data-toggle="tab"
-                                       href="#ahp"
-                                       role="tab"
-                                       aria-controls="home"
-                                       aria-selected="false">AHP</a>
-                                </li>
                                 <li class="nav-item">
                                     <a class="nav-link active show"
                                        id="saw-tab"
@@ -35,20 +34,29 @@
                                        aria-controls="profile"
                                        aria-selected="true">SAW</a>
                                 </li>
+                                <li class="nav-item">
+                                    <a class="nav-link"
+                                       id="ahp-tab"
+                                       data-toggle="tab"
+                                       href="#ahp"
+                                       role="tab"
+                                       aria-controls="home"
+                                       aria-selected="false">AHP</a>
+                                </li>
                             </ul>
                             <div class="tab-content"
                                  id="myTabContent">
+                                <div class="tab-pane fade"
+                                     id="saw"
+                                     role="tabpanel"
+                                     aria-labelledby="saw-tab">
+                                    SAW
+                                </div>
                                 <div class="tab-pane fade"
                                      id="ahp"
                                      role="tabpanel"
                                      aria-labelledby="ahp-tab">
                                     AHP
-                                </div>
-                                <div class="tab-pane fade active show"
-                                     id="saw"
-                                     role="tabpanel"
-                                     aria-labelledby="saw-tab">
-                                    SAW
                                 </div>
                             </div>
                         </div>
@@ -58,3 +66,71 @@
         </div>
     </section>
 @endsection
+@push('js')
+    <script type="module">
+        $(document).ready(() => {
+            const tableIds = ['#saw-table'];
+
+            $('a[data-toggle="tab"]').on('click', function (e) {
+                e.preventDefault();
+                const target = $(this).attr("href");
+                const tabId = target.substring(1);
+
+                var url = new URL(window.location.href);
+                url.searchParams.set('activeTab', tabId);
+                window.history.pushState({}, '', url);
+
+                $(target).addClass("active show").siblings().removeClass("active show");
+                $('a[data-toggle="tab"]').removeClass('active show');
+                $(this).addClass('active show');
+
+                loadTabContent(tabId);
+            });
+
+            // Load content based on URL parameter on page load
+            function setActiveTabAndUpdateContent(tabName) {
+                $('a[data-toggle="tab"][href="#' + tabName + '"]').addClass('active show');
+                $('#' + tabName).addClass('active show').siblings().removeClass('active show');
+                loadTabContent(tabName);
+            }
+
+            const activeTab = new URL(window.location.href).searchParams.get('activeTab');
+            if (activeTab) {
+                setActiveTabAndUpdateContent(activeTab);
+            } else {
+                setActiveTabAndUpdateContent('saw');
+            }
+
+            function loadTabContent(tabId) {
+
+                const urlBase = '/tab-content/';
+
+                const url = urlBase + tabId;
+
+                $.ajax({
+                    url: url,
+                    method: 'GET',
+                    success: function (response) {
+                        $('#' + tabId).html(response);
+                        if (!$.fn.DataTable.isDataTable('#' + tabId + ' table')) {
+                            $('#' + tabId + ' table').DataTable();
+                        }
+
+                        destroyTable(tableIds);
+                    },
+                    error: function (xhr) {
+                        console.log("Error loading tab content:", xhr);
+                    }
+                });
+            }
+
+            function destroyTable(tableIds) {
+                tableIds.forEach(function (id) {
+                    if ($.fn.dataTable.isDataTable(id)) {
+                        $(id).DataTable().destroy();
+                    }
+                });
+            }
+        });
+    </script>
+@endpush
