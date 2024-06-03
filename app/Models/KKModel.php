@@ -81,7 +81,7 @@ class KKModel extends Model
 		return $this->hasMany(CitizensModel::class, 'id_kk', 'id_kk');
 	}
 
-	public function familyCondition()
+	public function kondisiKeluarga()
 	{
 		return $this->hasOne(KondisiKeluargaModel::class, 'id_kk', 'id_kk');
 	}

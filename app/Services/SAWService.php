@@ -21,7 +21,7 @@ class SAWService
 					continue;
 				}
 
-				if ($k === "no_kk" || $k === "nama_lengkap") {
+				if ($k === "no_kk" || $k === "nama_lengkap" || $k === "id_kondisi_keluarga") {
 					continue;
 				}
 
@@ -42,7 +42,7 @@ class SAWService
 		$result = [];
 		foreach ($data as $key => $value) {
 			foreach ($value as $k => $v) {
-				if ($k === "no_kk" || $k === "nama_lengkap") {
+				if ($k === "no_kk" || $k === "nama_lengkap" || $k === "id_kondisi_keluarga") {
 					$result[$key][$k] = $v;
 					continue;
 				}
@@ -63,7 +63,7 @@ class SAWService
 
 		foreach ($data as $key => $value) {
 			foreach ($value as $k => $v) {
-				if ($k === "no_kk" || $k === "nama_lengkap") {
+				if ($k === "no_kk" || $k === "nama_lengkap" || $k === "id_kondisi_keluarga") {
 					$result[$key][$k] = $v;
 					continue;
 				}
@@ -79,13 +79,27 @@ class SAWService
 		$saw = [];
 		foreach ($data as $key => $value) {
 			foreach ($value as $k => $v) {
-				if ($k === "no_kk" || $k === "nama_lengkap") {
+				if ($k === "no_kk" || $k === "nama_lengkap" || $k === "id_kondisi_keluarga") {
 					$saw[$key][$k] = $v;
 				}
 			}
 			$saw[$key]['sum'] = array_sum($value);
 		}
-		arsort($saw);
+
+		uasort($saw, function ($a, $b) {
+			return $b['sum'] <=> $a['sum'];
+		});
+		
+		$saw = array_values($saw);
+
 		return $saw;
+	}
+
+	public function fullCalculatedSaw($data)
+	{
+		$minMax = $this->minMax($data);
+		$normalized = $this->normalized($data, $minMax);
+		$weighted = $this->weighted($normalized);
+		return $this->saw($weighted);
 	}
 }
