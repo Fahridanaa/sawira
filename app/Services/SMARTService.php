@@ -103,7 +103,7 @@ class SMARTService
 		return $smart;
 	}
 
-	public function fullCalculateSmart($data)
+	public function fullCalculatedSmart($data)
 	{
 		$min = $this->min($data);
 		$max = $this->max($data);

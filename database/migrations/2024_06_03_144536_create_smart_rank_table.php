@@ -10,10 +10,10 @@ return new class extends Migration {
 	 */
 	public function up(): void
 	{
-		Schema::create('saw_rank', function (Blueprint $table) {
-			$table->id('id_saw_rank');
+		Schema::create('smart_rank', function (Blueprint $table) {
+			$table->id('id_smart_rank');
 			$table->unsignedBigInteger('id_kondisi_keluarga')->index();
-			$table->decimal('nilai_saw', 50, 10);
+			$table->decimal('nilai_smart', 50, 10);
 			$table->timestamps();
 
 			$table->foreign('id_kondisi_keluarga')->references('id_kondisi_keluarga')->on('kondisi_keluarga')->onDelete('cascade');
@@ -25,6 +25,6 @@ return new class extends Migration {
 	 */
 	public function down(): void
 	{
-		Schema::dropIfExists('saw_rank');
+		Schema::dropIfExists('smart_rank');
 	}
 };
