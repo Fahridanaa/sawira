@@ -1,7 +1,7 @@
 @props(['sawRank' => []])
 
 <div class="col-12">
-    <h5>Normalisasi</h5>
+    <h5>Hasil Perangkingan</h5>
     <div class="table-responsive">
         <table class="table table-bordered">
             <thead>
