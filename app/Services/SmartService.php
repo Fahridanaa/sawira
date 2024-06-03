@@ -1,66 +1,113 @@
 <?php
-// app/Services/SMARTService.php
 
 namespace App\Services;
 
-use App\Models\Alternative;
-use App\Models\Criteria;
-
 class SMARTService
 {
-    private $weights = [
-        0.2,  // Jumlah Penghasilan
-        0.25, // Jumlah Tanggungan
-        0.15, // Kondisi Tempat Tinggal
-        0.05, // Jumlah Hutang
-        0.35  // Jumlah Pengeluaran
-    ];
+	private $weights = [
+		0.2,
+		0.25,
+		0.15,
+		0.05,
+		0.35
+	];
 
-    private $types = [
-        'Cost', // Jumlah Penghasilan
-        'Benefit', // Jumlah Tanggungan
-        'Cost',    // Kondisi Tempat Tinggal
-        'Benefit', // Jumlah Hutang
-        'Benefit'  // Jumlah Pengeluaran
-    ];
+	public function min($data)
+	{
+		$min = [];
+		foreach ($data as $key => $value) {
+			foreach ($value as $k => $v) {
+				if ($k === "no_kk" || $k === "nama_lengkap" || $k === "id_kondisi_keluarga" || !isset($v)) {
+					continue;
+				}
 
-    public function calculateScores()
-    {
-        $alternatives = Alternative::with('criteria')->get();
-        $criteria = Criteria::all();
+				if (!isset($min[$k]) || $v < $min[$k]) {
+					$min[$k] = $v;
+				}
+			}
+		}
+		return $min;
+	}
 
-        // Hitung nilai SMART
-        $alternativeScores = [];
-        foreach ($alternatives as $alternative) {
-            $score = 0;
-            foreach ($alternative->criteria as $index => $criterion) {
-                $weight = $this->weights[$index];
-                $value = $criterion->pivot->value;
-                if ($this->types[$index] === 'Cost') {
-                    $value = 1 / $value; // Asumsi nilai Cost dibalik
-                }
-                $score += $value * $weight;
-            }
-            $alternativeScores[] = ['alternative' => $alternative, 'score' => $score];
-        }
+	public function max($data)
+	{
+		$max = [];
+		foreach ($data as $key => $value) {
+			foreach ($value as $k => $v) {
+				if ($k === "no_kk" || $k === "nama_lengkap" || $k === "id_kondisi_keluarga" || !isset($v)) {
+					continue;
+				}
 
-        // Urutkan berdasarkan score
-        usort($alternativeScores, function($a, $b) {
-            return $b['score'] <=> $a['score'];
-        });
+				if (!isset($max[$k]) || $v > $max[$k]) {
+					$max[$k] = $v;
+				}
+			}
+		}
+		return $max;
+	}
 
-        return $alternativeScores;
-    }
+	public function normalize($data, $min, $max)
+	{
+		$result = [];
+		foreach ($data as $key => $value) {
+			foreach ($value as $k => $v) {
+				if ($k === "no_kk" || $k === "nama_lengkap" || $k === "id_kondisi_keluarga" || !isset($v)) {
+					$result[$key][$k] = $v;
+					continue;
+				}
+				if ($k === 1 || $k === 3) {
+					$result[$key][$k] = round(($max[$k] - $v) / ($max[$k] - $min[$k]), 3);
+				} else {
+					$result[$key][$k] = round(($v - $min[$k]) / ($max[$k] - $min[$k]), 3);
+				}
+			}
+		}
+		return $result;
+	}
 
-    public function storeAlternative($name, $criteriaValues)
-    {
-        $alternative = Alternative::create(['name' => $name]);
+	public function weighted($data)
+	{
+		$result = [];
+		foreach ($data as $key => $value) {
+			foreach ($value as $k => $v) {
+				if ($k === "no_kk" || $k === "nama_lengkap" || $k === "id_kondisi_keluarga") {
+					$result[$key][$k] = $v;
+					continue;
+				}
+				$result[$key][$k] = round($v * $this->weights[$k], 3);
+			}
+		}
+		return $result;
+	}
 
-        foreach ($criteriaValues as $criteriaId => $value) {
-            $alternative->criteria()->attach($criteriaId, ['value' => $value]);
-        }
+	public function smartTotalScore($data)
+	{
+		$smart = [];
+		foreach ($data as $key => $value) {
+			foreach ($value as $k => $v) {
+				if ($k === "no_kk" || $k === "nama_lengkap" || $k === "id_kondisi_keluarga") {
+					$smart[$key][$k] = $v;
+				}
+			}
+			$smart[$key]['sum'] = array_sum($value);
+		}
 
-        return $alternative;
-    }
+		uasort($smart, function ($a, $b) {
+			return $b['sum'] <=> $a['sum'];
+		});
+
+		$smart = array_values($smart);
+
+		return $smart;
+	}
+
+	public function fullCalculateSmart($data)
+	{
+		$min = $this->min($data);
+		$max = $this->max($data);
+		$normalized = $this->normalize($data, $min, $max);
+		$weighted = $this->weighted($normalized);
+		return $this->smartTotalScore($weighted);
+	}
 }
 
