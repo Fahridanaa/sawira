@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\views\FamilyInformationController;
 use App\Http\Controllers\views\ManageZakatController;
+use App\Http\Controllers\views\SAWController;
 
 /*
 |--------------------------------------------------------------------------
@@ -41,6 +42,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
 		Route::delete('family-heads/{family_head}', [FamilyController::class, 'softDeleteAndAddToHistory'])->name('family-heads.destroy');
 		Route::resource('citizens', CitizenController::class);
 		Route::get('citizens-history', [ManageHistoryController::class, 'citizen'])->name('citizens-history.index');
+		Route::get('saw', [ManageZakatController::class, 'saw'])->name('saw.index');
 		Route::get('family-history', [ManageHistoryController::class, 'family'])->name('family-history.index');
 		Route::get('family-history/download/{id}', [ManageHistoryController::class, 'download'])->name('family-history.download');
 	});
@@ -54,10 +56,10 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
 	Route::put('/settings/username', [AuthController::class, 'updateUsername'])->name('auth.update.username');
 
 	Route::resource('/zakat', ManageZakatController::class);
-	Route::get('saw', [ManageZakatController::class, 'saw'])->name('saw');
-	Route::get('saw/next', [ManageZakatController::class, 'nextStep'])->name('nextStep');
-	Route::get('saw/prev', [ManageZakatController::class, 'previousStep'])->name('prevStep');
-	Route::get('saw/step/{step}', [ManageZakatController::class, 'changeStep'])->name('changeStep');
+	Route::get('saw', [SAWController::class, 'index'])->name('saw');
+	Route::get('saw/next', [SAWController::class, 'nextStep'])->name('nextSawStep');
+	Route::get('saw/prev', [SAWController::class, 'previousStep'])->name('prevSawStep');
+	Route::get('saw/step/{step}', [SAWController::class, 'changeStep'])->name('changeSawStep');
 
 	Route::get('cities', [DependantDropdownController::class, 'cities'])->name('cities')->middleware('can:manager');
 	Route::get('districts', [DependantDropdownController::class, 'districts'])->name('districts')->middleware('can:manager');

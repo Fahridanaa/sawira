@@ -45,39 +45,39 @@
                                 <ul class="pagination justify-content-end">
                                     <li class="page-item">
                                         <a class="page-link"
-                                           href="{{ route('prevStep') }}">Previous</a>
+                                           href="{{ route('prevSawStep') }}">Previous</a>
                                     </li>
                                     <li class="page-item {{ $step == 1 ? 'active' : '' }}">
                                         <a class="page-link"
-                                           href="{{ route('changeStep', 1) }}">1</a>
+                                           href="{{ route('changeSawStep', 1) }}">1</a>
                                     </li>
                                     <li class="page-item {{ $step == 2 ? 'active' : '' }}">
                                         <a class="page-link"
-                                           href="{{ route('changeStep', 2) }}">2</a>
+                                           href="{{ route('changeSawStep', 2) }}">2</a>
                                     </li>
                                     <li class="page-item {{ $step == 3 ? 'active' : '' }}">
                                         <a class="page-link"
-                                           href="{{ route('changeStep', 3) }}">3</a>
+                                           href="{{ route('changeSawStep', 3) }}">3</a>
                                     </li>
                                     <li class="page-item {{ $step == 4 ? 'active' : '' }}">
                                         <a class="page-link"
-                                           href="{{ route('changeStep', 4) }}">4</a>
+                                           href="{{ route('changeSawStep', 4) }}">4</a>
                                     </li>
                                     <li class="page-item {{ $step == 5 ? 'active' : '' }}">
                                         <a class="page-link"
-                                           href="{{ route('changeStep', 5) }}">5</a>
+                                           href="{{ route('changeSawStep', 5) }}">5</a>
                                     </li>
                                     <li class="page-item {{ $step == 6 ? 'active' : '' }}">
                                         <a class="page-link"
-                                           href="{{ route('changeStep', 6) }}">6</a>
+                                           href="{{ route('changeSawStep', 6) }}">6</a>
                                     </li>
                                     <li class="page-item {{ $step == 7 ? 'active' : '' }}">
                                         <a class="page-link"
-                                           href="{{ route('changeStep', 7) }}">7</a>
+                                           href="{{ route('changeSawStep', 7) }}">7</a>
                                     </li>
                                     <li class="page-item">
                                         <a class="page-link"
-                                           href="{{ route('nextStep') }}">Next</a>
+                                           href="{{ route('nextSawStep') }}">Next</a>
                                     </li>
                                 </ul>
                             </nav>
@@ -88,39 +88,3 @@
         </div>
     </section>
 @endsection
-@push('js')
-    <script type="module">
-        {{--        const tableIds = ['#alternativespk-table'];--}}
-        $(document).ready(() => {
-            {{--            function destroyTable(tableIds) {--}}
-            {{--                tableIds.forEach(function (id) {--}}
-            {{--                    if ($.fn.dataTable.isDataTable(id)) {--}}
-            {{--                        $(id).DataTable().destroy();--}}
-            {{--                    }--}}
-            {{--                });--}}
-            {{--            }--}}
-
-            {{--            function loadComponent(id) {--}}
-            {{--                const baseUrl = 'saw/';--}}
-
-            {{--                const url = baseUrl + id;--}}
-
-            {{--                $.ajax({--}}
-            {{--                    url: url,--}}
-            {{--                    method: 'GET',--}}
-            {{--                    success: function (response) {--}}
-            {{--                        $('#' + id).html(response);--}}
-            {{--                        if ($.fn.DataTable.isDataTable('#' + id + ' table')) {--}}
-            {{--                            $('#' + id + ' table').DataTable();--}}
-            {{--                        }--}}
-
-            {{--                        destroyTable(tableIds);--}}
-            {{--                    },--}}
-            {{--                    error: function (xhr) {--}}
-            {{--                        console.log("Error loading tab content:", xhr);--}}
-            {{--                    }--}}
-            {{--                });--}}
-            {{--            }--}}
-        });
-    </script>
-@endpush
