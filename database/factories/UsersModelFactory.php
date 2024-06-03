@@ -25,6 +25,7 @@ class UsersModelFactory extends Factory
 		return [
 			'username' => $this->faker->userName(),
 			'password' => $this->faker->password(),
+			'role' => "warga",
 		];
 	}
 }

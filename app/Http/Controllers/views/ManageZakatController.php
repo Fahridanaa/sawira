@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers\views;
 
-use App\DataTables\AlternativeSPKDataTable;
+use App\DataTables\SAWRankingDataTable;
+use App\Helpers\BobotConvertHelper;
 use App\Http\Controllers\Controller;
 use App\Models\KondisiKeluargaModel;
+use App\Models\SAWRankModel;
 use App\Services\SAWService;
-use Illuminate\Http\Request;
-use App\Helpers\BobotConvertHelper;
+use Illuminate\Support\Facades\DB;
 
 class ManageZakatController extends Controller
 {
@@ -20,88 +21,40 @@ class ManageZakatController extends Controller
 		$this->bobotConvertHelper = new BobotConvertHelper();
 	}
 
-	public function index(AlternativeSPKDataTable $alternativeSPKDataTable)
+	public function index()
 	{
 		return view('pages.zakat.index');
 	}
 
-	public function saw(Request $request)
+	public function store()
 	{
-		if (!$request->session()->has('step')) {
-			$request->session()->put('step', 1);
-		}
-
+		DB::table('saw_rank')->truncate();
 		$kkData = KondisiKeluargaModel::with(['kk' => function ($query) {
 			$query->select('id_kk', 'no_kk');
-		}])->take(10)->get();
+		}])->get();
 
 		$citizensData = KondisiKeluargaModel::with(['kk.citizens' => function ($query) {
 			$query->select('id_kk', 'nama_lengkap')
-				->where('id_hubungan', 1)
-				->first();
-		}])->take(10)->get();
+				->where('id_hubungan', 1);
+		}])->get();
 
-		$alternativeSPK = $kkData->merge($citizensData);
-
+		$alternativeSPK = $kkData->merge($citizensData)->toArray();
 		$alternativeSPKConvert = $this->bobotConvertHelper->CriteriaConvert($alternativeSPK);
+		$sawResult = $this->SAWService->fullCalculatedSaw($alternativeSPKConvert);
+		DB::transaction(function () use ($sawResult) {
+			foreach ($sawResult as $key => $result) {
+				SAWRankModel::create([
+					'id_kondisi_keluarga' => $result['id_kondisi_keluarga'],
+					'nilai_saw' => $result['sum']
+				]);
+			}
+		}, 3);
 
-		$minMax = $this->SAWService->minMax($alternativeSPKConvert);
-
-		$normalized = $this->SAWService->normalized($alternativeSPKConvert, $minMax);
-
-		$weighted = $this->SAWService->weighted($normalized);
-
-		$sawRank = $this->SAWService->saw($weighted);
-
-		$step = $request->session()->get('step');
-
-		return view('pages.zakat.saw.index', [
-			'step' => $step,
-			'alternativeSPK' => $alternativeSPK,
-			'alternativeSPKConvert' => $alternativeSPKConvert,
-			'minMax' => $minMax,
-			'normalized' => $normalized,
-			'weighted' => $weighted,
-			'sawRank' => $sawRank
-		]);
+		return redirect()->route('zakat.index');
 	}
 
-	public function changeStep(Request $request, $step)
+	public function saw(SAWRankingDataTable $SAWRankingDataTable)
 	{
-		// Save the new step in the session
-		$request->session()->put('step', $step);
-
-		return redirect()->route('saw');
+		return $SAWRankingDataTable->render('components.tables.saw');
 	}
-
-	public function nextStep(Request $request)
-	{
-		$step = $request->session()->get('step', 1);
-
-		// Increment the step
-		$step++;
-
-		// Save the new step in the session
-		$request->session()->put('step', $step);
-
-		return redirect()->route('saw');
-	}
-
-	public function previousStep(Request $request)
-	{
-		$step = $request->session()->get('step', 1);
-
-		// Decrement the step
-		$step--;
-
-		// Save the new step in the session
-		$request->session()->put('step', $step);
-
-		return redirect()->route('saw');
-	}
-
-//	public function alternative(AlternativeSPKDataTable $alternativeSPKDataTable)
-//	{
-//		return $alternativeSPKDataTable->render('components.tables.alternative-spk');
-//	}
 }

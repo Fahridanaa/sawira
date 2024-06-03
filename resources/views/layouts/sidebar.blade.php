@@ -46,26 +46,26 @@
             </li>
         @endif
         @if(\App\Helpers\SidebarHelper::hasAnyRole(['amil']))
-            <li class="dropdown {{ Request::is('zakat*') ? 'active' : '' }}">
+            <li class="dropdown {{ Request::is('zakat*') || Request::is('saw') ? 'active' : '' }}">
                 <a href="#"
                    class="nav-link has-dropdown"><i class="fas fa-th-large"></i> <span>Pembagian Zakat</span></a>
                 <ul class="dropdown-menu">
-                    <li>
+                    <li class="{{ Request::is('zakat*') ? 'active' : '' }}">
                         <a class="nav-link"
-                           href="#">
-                            <span>Perhitungan AHP</span>
+                           href="{{ route('zakat.index') }}">
+                            <span>Hasil Perhitungan</span>
                         </a>
                     </li>
-                    <li>
+                    <li class="{{ Request::is('saw') ? 'active' : '' }}">
                         <a class="nav-link"
                            href="{{ route('saw') }}">
                             <span>Perhitungan SAW</span>
                         </a>
                     </li>
-                    <li class="{{ Request::is('zakat*') ? 'active' : '' }}">
+                    <li>
                         <a class="nav-link"
-                           href="{{ route('zakat.index') }}">
-                            <span>Hasil Perhitungan</span>
+                           href="#">
+                            <span>Perhitungan AHP</span>
                         </a>
                     </li>
                 </ul>
