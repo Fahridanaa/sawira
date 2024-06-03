@@ -62,10 +62,10 @@
                             <span>Perhitungan SAW</span>
                         </a>
                     </li>
-                    <li>
+                    <li class="{{ Request::is('smart') ? 'active' : '' }}">
                         <a class="nav-link"
-                           href="#">
-                            <span>Perhitungan AHP</span>
+                           href="{{ route('smart') }}">
+                            <span>Perhitungan Smart</span>
                         </a>
                     </li>
                 </ul>

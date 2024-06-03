@@ -6,7 +6,7 @@ use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 
-class spkSAWRanking extends Component
+class spkSmartAlternativeConversion extends Component
 {
 	/**
 	 * Create a new component instance.
@@ -21,6 +21,6 @@ class spkSAWRanking extends Component
 	 */
 	public function render(): View|Closure|string
 	{
-		return view('components.pagination.spk-saw-ranking');
+		return view('components.pagination.spk-smart-alternative-conversion');
 	}
 }

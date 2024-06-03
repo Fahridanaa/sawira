@@ -1,4 +1,4 @@
-@props(['sawRank' => []])
+@props(['rank' => []])
 
 <div class="col-12">
     <h5>Hasil Perangkingan</h5>
@@ -13,7 +13,7 @@
             </tr>
             </thead>
             <tbody>
-            @foreach($sawRank as $key => $value)
+            @foreach($rank as $key => $value)
                 <tr>
                     <td>{{ $key+1 }}</td>
                     <td>{{ $value["no_kk"] }}</td>

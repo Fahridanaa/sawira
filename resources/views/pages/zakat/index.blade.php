@@ -36,12 +36,12 @@
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link"
-                                       id="ahp-tab"
+                                       id="smart-tab"
                                        data-toggle="tab"
-                                       href="#ahp"
+                                       href="#smart"
                                        role="tab"
                                        aria-controls="home"
-                                       aria-selected="false">AHP</a>
+                                       aria-selected="false">SMART</a>
                                 </li>
                             </ul>
                             <div class="tab-content"
@@ -50,13 +50,11 @@
                                      id="saw"
                                      role="tabpanel"
                                      aria-labelledby="saw-tab">
-                                    SAW
                                 </div>
                                 <div class="tab-pane fade"
-                                     id="ahp"
+                                     id="smart"
                                      role="tabpanel"
-                                     aria-labelledby="ahp-tab">
-                                    AHP
+                                     aria-labelledby="smart-tab">
                                 </div>
                             </div>
                         </div>
@@ -69,7 +67,7 @@
 @push('js')
     <script type="module">
         $(document).ready(() => {
-            const tableIds = ['#saw-table'];
+            const tableIds = ['#saw-table', '#smart-table'];
 
             $('a[data-toggle="tab"]').on('click', function (e) {
                 e.preventDefault();

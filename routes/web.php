@@ -4,16 +4,17 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CitizenController;
 use App\Http\Controllers\DependantDropdownController;
 use App\Http\Controllers\FamilyController;
+use App\Http\Controllers\SAWController;
+use App\Http\Controllers\SMARTController;
 use App\Http\Controllers\views\DashboardController;
+use App\Http\Controllers\views\FamilyInformationController;
 use App\Http\Controllers\views\FamilyMemberInformationController;
 use App\Http\Controllers\views\LetterController;
 use App\Http\Controllers\views\ManageCitizens;
 use App\Http\Controllers\views\ManageHistoryController;
+use App\Http\Controllers\views\ManageZakatController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\views\FamilyInformationController;
-use App\Http\Controllers\views\ManageZakatController;
-use App\Http\Controllers\views\SAWController;
 
 /*
 |--------------------------------------------------------------------------
@@ -43,6 +44,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
 		Route::resource('citizens', CitizenController::class);
 		Route::get('citizens-history', [ManageHistoryController::class, 'citizen'])->name('citizens-history.index');
 		Route::get('saw', [ManageZakatController::class, 'saw'])->name('saw.index');
+		Route::get('smart', [ManageZakatController::class, 'smart'])->name('smart.index');
 		Route::get('family-history', [ManageHistoryController::class, 'family'])->name('family-history.index');
 		Route::get('family-history/download/{id}', [ManageHistoryController::class, 'download'])->name('family-history.download');
 	});
@@ -60,6 +62,11 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
 	Route::get('saw/next', [SAWController::class, 'nextStep'])->name('nextSawStep');
 	Route::get('saw/prev', [SAWController::class, 'previousStep'])->name('prevSawStep');
 	Route::get('saw/step/{step}', [SAWController::class, 'changeStep'])->name('changeSawStep');
+
+	Route::get('smart', [SMARTController::class, 'index'])->name('smart');
+	Route::get('smart/next', [SMARTController::class, 'nextStep'])->name('nextSmartStep');
+	Route::get('smart/prev', [SMARTController::class, 'previousStep'])->name('prevSmartStep');
+	Route::get('smart/step/{step}', [SMARTController::class, 'changeStep'])->name('changeSmartStep');
 
 	Route::get('cities', [DependantDropdownController::class, 'cities'])->name('cities')->middleware('can:manager');
 	Route::get('districts', [DependantDropdownController::class, 'districts'])->name('districts')->middleware('can:manager');

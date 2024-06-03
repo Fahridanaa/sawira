@@ -2,14 +2,18 @@
 
 namespace App\DataTables;
 
-use App\Models\SAWRankModel;
+use App\Models\SMARTRanking;
+use App\Models\SMARTRankModel;
 use Illuminate\Database\Eloquent\Builder as QueryBuilder;
 use Yajra\DataTables\EloquentDataTable;
 use Yajra\DataTables\Html\Builder as HtmlBuilder;
+use Yajra\DataTables\Html\Button;
 use Yajra\DataTables\Html\Column;
+use Yajra\DataTables\Html\Editor\Editor;
+use Yajra\DataTables\Html\Editor\Fields;
 use Yajra\DataTables\Services\DataTable;
 
-class SAWRankingDataTable extends DataTable
+class SMARTRankingDataTable extends DataTable
 {
 	/**
 	 * Build the DataTable class.
@@ -25,22 +29,22 @@ class SAWRankingDataTable extends DataTable
 			->addColumn('kondisiKeluarga.kk.citizens', function ($row) {
 				return $row->kondisiKeluarga->kk->citizens->where('id_hubungan', 1)->first()->nama_lengkap;
 			})
-			->addColumn('nilai_saw', function ($row) {
-				return round($row->nilai_saw, 3);
+			->addColumn('nilai_smart', function ($row) {
+				return round($row->nilai_smart, 3);
 			})
-			->addColumn('id_saw_rank', function ($row) {
-				return $row->id_saw_rank;
+			->addColumn('id_smart_rank', function ($row) {
+				return $row->id_smart_rank;
 			});
 	}
 
 	/**
 	 * Get the query source of dataTable.
 	 */
-	public function query(SAWRankModel $model): QueryBuilder
+	public function query(SMARTRankModel $model): QueryBuilder
 	{
 		return $model->newQuery()
 			->with(['kondisiKeluarga.kk.citizens'])
-			->select('saw_rank.*');
+			->select('smart_rank.*');
 	}
 
 	/**
@@ -49,7 +53,7 @@ class SAWRankingDataTable extends DataTable
 	public function html(): HtmlBuilder
 	{
 		return $this->builder()
-			->setTableId('saw-table')
+			->setTableId('smart-table')
 			->columns($this->getColumns())
 			->minifiedAjax()
 			//->dom('Bfrtip')
@@ -68,10 +72,10 @@ class SAWRankingDataTable extends DataTable
 	public function getColumns(): array
 	{
 		return [
-			Column::make('id_saw_rank')->title('Ranking'),
+			Column::make('id_smart_rank')->title('Ranking'),
 			Column::make('kondisiKeluarga.kk.no_kk')->title('No. KK'),
 			Column::make('kondisiKeluarga.kk.citizens')->title('Kepala Keluarga'),
-			Column::make('nilai_saw'),
+			Column::make('nilai_smart'),
 		];
 	}
 
@@ -80,6 +84,6 @@ class SAWRankingDataTable extends DataTable
 	 */
 	protected function filename(): string
 	{
-		return 'SAWRanking_' . date('YmdHis');
+		return 'SMARTRanking_' . date('YmdHis');
 	}
 }

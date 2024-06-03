@@ -1,20 +1,22 @@
 <?php
 
-namespace App\Http\Controllers\views;
+namespace App\Http\Controllers;
 
 use App\Helpers\BobotConvertHelper;
-use App\Http\Controllers\Controller;
 use App\Models\KondisiKeluargaModel;
 use App\Services\SAWService;
+use App\Services\ZakatService;
 use Illuminate\Http\Request;
 
 class SAWController extends Controller
 {
+	protected ZakatService $zakatService;
 	protected SAWService $SAWService;
 	protected BobotConvertHelper $bobotConvertHelper;
 
-	public function __construct(SAWService $SAWService)
+	public function __construct(SAWService $SAWService, ZakatService $zakatService)
 	{
+		$this->zakatService = $zakatService;
 		$this->SAWService = $SAWService;
 		$this->bobotConvertHelper = new BobotConvertHelper();
 	}
@@ -27,17 +29,8 @@ class SAWController extends Controller
 
 		$sawStep = $request->session()->get('sawStep');
 
-		if (!$request->session()->has('alternativeSPK')) {
-			$kkData = KondisiKeluargaModel::with(['kk' => function ($query) {
-				$query->select('id_kk', 'no_kk');
-			}])->take(10)->get();
-
-			$citizensData = KondisiKeluargaModel::with(['kk.citizens' => function ($query) {
-				$query->select('id_kk', 'nama_lengkap')
-					->where('id_hubungan', 1);
-			}])->take(10)->get();
-
-			$alternativeSPK = $kkData->merge($citizensData)->toArray();
+		if (!$request->session()->has('alternativeSawSPK')) {
+			$alternativeSPK = $this->zakatService->getAlternative();
 			$request->session()->put('alternativeSPK', $alternativeSPK);
 
 			$alternativeSPKConvert = $this->bobotConvertHelper->CriteriaConvert($alternativeSPK);
@@ -55,7 +48,7 @@ class SAWController extends Controller
 			$sawRank = $this->SAWService->saw($weighted);
 			$request->session()->put('sawRank', $sawRank);
 		} else {
-			$alternativeSPK = $request->session()->get('alternativeSPK');
+			$alternativeSPK = $request->session()->get('alternativeSawSPK');
 			$alternativeSPKConvert = $request->session()->get('alternativeSPKConvert');
 			$minMax = $request->session()->get('minMax');
 			$normalized = $request->session()->get('normalized');
