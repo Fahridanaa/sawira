@@ -37,12 +37,22 @@ class ManageZakatController extends Controller
 		DB::table('smart_rank')->truncate();
 		$kkData = KondisiKeluargaModel::with(['kk' => function ($query) {
 			$query->select('id_kk', 'no_kk');
-		}])->get();
+		}])->whereNotNull('jumlah_penghasilan')
+			->whereNotNull('jumlah_pengeluaran')
+			->whereNotNull('jumlah_tanggungan')
+			->whereNotNull('jumlah_hutang')
+			->whereNotNull('kondisi_tempat_tinggal')
+			->get();
 
 		$citizensData = KondisiKeluargaModel::with(['kk.citizens' => function ($query) {
 			$query->select('id_kk', 'nama_lengkap')
 				->where('id_hubungan', 1);
-		}])->get();
+		}])->whereNotNull('jumlah_penghasilan')
+			->whereNotNull('jumlah_pengeluaran')
+			->whereNotNull('jumlah_tanggungan')
+			->whereNotNull('jumlah_hutang')
+			->whereNotNull('kondisi_tempat_tinggal')
+			->get();
 
 		$alternativeSPK = $kkData->merge($citizensData)->toArray();
 		$alternativeSPKConvert = $this->bobotConvertHelper->CriteriaConvert($alternativeSPK);

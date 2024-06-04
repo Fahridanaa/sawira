@@ -39,7 +39,7 @@
                                 @elseif($step == 6)
                                     <x-pagination.spk-alternative-weighted :weighted="$weighted"/>
                                 @elseif($step == 7)
-                                    <x-pagination.spk-saw-ranking :rank="$smartRank"/>
+                                    <x-pagination.spk-ranking :rank="$smartRank"/>
                                 @endif
                             </div>
                             <nav aria-label="Page navigation example">

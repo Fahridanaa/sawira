@@ -22,9 +22,7 @@
                             <h4>Masukkan Data Keluarga</h4>
                         </div>
                         <div class="card-body">
-                            <form method="post"
-                                  action="{{ route('family-heads.store') }}"
-                                  id="family-form">
+                            <form id="family-form">
                                 @csrf
                                 <div class="row">
                                     <div class="col-6">
@@ -35,6 +33,9 @@
                                                    name="no_kk"
                                                    id="no_kk"
                                                    required>
+                                            <div class="invalid-feedback"
+                                                 id="no_kk-error-message-feedback">
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -59,6 +60,8 @@
                                                     @endforeach
                                                 @endif
                                             </select>
+                                            <div class="invalid-feedback">
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="col-6">
@@ -69,6 +72,8 @@
                                                     id="id_kabupaten"
                                                     required>
                                             </select>
+                                            <div class="invalid-feedback">
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -81,6 +86,8 @@
                                                     id="id_kecamatan"
                                                     required>
                                             </select>
+                                            <div class="invalid-feedback">
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="col-6">
@@ -91,6 +98,8 @@
                                                     id="id_kelurahan"
                                                     required>
                                             </select>
+                                            <div class="invalid-feedback">
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -99,10 +108,12 @@
                                         <div class="form-group">
                                             <label for="kode_pos">Kode Pos</label>
                                             <input type="text"
-                                                   class="form-control"
+                                                   class="form-control @error('kode_pos') is-invalid @enderror"
                                                    name="kode_pos"
                                                    id="kode_pos"
                                                    required>
+                                            <div class="invalid-feedback">
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -115,6 +126,8 @@
                                                    name="alamat"
                                                    id="alamat"
                                                    required>
+                                            <div class="invalid-feedback">
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -140,9 +153,6 @@
 @push('js')
     <script type="module">
         $(document).ready(() => {
-            let familyCardId;
-            let ajaxRequestPromises = [];
-
             function onChangeSelect(url, id, name) {
                 $.ajax({
                     url: url,
@@ -222,8 +232,26 @@
                     success: function () {
                         window.location.href = '{{ route('penduduk') }}';
                     },
-                    error: function (xhr, status, error) {
-                        console.log('error: ', xhr.responseText);
+                    error: function (response) {
+                        $('input').removeClass('is-invalid');
+                        $('select').removeClass('is-invalid');
+                        if (response.status === 400) {
+                            const errors = response.responseJSON.message;
+                            $('.invalid-feedback').text('');
+                            for (const error in errors) {
+                                const element = $('#' + error);
+                                const invalidDiv = element.closest('.form-group').find('.invalid-feedback');
+                                element.addClass('is-invalid');
+                                invalidDiv.text(errors[error]);
+                            }
+                        } else if (response.status === 401) {
+                            $('#no_kk').addClass('is-invalid');
+                            $('#no_kk-error-message-feedback').text(response.responseJSON.message)
+                        } else if (response.status === 402) {
+                            $('#nik').addClass('is-invalid');
+                            $('#nik-error-message-feedback').text(response.responseJSON.message)
+                        }
+
                     }
                 });
             });
