@@ -15,6 +15,7 @@ use App\Models\UsersModel;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
@@ -55,11 +56,9 @@ class FamilyController extends Controller
 			$familyValidator = Validator::make($request->family, (new StoreFamilyCardRequest)->rules());
 
 			if ($familyValidator->fails()) {
-				return response()->json([
-					'status' => 'error',
-					'message' => $familyValidator->errors()
-				], 400);
+				throw new \Exception(json_encode($familyValidator->errors()->toArray()));
 			}
+
 			$familyData = $familyValidator->validated();
 
 			$citizens = $request->citizens;
@@ -90,21 +89,34 @@ class FamilyController extends Controller
 					$citizenValidator = Validator::make(array_merge($citizen, [
 						'id_kk' => $newFamily->id_kk,
 					]), (new StoreCitizenRequest)->rules());
+
 					if ($citizenValidator->fails()) {
-						return response()->json([
-							'status' => 'error',
-							'message' => $citizenValidator->errors()
-						], 400);
+						throw new \Exception(json_encode($citizenValidator->errors()->toArray()));
 					}
+
 					CitizensModel::create($citizenValidator->validated());
 				}
+
+				return response()->json(['message' => 'success coy'], 201);
 			}, 3);
 
 			return response()->json(['message' => 'Successfully created family-card'], 201);
-		} catch (\Exception $e) {
+		} catch (\Illuminate\Database\UniqueConstraintViolationException $e) {
 			return response()->json([
 				'status' => 'error',
-				'message' => $e->getMessage()
+				'message' => 'The provided No. KK already exists. Please use a different value.'
+			], 401);
+		} catch (\Illuminate\Database\QueryException $e) {
+			return response()->json([
+				'status' => 'error',
+				'message' => 'NIK sudah ada. Silahkan gunakan NIK yang berbeda.'
+			], 402);
+		} catch (\Exception $e) {
+			// Handle other exceptions
+			Log::error($e);
+			return response()->json([
+				'status' => 'error',
+				'message' => json_decode($e->getMessage(), true)
 			], 400);
 		}
 	}

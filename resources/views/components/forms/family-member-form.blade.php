@@ -1,3 +1,5 @@
+@props(['status' => 'familyMember', 'id' => '', 'iteration' => 0])
+
 @php
     $isHeadFamily = $status === 'headFamily';
     $isFamilyMember = $status === 'familyMember';
@@ -53,6 +55,8 @@
                                    id="id_hubungan"
                                    value="1">
                         @endif
+                        <div class="invalid-feedback">
+                        </div>
                     </div>
                 </div>
             </div>
@@ -67,12 +71,14 @@
                                 </div>
                             </div>
                             <input type="text"
-                                   class="form-control"
+                                   class="form-control @error('nik') is-invalid @enderror"
                                    name="nik"
                                    id="nik"
                                    required>
+                            <div class="invalid-feedback"
+                                 id="nik-error-message-feedback">
+                            </div>
                         </div>
-
                     </div>
                 </div>
                 <div class="col-12 col-lg-6">
@@ -85,10 +91,12 @@
                                 </div>
                             </div>
                             <input type="text"
-                                   class="form-control"
+                                   class="form-control @error('nama_lengkap') is-invalid @enderror"
                                    name="nama_lengkap"
                                    id="nama_lengkap"
                                    required>
+                            <div class="invalid-feedback">
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -104,9 +112,11 @@
                                 </div>
                             </div>
                             <input type="text"
-                                   class="form-control phone-number"
+                                   class="form-control phone-number @error('no_telp') is-invalid @enderror"
                                    name="no_telp"
                                    id="no_telp">
+                            <div class="invalid-feedback">
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -119,7 +129,7 @@
                                     <i class="fas fa-users"></i>
                                 </div>
                             </div>
-                            <select class="form-control"
+                            <select class="form-control @error('agama') is-invalid @enderror"
                                     id="agama"
                                     name="agama">
                                 <option disabled
@@ -133,6 +143,8 @@
                                 <option value="Buddha">Buddha</option>
                                 <option value="Konghucu">Konghucu</option>
                             </select>
+                            <div class="invalid-feedback">
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -140,7 +152,7 @@
             <div class="row">
                 <div class="col-12 col-lg-6">
                     <div class="form-group">
-                        <label class="form-label"
+                        <label class="form-label @error('jenis_kelamin') is-invalid @enderror"
                                for="jenis_kelamin">Jenis Kelamin</label>
                         <div class="selectgroup selectgroup-pills">
                             <label class="selectgroup-item"
@@ -160,6 +172,8 @@
                                 <span class="selectgroup-button selectgroup-button-icon"><i class="fas fa-venus"></i></span>
                             </label>
                         </div>
+                        <div class="invalid-feedback">
+                        </div>
                     </div>
                 </div>
             </div>
@@ -174,9 +188,14 @@
                                 </div>
                             </div>
                             <input type="text"
-                                   class="form-control"
+                                   class="form-control @error('asal_tempat') is-invalid @enderror"
                                    name="asal_tempat"
                                    id="asal_tempat">
+                            @error('asal_tempat')
+                            <div class="invalid-feedback">
+                                {{ $message }}
+                            </div>
+                            @enderror
                         </div>
                     </div>
                 </div>
@@ -190,9 +209,11 @@
                                 </div>
                             </div>
                             <input type="date"
-                                   class="form-control datepicker"
+                                   class="form-control datepicker @error('tanggal_lahir') is-invalid @enderror"
                                    name="tanggal_lahir"
                                    id="tanggal_lahir">
+                            <div class="invalid-feedback">
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -207,7 +228,7 @@
                                     <i class="fas fa-child"></i>
                                 </div>
                             </div>
-                            <select class="form-control"
+                            <select class="form-control @error('status_perkawinan') is-invalid @enderror"
                                     id="status_perkawinan"
                                     name="status_perkawinan">
                                 <option disabled
@@ -219,6 +240,8 @@
                                 <option value="Cerai Hidup">Cerai Hidup</option>
                                 <option value="Cerai Mati">Cerai Mati</option>
                             </select>
+                            <div class="invalid-feedback">
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -231,7 +254,7 @@
                                     <i class="fas fa-flag"></i>
                                 </div>
                             </div>
-                            <select class="form-control"
+                            <select class="form-control @error('kewarganegaraan') is-invalid @enderror"
                                     id="kewarganegaraan"
                                     name="kewarganegaraan">
                                 <option disabled
@@ -241,6 +264,8 @@
                                 <option value="WNI">WNI</option>
                                 <option value="WNA">WNA</option>
                             </select>
+                            <div class="invalid-feedback">
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -256,9 +281,14 @@
                                 </div>
                             </div>
                             <input type="text"
-                                   class="form-control"
+                                   class="form-control @error('pendidikan_terakhir') is-invalid @enderror"
                                    name="pendidikan_terakhir"
                                    id="pendidikan_terakhir">
+                            @error('pendidikan_terakhir')
+                            <div class="invalid-feedback">
+                                {{ $message }}
+                            </div>
+                            @enderror
                         </div>
                     </div>
                 </div>
@@ -272,9 +302,11 @@
                                 </div>
                             </div>
                             <input type="text"
-                                   class="form-control"
+                                   class="form-control @error('pekerjaan') is-invalid @enderror"
                                    name="pekerjaan"
                                    id="pekerjaan">
+                            <div class="invalid-feedback">
+                            </div>
                         </div>
                     </div>
                 </div>
