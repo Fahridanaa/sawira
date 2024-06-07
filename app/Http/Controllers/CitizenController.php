@@ -2,11 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreCitizenHistoryRequest;
 use App\Http\Requests\StoreCitizenRequest;
+use App\Http\Requests\StoreHistoryRequest;
 use App\Models\CitizensModel;
 use App\Models\KKModel;
 use App\DataTables\CitizensDataTable;
+use App\Models\RiwayatWargaModel;
 use App\Services\FamilyService;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -102,11 +106,52 @@ class CitizenController extends Controller
 		return response()->json(['message' => 'Successfully updated citizens'], 201);
 	}
 
+	public function upload(Request $request, string $id)
+	{
+		$request->validate([
+			'file_surat' => 'required|file',
+		]);
+
+		DB::transaction(function () use ($request, $id) {
+			$family = RiwayatWargaModel::findOrFail($id);
+
+			$filePath = $request->file_surat->store('public/surat');
+
+			$family->update([
+				'file_surat' => $filePath,
+			]);
+		});
+
+		return redirect()->route('history');
+	}
+
 	/**
 	 * Remove the specified resource from storage.
 	 */
-	public function destroy(string $id)
+	public function softDeleteAndAddToHistory(StoreHistoryRequest $storeHistoryRequest, $id_warga)
 	{
-		//
+		DB::transaction(function () use ($storeHistoryRequest, $id_warga) {
+			$citizen = CitizensModel::findOrFail($id_warga);
+			$citizen->delete();
+
+			RiwayatWargaModel::create([
+				'id_warga' => $id_warga,
+				'tanggal' => Carbon::now(),
+				'status' => $storeHistoryRequest->status,
+			]);
+		});
+		return redirect()->route('history');
+	}
+
+	public function restore($id)
+	{
+		$citizen = CitizensModel::withTrashed()->find($id);
+
+		if (!$citizen) {
+			return response()->json(['message' => 'Citizen not found'], 404);
+		}
+		$citizen->restore();
+		return redirect()->route('citizens.index');
+
 	}
 }

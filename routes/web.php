@@ -41,8 +41,10 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
 	Route::prefix('/tab-content/')->group(function () {
 		Route::resource('family-heads', FamilyController::class);
 		Route::delete('family-heads/{family_head}', [FamilyController::class, 'softDeleteAndAddToHistory'])->name('family-heads.destroy');
+		Route::put('family-heads/upload/{family_head}', [FamilyController::class, 'upload'])->name('family-heads.upload');
 		Route::resource('citizens', CitizenController::class);
 		Route::delete('citizens/{citizen}', [CitizenController::class, 'softDeleteAndAddToHistory'])->name('citizens.destroy');
+		Route::put('citizens/upload/{citizen}', [CitizenController::class, 'upload'])->name('citizens.upload');
 		Route::get('citizens-restore/{citizen}', [CitizenController::class, 'restore'])->name('citizens.restore');
 		Route::get('citizens-history', [ManageHistoryController::class, 'citizen'])->name('citizens-history.index');
 		Route::get('citizens-history/download/{id}', [ManageHistoryController::class, 'download'])->name('citizens-history.download');

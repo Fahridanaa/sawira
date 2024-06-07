@@ -6,7 +6,7 @@ use App\DataTables\FamilyHeadsDataTable;
 use App\DataTables\FamilyInformationDataTable;
 use App\Http\Requests\StoreCitizenRequest;
 use App\Http\Requests\StoreFamilyCardRequest;
-use App\Http\Requests\StoreFamilyHistoryRequest;
+use App\Http\Requests\StoreHistoryRequest;
 use App\Models\CitizensModel;
 use App\Models\KKModel;
 use App\Models\KondisiKeluargaModel;
@@ -141,7 +141,7 @@ class FamilyController extends Controller
 	/**
 	 * Update the specified resource in storage.
 	 */
-	public function update(Request $request, string $id)
+	public function upload(Request $request, string $id)
 	{
 		$request->validate([
 			'file_surat' => 'required|file',
@@ -163,9 +163,9 @@ class FamilyController extends Controller
 	/**
 	 * Remove the specified resource from storage.
 	 */
-	public function softDeleteAndAddToHistory(StoreFamilyHistoryRequest $storeFamilyHistoryRequest, $id_kk)
+	public function softDeleteAndAddToHistory(StoreHistoryRequest $storeHistoryRequest, $id_kk)
 	{
-		DB::transaction(function () use ($storeFamilyHistoryRequest, $id_kk) {
+		DB::transaction(function () use ($storeHistoryRequest, $id_kk) {
 			$kk = KKModel::findOrFail($id_kk);
 
 			$kk->delete();
@@ -173,7 +173,7 @@ class FamilyController extends Controller
 			RiwayatKKModel::create([
 				'id_kk' => $id_kk,
 				'tanggal' => Carbon::now(),
-				'status' => $storeFamilyHistoryRequest->status,
+				'status' => $storeHistoryRequest->status,
 			]);
 		});
 		return redirect()->route('history');
