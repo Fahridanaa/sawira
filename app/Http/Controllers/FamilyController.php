@@ -149,12 +149,21 @@ class FamilyController extends Controller
 
 		DB::transaction(function () use ($request, $id) {
 			$family = RiwayatKKModel::findOrFail($id);
+		
 
-			$filePath = $request->file_surat->store('public/surat');
+			if ($family->file_surat) {
+				Storage::delete('public/surat/' . $family->file_surat);
+			}
 
-			$family->update([
-				'file_surat' => $filePath,
-			]);
+			if ($request->hasFile('file_surat')) {
+				$file = $request->file('file_surat');
+				$filename = time() . '_' . $file->getClientOriginalName();
+				$path = $file->storeAs('public/surat', $filename);
+	
+				// Simpan nama file ke database
+				$family->file_surat = $filename;
+				$family->save();
+			}
 		});
 
 		return redirect()->route('history');

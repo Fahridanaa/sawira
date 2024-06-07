@@ -62,7 +62,7 @@ class ManageHistoryController extends Controller
 		$history = RiwayatKKModel::findOrFail($id);
 
 		if ($history->file_surat) {
-			return Storage::download($history->file_surat);
+			return Storage::download('public/surat/' . $history->file_surat);
 		} else {
 			return redirect()->back()->with('error', 'File not found.');
 		}
