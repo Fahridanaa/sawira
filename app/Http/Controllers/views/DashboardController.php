@@ -13,14 +13,17 @@ class DashboardController extends Controller
 {
 	public function index(ChartService $chartService)
 	{
-		$KK = KKModel::all();
 		$citizens = CitizensModel::all();
-		$citizensHistory = RiwayatWargaModel::all();
-		$movingCitizensHistory = RiwayatKKModel::all();
+		// $KK = KKModel::all();
+		// $citizensHistory = RiwayatWargaModel::all();
+		// $movingCitizensHistory = RiwayatKKModel::all();
 
-		$citizensByEntryMonth = $chartService->countCitizensByEntryDate($KK);
-		$citizensByExitMonth = $chartService->countCitizensByExitDate($citizensHistory, $movingCitizensHistory);
+		// $citizensByEntryMonth = $chartService->countCitizensByEntryDate($KK);
+		// $citizensByExitMonth = $chartService->countCitizensByExitDate($citizensHistory, $movingCitizensHistory);
 		$ageGroupCount = $chartService->categorizeCitizensByAge($citizens);
+		$labelss = $chartService->getRTLabels();
+		$genderManStatistics = $chartService->getGenderManStatisticsByRT();
+		$genderWomanStatistics = $chartService->getGenderWomanStatisticsByRT();
 
 		$totalCitizenCount = $chartService->countCitizens();
 		$totalFamilyCount = $chartService->countKKs();
@@ -33,12 +36,13 @@ class DashboardController extends Controller
 		return view('pages.dashboard.' . $userLevel, [
 			'breadcrumbTitle' => $breadcrumbTitle,
 			'monthLabels' => $indonesianMonthNames,
-			'entryDataPerMonth' => $chartService->sortDataByMonth($citizensByEntryMonth, $indonesianMonthNames),
-			'exitDataPerMonth' => $chartService->sortDataByMonth($citizensByExitMonth, $indonesianMonthNames),
 			'totalCitizenCount' => $totalCitizenCount,
 			'totalFamilyCount' => $totalFamilyCount,
 			'totalRTCount' => $totalRTCount,
 			'ageGroupCounts' => array_values($ageGroupCount),
+			'genderManStatistics' => $genderManStatistics,
+			'genderWomanStatistics' => $genderWomanStatistics,
+			'labelss' => $labelss,
 		]);
 	}
 }
