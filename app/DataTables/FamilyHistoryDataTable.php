@@ -21,8 +21,8 @@ class FamilyHistoryDataTable extends DataTable
 	{
 		return (new EloquentDataTable($query))
 			->addColumn('action', function ($row) {
-				$downloadbtn = '<a href="' . route('family-history.download', $row->id_riwayatKK) . '" class="btn btn-success btn-sm">Surat</a>';
-				$uploadBtn = '<button class="upload-file-btn btn btn-primary btn-sm" data-toggle="modal" data-target="#upload-file-modal" data-id="' . $row->id_riwayatKK . '">Upload</button>';
+				$downloadbtn = '<a href="' . route('family-history.download', $row->id_riwayatKK) . '" class="btn btn-primary btn-sm">Download</a>';
+				$uploadBtn = '<button class="upload-file-btn btn btn-success btn-sm" data-toggle="modal" data-target="#upload-file-modal" data-id="' . $row->id_riwayatKK . '">Upload</button>';
 
 				return ($row->file_surat === null) ? $uploadBtn : $downloadbtn;
 			})

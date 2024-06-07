@@ -32,7 +32,7 @@ class CitizensDataTable extends DataTable
 				if (auth()->user()->role !== 'rw') {
 					$buttonHTML .= '<button class="btn btn-warning edit-btn ml-1">Edit</button>';
 				}
-				$buttonHTML .= '<button class="btn btn-danger detail-btn ml-1" data-toggle="modal"  data-target="#detailModal">Hapus</button>';
+				$buttonHTML .= '<button class="btn btn-danger delete-btn ml-2" data-toggle="modal" data-target="#delete-modal">Hapus</button>';
 				$buttonHTML .= '</div>';
 				return $buttonHTML;
 			})
