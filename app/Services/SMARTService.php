@@ -56,7 +56,7 @@ class SMARTService
 					continue;
 				}
 				$denominator = ($max[$k] - $min[$k]) != 0 ? ($max[$k] - $min[$k]) : 1;
-				if ($k === 1 || $k === 3) {
+				if ($k === 0 || $k === 2) {
 					$result[$key][$k] = round((($max[$k] - $v) / $denominator) * 100, 3);
 				} else {
 					$result[$key][$k] = round((($v - $min[$k]) / $denominator) * 100, 3);
@@ -86,16 +86,18 @@ class SMARTService
 	{
 		$smart = [];
 		foreach ($data as $key => $value) {
-			foreach ($value as $k => $v) {
-				if ($k === "no_kk" || $k === "nama_lengkap" || $k === "id_kondisi_keluarga") {
-					$smart[$key][$k] = $v;
+			$smart[$key] = array_intersect_key($value, array_flip(["no_kk", "nama_lengkap", "id_kondisi_keluarga"]));
+			$sum = 0;
+			for ($i = 0; $i <= 4; $i++) {
+				if (isset($value[$i])) {
+					$sum += $value[$i];
 				}
 			}
-			$smart[$key]['sum'] = array_sum($value);
+			$smart[$key]['sum'] = $sum;
 		}
 
 		uasort($smart, function ($a, $b) {
-			return $b['sum'] <=> $a['sum'];
+			return $a['sum'] <=> $b['sum'];
 		});
 
 		$smart = array_values($smart);

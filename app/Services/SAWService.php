@@ -78,18 +78,20 @@ class SAWService
 	{
 		$saw = [];
 		foreach ($data as $key => $value) {
-			foreach ($value as $k => $v) {
-				if ($k === "no_kk" || $k === "nama_lengkap" || $k === "id_kondisi_keluarga") {
-					$saw[$key][$k] = $v;
+			$saw[$key] = array_intersect_key($value, array_flip(["no_kk", "nama_lengkap", "id_kondisi_keluarga"]));
+			$sum = 0;
+			for ($i = 0; $i <= 4; $i++) {
+				if (isset($value[$i])) {
+					$sum += $value[$i];
 				}
 			}
-			$saw[$key]['sum'] = array_sum($value);
+			$saw[$key]['sum'] = $sum;
 		}
 
 		uasort($saw, function ($a, $b) {
-			return $b['sum'] <=> $a['sum'];
+			return $a['sum'] <=> $b['sum'];
 		});
-		
+
 		$saw = array_values($saw);
 
 		return $saw;
