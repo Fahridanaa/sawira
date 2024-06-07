@@ -13,8 +13,9 @@ return new class extends Migration {
 		Schema::create('riwayat_warga', function (Blueprint $table) {
 			$table->id('id_riwayatWarga');
 			$table->unsignedBigInteger('id_warga')->index();
-			$table->string('kategori_riwayat', 255);
 			$table->date('tanggal');
+			$table->enum('status', ['Pindah', 'Kematian']);
+			$table->string('file_surat', 255)->nullable();
 			$table->timestamps();
 
 			$table->foreign('id_warga')->references('id_warga')->on('warga');

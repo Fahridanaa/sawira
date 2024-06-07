@@ -42,12 +42,15 @@
 
 @push('js')
     <script type="module">
-        const uploadFileUrl = "{{ route('family-heads.update', ['family_head' => '__id__']) }}";
         const uploadFileForm = $('#upload-file-modal form');
         const uploadFileModal = $('#upload-file-modal');
         const uploadFileButton = $('#upload-file-modal button[type="submit"]');
 
         $(document).on('click', '.upload-file-btn', function () {
+            let urlParams = new URLSearchParams(window.location.search);
+            let uploadFileUrl = (urlParams.get('activeTab') === 'citizens-history') ?
+                "{{ route('citizens.upload', ['citizen' => '__id__']) }}" :
+                "{{ route('family-heads.upload', ['family_head' => '__id__']) }}";
             let id = $(this).data('id');
             let url = uploadFileUrl.replace('__id__', id);
             uploadFileForm.attr('action', url);
