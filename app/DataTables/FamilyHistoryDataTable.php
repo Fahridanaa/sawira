@@ -23,8 +23,22 @@ class FamilyHistoryDataTable extends DataTable
 			->addColumn('action', function ($row) {
 				$downloadbtn = '<a href="' . route('family-history.download', $row->id_riwayatKK) . '" class="btn btn-success btn-sm">Surat</a>';
 				$uploadBtn = '<button class="upload-file-btn btn btn-primary btn-sm" data-toggle="modal" data-target="#upload-file-modal" data-id="' . $row->id_riwayatKK . '">Upload</button>';
+				$replaceBtn = '<button class="upload-file-btn btn btn-warning btn-sm" data-toggle="modal" data-target="#upload-file-modal" data-id="' . $row->id_riwayatKK . '">Replace</button>';
+				// $restoreBtn = '<button class="upload-file-btn btn btn-primary btn-sm" data-toggle="modal" data-target="#upload-file-modal" data-id="' . $row->id_riwayatKK . '">Restore</button>';
 
-				return ($row->file_surat === null) ? $uploadBtn : $downloadbtn;
+				if ($row->status === 'Kematian') {
+					return '';
+				}
+				if ($row->status === 'Pindah') {
+					// return  $uploadBtn . $downloadbtn;
+					return ($row->file_surat === null) ? $uploadBtn : $replaceBtn . $downloadbtn;
+				}
+				return $row->file_surat === null ? $uploadBtn : $replaceBtn . $downloadbtn;
+
+				// if ($row->status === 'Pindah') {
+				// 	return ($row->file_surat === null) ? $uploadBtn : $downloadbtn;
+				// }
+				// return ($row->file_surat === null) ? $uploadBtn : $downloadbtn;
 			})
 			->editColumn('tanggal', function ($row) {
 				return $row->tanggal ? with(new Carbon($row->tanggal))->format('d/m/Y') : '';
