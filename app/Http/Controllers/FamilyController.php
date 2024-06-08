@@ -12,6 +12,7 @@ use App\Models\KKModel;
 use App\Models\KondisiKeluargaModel;
 use App\Models\RiwayatKKModel;
 use App\Models\UsersModel;
+use App\Services\HistoryService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -22,6 +23,13 @@ use Illuminate\Support\Str;
 
 class FamilyController extends Controller
 {
+	protected HistoryService $historyService;
+
+	public function __construct()
+	{
+		$this->historyService = new HistoryService();
+	}
+
 	/**
 	 * Display a listing of the resource.
 	 */
@@ -149,24 +157,21 @@ class FamilyController extends Controller
 
 		DB::transaction(function () use ($request, $id) {
 			$family = RiwayatKKModel::findOrFail($id);
-		
 
-			if ($family->file_surat) {
-				Storage::delete('public/surat/' . $family->file_surat);
-			}
-
-			if ($request->hasFile('file_surat')) {
-				$file = $request->file('file_surat');
-				$filename = time() . '_' . $file->getClientOriginalName();
-				$path = $file->storeAs('public/surat', $filename);
-	
-				// Simpan nama file ke database
-				$family->file_surat = $filename;
-				$family->save();
-			}
+			$this->historyService->uploadFile($family, $request);
 		});
 
-		return redirect()->route('history');
+		return redirect()->back();
+	}
+
+	public function download($id)
+	{
+		$history = RiwayatKKModel::findOrFail($id);
+
+		$file = $this->historyService->downloadFile($history);
+
+		if ($file === null) return redirect()->back()->with('error', 'File not found.');
+		return $file;
 	}
 
 	/**
@@ -187,4 +192,23 @@ class FamilyController extends Controller
 		});
 		return redirect()->route('history');
 	}
+
+	public function restore($id)
+	{
+		$kkHistory = RiwayatKKModel::findOrFail($id);
+		$kk = KKModel::withTrashed()->find($kkHistory->id_kk);
+
+		if (!$kk || $kkHistory->status === 'Kematian') {
+			return response()->json(['message' => 'Citizen not found'], 404);
+		}
+
+		if ($kk->file_surat) {
+			Storage::delete('public/surat/' . $kkHistory->file_surat);
+		}
+		$kkHistory->delete();
+		$kk->restore();
+		return redirect()->route('penduduk');
+
+	}
+
 }
