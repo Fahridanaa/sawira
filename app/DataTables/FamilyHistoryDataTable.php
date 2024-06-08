@@ -33,7 +33,6 @@ class FamilyHistoryDataTable extends DataTable
 					return ($row->file_surat === null) ? $uploadBtn : $replaceBtn . $downloadbtn;
 				}
 				return $row->file_surat === null ? $uploadBtn : $replaceBtn . $downloadbtn;
-
 				// if ($row->status === 'Pindah') {
 				// 	return ($row->file_surat === null) ? $uploadBtn : $downloadbtn;
 				// }
