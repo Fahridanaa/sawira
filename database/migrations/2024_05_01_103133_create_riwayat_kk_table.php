@@ -14,7 +14,7 @@ return new class extends Migration {
 			$table->id('id_riwayatKK');
 			$table->unsignedBigInteger('id_kk')->index();
 			$table->date('tanggal');
-			$table->enum('status', ['Pindah', 'Kematian', 'Lainnya']);
+			$table->enum('status', ['Pindah', 'Kematian']);
 			$table->string('file_surat', 255)->nullable();
 			$table->timestamps();
 

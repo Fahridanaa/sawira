@@ -5,10 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class CitizensModel extends Model
 {
-	use HasFactory;
+	use HasFactory, SoftDeletes;
 
 	protected $table = 'warga';
 	protected $primaryKey = 'id_warga';
@@ -61,15 +62,5 @@ class CitizensModel extends Model
 	public function rt(): BelongsTo
 	{
 		return $this->belongsTo(RTModel::class, 'id_rt', 'id_rt');
-	}
-
-	public function mustahik()
-	{
-		return $this->hasOne(MustahikModel::class, 'id_warga', 'id_warga');
-	}
-
-	public function pengajuanMustahik()
-	{
-		return $this->hasOne(PengajuanMustahikModel::class, 'id_warga', 'id_warga');
 	}
 }

@@ -58,7 +58,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
+                                        @endif
                                         <div class="tab-pane fade"
                                              id="family-history"
                                              role="tabpanel"
@@ -101,7 +101,6 @@
     </style>
 @endpush
 @push('js')
-    {{--    <script src="{{ asset('assets/js/page/modules-datatables.js') }}"></script>--}}
     <script type="module">
         const tableIds = ['#citizens-history-table', '#family-history-table'];
         $(document).ready(() => {

@@ -29,10 +29,19 @@ class CitizensHistoryDataTable extends DataTable
 			->editColumn('tanggal', function ($row) {
 				return $row->tanggal ? with(new Carbon($row->tanggal))->format('d/m/Y') : '';
 			})
-			->addColumn('id_rt', function ($row) {
-				return $row->warga->kk->id_rt;
+			->addColumn('action', function ($row) {
+				$buttonHTML = '<div class="btn-group" data-id="' . $row->id_kk . '">';
+				if ($row->file_surat === null) {
+					$buttonHTML .= '<button class="upload-file-btn btn btn-success btn-sm" data-toggle="modal" data-target="#upload-file-modal" data-id="' . $row->id_riwayatWarga . '">Upload</button>';
+				} else {
+					$buttonHTML .= '<a href="" class="btn btn-primary btn-sm">Download</a>';
+					$buttonHTML .= '<button class="restore-btn btn btn-danger btn-sm ml-2" data-id="' . $row->id_riwayatWarga . '">Restore</button>';
+				}
+				$buttonHTML .= '</div>';
+
+				return $buttonHTML;
 			})
-			->rawColumns(['nama_warga'])
+			->rawColumns(['nama_warga', 'action'])
 			->setRowId('id');
 	}
 
@@ -42,19 +51,21 @@ class CitizensHistoryDataTable extends DataTable
 	public function query(RiwayatWargaModel $model): QueryBuilder
 	{
 		$role = auth()->user()->role;
-		$query = $model->newQuery()->with('warga');
+		$query = $model->newQuery()->with(['warga' => function ($query) {
+			$query->withTrashed();
+		}]);
 
 		if ($role !== 'rw') {
 			$rt = str_replace('rt', '', $role);
 			$query->whereHas('warga.kk', function ($query) use ($rt) {
 				$query->withTrashed()->where('id_rt', $rt);
 			});
-		}
-		$query->whereHas('warga.kk', function ($query) {
-			if (request()->has('id_rt') && request('id_rt') != '') {
-				$query->where('id_rt', request('id_rt'));
-			}
-		});
+
+		} else if (request()->has('id_rt') && request('id_rt') != '') {
+			$query->whereHas('warga.kk', function ($query) {
+				$query->withTrashed()->where('id_rt', request('id_rt'));
+			});
+		};
 
 		return $query;
 	}
@@ -68,10 +79,9 @@ class CitizensHistoryDataTable extends DataTable
 			->setTableId('citizens-history-table')
 			->columns($this->getColumns())
 			->minifiedAjax()
-			//->dom('Bfrtip')
 			->orderBy(1)
 			->selectStyleSingle()
-			->dom('lrtip'); // Exclude 'B' for buttons
+			->buttons('l');
 	}
 
 	/**
@@ -81,13 +91,19 @@ class CitizensHistoryDataTable extends DataTable
 	{
 		$columns = [
 			Column::make('nama_lengkap'),
-			Column::make('kategori_riwayat'),
 			Column::make('tanggal'),
+			Column::make('status'),
 		];
 
 		if (auth()->user()->role === 'rw') {
 			$columns[] = Column::make('id_rt')->title('RT');
 		}
+
+		$columns[] = Column::computed('action')
+			->exportable(false)
+			->printable(false)
+			->width(60)
+			->addClass('text-center');
 
 		return $columns;
 	}

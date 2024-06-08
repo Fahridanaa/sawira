@@ -21,11 +21,10 @@ class FamilyHistoryDataTable extends DataTable
 	{
 		return (new EloquentDataTable($query))
 			->addColumn('action', function ($row) {
-				$downloadbtn = '<a href="' . route('family-history.download', $row->id_riwayatKK) . '" class="btn btn-success btn-sm">Surat</a>';
-				$uploadBtn = '<button class="upload-file-btn btn btn-primary btn-sm" data-toggle="modal" data-target="#upload-file-modal" data-id="' . $row->id_riwayatKK . '">Upload</button>';
+				$downloadbtn = '<a href="' . route('family-history.download', $row->id_riwayatKK) . '" class="btn btn-primary btn-sm">Download</a>';
+				$uploadBtn = '<button class="upload-file-btn btn btn-success btn-sm" data-toggle="modal" data-target="#upload-file-modal" data-id="' . $row->id_riwayatKK . '">Upload</button>';
 				$replaceBtn = '<button class="upload-file-btn btn btn-warning btn-sm" data-toggle="modal" data-target="#upload-file-modal" data-id="' . $row->id_riwayatKK . '">Replace</button>';
 				// $restoreBtn = '<button class="upload-file-btn btn btn-primary btn-sm" data-toggle="modal" data-target="#upload-file-modal" data-id="' . $row->id_riwayatKK . '">Restore</button>';
-
 				if ($row->status === 'Kematian') {
 					return '';
 				}
@@ -34,7 +33,6 @@ class FamilyHistoryDataTable extends DataTable
 					return ($row->file_surat === null) ? $uploadBtn : $replaceBtn . $downloadbtn;
 				}
 				return $row->file_surat === null ? $uploadBtn : $replaceBtn . $downloadbtn;
-
 				// if ($row->status === 'Pindah') {
 				// 	return ($row->file_surat === null) ? $uploadBtn : $downloadbtn;
 				// }

@@ -11,6 +11,7 @@ class RiwayatWargaModel extends Model
 	use HasFactory;
 
 	protected $table = 'riwayat_warga';
+	protected $primaryKey = 'id_riwayatWarga';
 
 	/**
 	 * The attributes that are mass assignable.
@@ -18,9 +19,10 @@ class RiwayatWargaModel extends Model
 	 * @var array
 	 */
 	protected $fillable = [
-		'kategori_riwayat',
 		'id_warga',
-		'tanggal'
+		'tanggal',
+		'file_surat',
+		'status',
 	];
 
 	/**
@@ -31,11 +33,17 @@ class RiwayatWargaModel extends Model
 	protected $casts = [
 		'id_riwayatWarga' => 'integer',
 		'id_warga' => 'integer',
-		'tanggal' => 'date'
+		'tanggal' => 'date',
+		'status' => 'string',
 	];
 
 	public function warga(): BelongsTo
 	{
-		return $this->belongsTo(CitizensModel::class, 'id_warga', 'id_warga');
+		return $this->belongsTo(CitizensModel::class, 'id_warga', 'id_warga')->withTrashed();
+	}
+
+	public function kk()
+	{
+		return $this->warga->kk();
 	}
 }

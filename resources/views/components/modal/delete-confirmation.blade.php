@@ -36,14 +36,14 @@
                                        required>
                                 <span class="selectgroup-button selectgroup-button-icon">Pindah</span>
                             </label>
-                            <label class="selectgroup-item w-100">
-                                <input type="radio"
-                                       name="status"
-                                       value="Lainnya"
-                                       class="selectgroup-input"
-                                       required>
-                                <span class="selectgroup-button selectgroup-button-icon">Lainnya</span>
-                            </label>
+                            {{--                            <label class="selectgroup-item w-100">--}}
+                            {{--                                <input type="radio"--}}
+                            {{--                                       name="status"--}}
+                            {{--                                       value="Lainnya"--}}
+                            {{--                                       class="selectgroup-input"--}}
+                            {{--                                       required>--}}
+                            {{--                                <span class="selectgroup-button selectgroup-button-icon">Lainnya</span>--}}
+                            {{--                            </label>--}}
                         </div>
                     </div>
                     <p>Data akan dimasukkan ke dalam riwayat</p>
@@ -65,12 +65,15 @@
 
 @push('js')
     <script type="module">
-        var deleteUrl = "{{ route('family-heads.destroy', ['family_head' => '__id__']) }}";
-        var deleteForm = $('#delete-modal form');
-        var deleteModal = $('#delete-modal');
-        var deleteButton = $('#delete-modal button[type="submit"]');
+        const deleteForm = $('#delete-modal form');
+        const deleteModal = $('#delete-modal');
+        const deleteButton = $('#delete-modal button[type="submit"]');
 
         $(document).on('click', '.delete-btn', function () {
+            let urlParams = new URLSearchParams(window.location.search);
+            let deleteUrl = (urlParams.get('activeTab') === 'citizens') ?
+                "{{ route('citizens.destroy', ['citizen' => '__id__']) }}" :
+                "{{ route('family-heads.destroy', ['family_head' => '__id__']) }}";
             let id = $(this).parent().data('id');
             let url = deleteUrl.replace('__id__', id);
             deleteForm.attr('action', url);
