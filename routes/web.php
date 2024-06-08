@@ -13,6 +13,7 @@ use App\Http\Controllers\views\LetterController;
 use App\Http\Controllers\views\ManageCitizens;
 use App\Http\Controllers\views\ManageHistoryController;
 use App\Http\Controllers\views\ManageZakatController;
+use App\Http\Controllers\views\pecahKKController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -40,6 +41,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
 
 	Route::prefix('/tab-content/')->group(function () {
 		Route::resource('family-heads', FamilyController::class);
+		Route::get('family-heads/pecah/{family_head}', [FamilyController::class, 'create'])->name('family-heads.pecah');
 		Route::delete('family-heads/{family_head}', [FamilyController::class, 'softDeleteAndAddToHistory'])->name('family-heads.destroy');
 		Route::put('family-heads/upload/{family_head}', [FamilyController::class, 'upload'])->name('family-heads.upload');
 		Route::resource('citizens', CitizenController::class);

@@ -49,10 +49,11 @@ class FamilyController extends Controller
 	/**
 	 * Show the form for creating a new resource.
 	 */
-	public function create()
+	public function create($id = null)
 	{
+		$citizen = ($id) ? CitizensModel::where('id_warga', $id)->first() : null;
 		$provinces = \Indonesia::allProvinces();
-		return view('pages.familyHeads.create', ['provinces' => $provinces]);
+		return view('pages.familyHeads.create', ['provinces' => $provinces], compact('citizen'));
 	}
 
 	/**
@@ -101,6 +102,8 @@ class FamilyController extends Controller
 					if ($citizenValidator->fails()) {
 						throw new \Exception(json_encode($citizenValidator->errors()->toArray()));
 					}
+
+					if ($citizen['id_warga']) CitizensModel::findOrFail($citizen['id_warga'])->delete();
 
 					CitizensModel::create($citizenValidator->validated());
 				}
