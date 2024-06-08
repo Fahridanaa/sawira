@@ -48,8 +48,8 @@ class ChartService
 	}
 
 	// public function getGenderStatisticsByRT($gender)
-    // {
-    //     $statistics = RTModel::all()
+	// {
+	//     $statistics = RTModel::all()
 	// 		->mapWithKeys(function ($rt, $gender) {
 	// 			$totalL = $rt->kk->reduce(function ($carry, $kk, $gender) {
 	// 				return $carry + $kk->citizens->where('jenis_kelamin', $gender)->count();
@@ -59,41 +59,44 @@ class ChartService
 	// 			return [$rt->id_rt => ['P' => $totalL]];
 	// 		});
 
-    //     return $statistics;
-    // }
-	private function getGenderStatisticsByRT(){
-    $statistics = RTModel::all()
-        ->mapWithKeys(function ($rt) {
-            $totalL = $rt->kk->reduce(function ($carry, $kk) {
-                return $carry + $kk->citizens->where('jenis_kelamin', 'L')->count();
-            }, 0);
+	//     return $statistics;
+	// }
+	public function getGenderStatisticsByRT()
+	{
+		$statistics = RTModel::all()
+			->mapWithKeys(function ($rt) {
+				$totalL = $rt->kk->reduce(function ($carry, $kk) {
+					return $carry + $kk->citizens->where('jenis_kelamin', 'L')->count();
+				}, 0);
 
-            $totalP = $rt->kk->reduce(function ($carry, $kk) {
-                return $carry + $kk->citizens->where('jenis_kelamin', 'P')->count();
-            }, 0);
+				$totalP = $rt->kk->reduce(function ($carry, $kk) {
+					return $carry + $kk->citizens->where('jenis_kelamin', 'P')->count();
+				}, 0);
 
-            return [$rt->id_rt => ['L' => $totalL, 'P' => $totalP]];
-        });
+				return [$rt->id_rt => ['L' => $totalL, 'P' => $totalP]];
+			});
 
-    return $statistics;
+		return $statistics;
 	}
 
-	public function getGenderWomanStatisticsByRT(){
-		return $this->getGenderStatisticsByRT()->map(function ($genderStatistics) {
+	public function getGenderWomanStatisticsByRT($statistics)
+	{
+		return $statistics->map(function ($genderStatistics) {
 			return $genderStatistics['P'];
 		});
 	}
 
-	public function getGenderManStatisticsByRT() {
-		return $this->getGenderStatisticsByRT()->map(function ($genderStatistics) {
+	public function getGenderManStatisticsByRT($statistics)
+	{
+		return $statistics->map(function ($genderStatistics) {
 			return $genderStatistics['L'];
 		});
 	}
 
-    public function getRTLabels()
-    {
+	public function getRTLabels()
+	{
 		return RTModel::select('id_rt')->pluck('id_rt')->toArray();
-    }
+	}
 
 	public function getIndonesianMonths(): array
 	{

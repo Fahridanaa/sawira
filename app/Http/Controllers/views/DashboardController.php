@@ -14,16 +14,11 @@ class DashboardController extends Controller
 	public function index(ChartService $chartService)
 	{
 		$citizens = CitizensModel::all();
-		// $KK = KKModel::all();
-		// $citizensHistory = RiwayatWargaModel::all();
-		// $movingCitizensHistory = RiwayatKKModel::all();
-
-		// $citizensByEntryMonth = $chartService->countCitizensByEntryDate($KK);
-		// $citizensByExitMonth = $chartService->countCitizensByExitDate($citizensHistory, $movingCitizensHistory);
+		$genderDataStatistics = $chartService->getGenderStatisticsByRT();
 		$ageGroupCount = $chartService->categorizeCitizensByAge($citizens);
 		$labelss = $chartService->getRTLabels();
-		$genderManStatistics = $chartService->getGenderManStatisticsByRT();
-		$genderWomanStatistics = $chartService->getGenderWomanStatisticsByRT();
+		$genderManStatistics = $chartService->getGenderManStatisticsByRT($genderDataStatistics);
+		$genderWomanStatistics = $chartService->getGenderWomanStatisticsByRT($genderDataStatistics);
 
 		$totalCitizenCount = $chartService->countCitizens();
 		$totalFamilyCount = $chartService->countKKs();
