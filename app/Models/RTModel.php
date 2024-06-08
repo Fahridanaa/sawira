@@ -29,8 +29,8 @@ class RTModel extends Model
 		'id_rt' => 'integer',
 	];
 
-	public function warga()
+	public function kk()
 	{
-		return $this->hasMany(CitizensModel::class, 'id_rt', 'id_rt');
+		return $this->hasMany(KKModel::class, 'id_rt', 'id_rt');
 	}
 }

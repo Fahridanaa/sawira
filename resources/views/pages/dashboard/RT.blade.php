@@ -28,13 +28,11 @@
             />
         </div>
         <div class="row flex-grow-1 d-flex">
-            <x-charts.penduduk-line-chart
-                    cardTitle="Penduduk Masuk dan Keluar"
-                    cardCategory="2024"
-                    :labels="$monthLabels"
-                    :entryCitizenData="$entryDataPerMonth"
-                    :exitCitizenData="$exitDataPerMonth"
-                    chartId="citizensChart"
+            <x-charts.total-citizens-bar-chart
+                    cardTitle="Jumlah Penduduk"
+                    :labelss="$labelss"
+                    :genderManStatistics="$genderManStatistics"
+                    :genderWomanStatistics="$genderWomanStatistics"
             />
             <x-charts.usia-penduduk-pie-chart
                     cardTitle="Usia Penduduk"
@@ -45,6 +43,9 @@
     </section>
 @endsection
 @push('js')
-    {{--    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>--}}
+<script type="module">
+    $.(document).ready(function() {
+        console.log('ready');
+    });
+</script>
 @endpush
-
