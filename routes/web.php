@@ -45,13 +45,14 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
 		Route::resource('citizens', CitizenController::class);
 		Route::delete('citizens/{citizen}', [CitizenController::class, 'softDeleteAndAddToHistory'])->name('citizens.destroy');
 		Route::put('citizens/upload/{citizen}', [CitizenController::class, 'upload'])->name('citizens.upload');
-		Route::get('citizens-restore/{citizen}', [CitizenController::class, 'restore'])->name('citizens.restore');
+		Route::get('citizens/restore/{citizen}', [CitizenController::class, 'restore'])->name('citizens.restore');
 		Route::get('citizens-history', [ManageHistoryController::class, 'citizen'])->name('citizens-history.index');
-		Route::get('citizens-history/download/{id}', [ManageHistoryController::class, 'download'])->name('citizens-history.download');
+		Route::get('citizens-history/download/{id}', [CitizenController::class, 'download'])->name('citizens-history.download');
 		Route::get('saw', [ManageZakatController::class, 'saw'])->name('saw.index');
 		Route::get('smart', [ManageZakatController::class, 'smart'])->name('smart.index');
 		Route::get('family-history', [ManageHistoryController::class, 'family'])->name('family-history.index');
-		Route::get('family-history/download/{id}', [ManageHistoryController::class, 'download'])->name('family-history.download');
+		Route::get('family-history/download/{id}', [FamilyController::class, 'download'])->name('family-history.download');
+		Route::get('family-history/restore/{family_head}', [FamilyController::class, 'restore'])->name('family-history.restore');
 	});
 
 	Route::resource('/informasi-keluarga', FamilyInformationController::class);

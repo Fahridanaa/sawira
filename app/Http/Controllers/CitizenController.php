@@ -10,17 +10,21 @@ use App\Models\KKModel;
 use App\DataTables\CitizensDataTable;
 use App\Models\RiwayatWargaModel;
 use App\Services\FamilyService;
+use App\Services\HistoryService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 class CitizenController extends Controller
 {
 	protected FamilyService $familyService;
+	protected HistoryService $historyService;
 
 	public function __construct()
 	{
 		$this->familyService = new FamilyService();
+		$this->historyService = new HistoryService();
 	}
 
 	/**
@@ -113,16 +117,21 @@ class CitizenController extends Controller
 		]);
 
 		DB::transaction(function () use ($request, $id) {
-			$family = RiwayatWargaModel::findOrFail($id);
+			$citizen = RiwayatWargaModel::findOrFail($id);
 
-			$filePath = $request->file_surat->store('public/surat');
-
-			$family->update([
-				'file_surat' => $filePath,
-			]);
+			$this->historyService->uploadFile($citizen, $request);
 		});
 
-		return redirect()->route('history');
+		return redirect()->back();
+	}
+
+	public function download($id)
+	{
+		$history = RiwayatWargaModel::findOrFail($id);
+
+		$file = $this->historyService->downloadFile($history);
+		if ($file === null) return redirect()->back()->with('error', 'File not found.');
+		return $file;
 	}
 
 	/**
@@ -132,6 +141,10 @@ class CitizenController extends Controller
 	{
 		DB::transaction(function () use ($storeHistoryRequest, $id_warga) {
 			$citizen = CitizensModel::findOrFail($id_warga);
+			if ($citizen->id_hubungan === 1) {
+				$kk = KKModel::findOrFail($citizen->id_kk);
+				$kk->delete();
+			}
 			$citizen->delete();
 
 			RiwayatWargaModel::create([
@@ -145,13 +158,24 @@ class CitizenController extends Controller
 
 	public function restore($id)
 	{
-		$citizen = CitizensModel::withTrashed()->find($id);
+		$citizenHistory = RiwayatWargaModel::findOrFail($id);
+		$citizen = CitizensModel::withTrashed()->find($citizenHistory->id_warga);
 
-		if (!$citizen) {
+		if (!$citizen || $citizenHistory->status === 'Kematian') {
 			return response()->json(['message' => 'Citizen not found'], 404);
 		}
+
+		if ($citizen->file_surat) {
+			Storage::delete('public/surat/' . $citizenHistory->file_surat);
+		}
+		
+		if ($citizen->id_hubungan === 1) {
+			$kk = KKModel::withTrashed()->findOrFail($citizen->id_kk);
+			$kk->restore();
+		}
 		$citizen->restore();
-		return redirect()->route('citizens.index');
+		$citizenHistory->delete();
+		return redirect()->route('penduduk');
 
 	}
 }

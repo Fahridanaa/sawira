@@ -21,22 +21,18 @@ class FamilyHistoryDataTable extends DataTable
 	{
 		return (new EloquentDataTable($query))
 			->addColumn('action', function ($row) {
-				$downloadbtn = '<a href="' . route('family-history.download', $row->id_riwayatKK) . '" class="btn btn-primary btn-sm">Download</a>';
-				$uploadBtn = '<button class="upload-file-btn btn btn-success btn-sm" data-toggle="modal" data-target="#upload-file-modal" data-id="' . $row->id_riwayatKK . '">Upload</button>';
-				$replaceBtn = '<button class="upload-file-btn btn btn-warning btn-sm" data-toggle="modal" data-target="#upload-file-modal" data-id="' . $row->id_riwayatKK . '">Replace</button>';
-				// $restoreBtn = '<button class="upload-file-btn btn btn-primary btn-sm" data-toggle="modal" data-target="#upload-file-modal" data-id="' . $row->id_riwayatKK . '">Restore</button>';
-				if ($row->status === 'Kematian') {
-					return '';
+				if ($row->status === 'Kematian') return null;
+				$buttonHTML = '<div class="btn-group" data-id="' . $row->id_kk . '">';
+				if ($row->file_surat === null) {
+					$buttonHTML = '<button class="upload-file-btn btn btn-success btn-sm" data-toggle="modal" data-target="#upload-file-modal" data-id="' . $row->id_riwayatKK . '">Upload</button>';
+				} else {
+					$buttonHTML .= '<a href="' . route('family-history.download', $row->id_riwayatKK) . '" class="btn btn-primary btn-sm">Download</a>';
+					$buttonHTML .= '<button class="upload-file-btn btn btn-warning btn-sm ml-2" data-toggle="modal" data-target="#upload-file-modal" data-id="' . $row->id_riwayatKK . '">Replace</button>';
+					$buttonHTML .= '<a href="' . route('family-history.restore', $row->id_riwayatKK) . '" class="restore-btn btn btn-danger btn-sm ml-2">Restore</button>';
 				}
-				if ($row->status === 'Pindah') {
-					// return  $uploadBtn . $downloadbtn;
-					return ($row->file_surat === null) ? $uploadBtn : $replaceBtn . $downloadbtn;
-				}
-				return $row->file_surat === null ? $uploadBtn : $replaceBtn . $downloadbtn;
-				// if ($row->status === 'Pindah') {
-				// 	return ($row->file_surat === null) ? $uploadBtn : $downloadbtn;
-				// }
-				// return ($row->file_surat === null) ? $uploadBtn : $downloadbtn;
+				$buttonHTML .= '</div>';
+
+				return $buttonHTML;
 			})
 			->editColumn('tanggal', function ($row) {
 				return $row->tanggal ? with(new Carbon($row->tanggal))->format('d/m/Y') : '';
