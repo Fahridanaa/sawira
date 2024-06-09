@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreCitizenHistoryRequest;
 use App\Http\Requests\StoreCitizenRequest;
 use App\Http\Requests\StoreHistoryRequest;
 use App\Models\CitizensModel;
 use App\Models\KKModel;
 use App\DataTables\CitizensDataTable;
 use App\Models\RiwayatWargaModel;
+use App\Models\RiwayatKKModel;
 use App\Services\FamilyService;
 use App\Services\HistoryService;
 use Carbon\Carbon;
@@ -137,17 +139,37 @@ class CitizenController extends Controller
 	{
 		DB::transaction(function () use ($storeHistoryRequest, $id_warga) {
 			$citizen = CitizensModel::findOrFail($id_warga);
-			if ($citizen->id_hubungan === 1) {
-				$kk = KKModel::findOrFail($citizen->id_kk);
-				$kk->delete();
-			}
 			$citizen->delete();
+			 if ($citizen->id_hubungan === 1) {
+				$kk = KKModel::findOrFail($citizen->id_kk);
+				$citizens = CitizensModel::where('id_kk', $citizen->id_kk)->get();
 
-			RiwayatWargaModel::create([
-				'id_warga' => $id_warga,
-				'tanggal' => Carbon::now(),
-				'status' => $storeHistoryRequest->status,
-			]);
+				foreach ($citizens as $citizen) {
+					$citizen->delete();
+
+					RiwayatWargaModel::create([
+						'id_warga' => $citizen->id_warga,
+						'tanggal' => Carbon::now(),
+						'status' => $storeHistoryRequest->status,
+					]);
+				}
+
+				$kk->delete();
+
+				RiwayatKKModel::create([
+					'id_kk' => $citizen->id_kk,
+					'tanggal' => Carbon::now(),
+					'status' => $storeHistoryRequest->status,
+				]);
+			} else {
+				$citizen->delete();
+
+				RiwayatWargaModel::create([
+					'id_warga' => $id_warga,
+					'tanggal' => Carbon::now(),
+					'status' => $storeHistoryRequest->status,
+				]);
+			}
 		});
 		return redirect('history')->with('toast_success', 'Data Warga Berhasil Dihapus!');
 	}
