@@ -27,7 +27,7 @@ class FamilyHistoryDataTable extends DataTable
 					$buttonHTML = '<button class="upload-file-btn btn btn-success btn-sm" data-toggle="modal" data-target="#upload-file-modal" data-id="' . $row->id_riwayatKK . '">Upload</button>';
 				} else {
 					$buttonHTML .= '<a href="' . route('family-history.download', $row->id_riwayatKK) . '" class="btn btn-primary btn-sm">Download</a>';
-					$buttonHTML .= '<button class="upload-file-btn btn btn-warning btn-sm ml-2" data-toggle="modal" data-target="#upload-file-modal" data-id="' . $row->id_riwayatKK . '">Replace</button>';
+					$buttonHTML .= '<button class="upload-file-btn btn btn-warning btn-sm ml-2" data-toggle="modal" data-target="#upload-file-modal" data-id="' . $row->id_riwayatKK . '">Reupload</button>';
 				}
 				$buttonHTML .= '<a href="' . route('family-history.restore', $row->id_riwayatKK) . '" class="restore-btn btn btn-danger btn-sm ml-2">Restore</a>';
 				$buttonHTML .= '</div>';

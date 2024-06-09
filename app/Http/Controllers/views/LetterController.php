@@ -70,10 +70,7 @@ class LetterController extends Controller
 
 			return $response; // Return the response from the storeLetter method
 		} catch (\Exception $e) {
-			return response()->json([
-				'status' => 'error',
-				'message' => $e->getMessage()
-			], 400);
+			return back()->with('toast_error', $e->getMessage());
 		}
 	}
 

@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreCitizenHistoryRequest;
 use App\Http\Requests\StoreCitizenRequest;
 use App\Http\Requests\StoreHistoryRequest;
 use App\Models\CitizensModel;
@@ -67,12 +66,9 @@ class CitizenController extends Controller
 			DB::transaction(function () use ($storeCitizenRequest) {
 				CitizensModel::create($storeCitizenRequest->validated());
 			}, 3);
-			return response()->json(['message' => 'Successfully created citizens'], 201);
+			return redirect('penduduk')->with('toast_success', 'Data Warga Berhasil Ditambah!');
 		} catch (\Exception $e) {
-			return response()->json([
-				'status' => 'error',
-				'message' => $e->getMessage()
-			], 400);
+			return back()->with('errors', $e->getMessage());
 		}
 	}
 
@@ -107,7 +103,7 @@ class CitizenController extends Controller
 	public function update(StoreCitizenRequest $request, string $id)
 	{
 		CitizensModel::find($id)->update($request->validated());
-		return response()->json(['message' => 'Successfully updated citizens'], 201);
+		return redirect('penduduk')->with('toast_success', 'Data Warga Berhasil Diupdate!');
 	}
 
 	public function upload(Request $request, string $id)
@@ -130,7 +126,7 @@ class CitizenController extends Controller
 		$history = RiwayatWargaModel::findOrFail($id);
 
 		$file = $this->historyService->downloadFile($history);
-		if ($file === null) return redirect()->back()->with('error', 'File not found.');
+		if ($file === null) return redirect()->back()->with('toast_error', 'File not found.');
 		return $file;
 	}
 
@@ -153,7 +149,7 @@ class CitizenController extends Controller
 				'status' => $storeHistoryRequest->status,
 			]);
 		});
-		return redirect()->route('history');
+		return redirect('history')->with('toast_success', 'Data Warga Berhasil Dihapus!');
 	}
 
 	public function restore($id)
@@ -162,20 +158,20 @@ class CitizenController extends Controller
 		$citizen = CitizensModel::withTrashed()->find($citizenHistory->id_warga);
 
 		if (!$citizen || $citizenHistory->status === 'Kematian') {
-			return response()->json(['message' => 'Citizen not found'], 404);
+			return back()->with('toast_error', 'Warga tidak ditemukan');
 		}
 
 		if ($citizen->file_surat) {
 			Storage::delete('public/surat/' . $citizenHistory->file_surat);
 		}
-		
+
 		if ($citizen->id_hubungan === 1) {
 			$kk = KKModel::withTrashed()->findOrFail($citizen->id_kk);
 			$kk->restore();
 		}
 		$citizen->restore();
 		$citizenHistory->delete();
-		return redirect()->route('penduduk');
+		return redirect('penduduk')->with('toast_success', 'Data Warga Berhasil Dikembalikan!');
 
 	}
 }

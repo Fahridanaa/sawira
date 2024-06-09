@@ -74,7 +74,7 @@ class ManageZakatController extends Controller
 			}
 		}, 3);
 
-		return redirect()->route('zakat.index');
+		return redirect('zakat.index')->with('toast_success', 'Zakat berhasil dihitung!');
 	}
 
 	public function saw(SAWRankingDataTable $SAWRankingDataTable)

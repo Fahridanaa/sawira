@@ -48,6 +48,6 @@ class FamilyInformationController extends Controller
 		$kk = KKModel::where('id_user', $id_user)->first();
 		$kondisiKeluarga = KondisiKeluargaModel::where('id_kk', $kk->id_kk)->first();
 		$kondisiKeluarga->update($request->all());
-		return redirect()->route('informasi-keluarga.index');
+		return redirect('informasi-keluarga.index')->with('toast_success', 'Data berhasil diubah!');
 	}
 }
