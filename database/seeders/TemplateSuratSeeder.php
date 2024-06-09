@@ -13,9 +13,16 @@ class TemplateSuratSeeder extends Seeder
 	 */
 	public function run(): void
 	{
-		TemplateSuratModel::create([
-			'no_registrasi' => '001',
-			'nama_surat' => 'Surat Keterangan Tidak Mampu',
-		]);
+		TemplateSuratModel::create(
+			[
+				'nama_surat' => 'Surat Keterangan Tidak Mampu',
+			],
+			[
+				'nama_surat' => 'Surat Pengantar',
+			],
+			[
+				'nama_surat' => 'Surat Pernyataan'
+			]
+		);
 	}
 }

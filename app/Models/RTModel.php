@@ -10,6 +10,7 @@ class RTModel extends Model
 	use HasFactory;
 
 	protected $table = 'rt';
+	protected $primaryKey = 'id_rt';
 
 	/**
 	 * The attributes that are mass assignable.
@@ -18,6 +19,7 @@ class RTModel extends Model
 	 */
 	protected $fillable = [
 		'no_rt',
+		'ketua_rt'
 	];
 
 	/**
@@ -27,6 +29,8 @@ class RTModel extends Model
 	 */
 	protected $casts = [
 		'id_rt' => 'integer',
+		'no_rt' => 'integer',
+		'ketua_rt' => 'string'
 	];
 
 	public function kk()
