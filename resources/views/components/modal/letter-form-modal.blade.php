@@ -100,20 +100,14 @@
                                             selected>Pilih Jenis Surat
                                     </option>
                                     <option value="1">Surat Keterangan Tidak Mampu</option>
+                                    <option value="2">Surat Pengantar</option>
+                                    <option value="3">Surat Pernyataan</option>
                                 </select>
                             </div>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col-12">
-                            <div class="form-group">
-                                <label for="data_surat[keperluan]">Keperluan</label>
-                                <input type="text"
-                                       class="form-control datepicker"
-                                       name="data_surat[keperluan]"
-                                       id="data_surat[keperluan]">
-                            </div>
-                        </div>
+                    <div class="row"
+                         id="add-on-input">
                     </div>
                     <div class="row justify-content-end">
                         <div class="btn-group">
@@ -175,6 +169,15 @@
                     window.location.reload();
                 }, 500);
             });
+
+            $('#jenis_surat').on('change', function () {
+                $('#add-on-input').empty();
+                if ($(this).val() === '1' || $(this).val() === '3') {
+                    $('#add-on-input').append(`@include('components.forms.letter.surat-pernyataan-form')`)
+                } else if ($(this).val() === '2') {
+                    $('#add-on-input').append(`@include('components.forms.letter.surat-pengantar')`)
+                }
+            })
         });
     </script>
 @endpush

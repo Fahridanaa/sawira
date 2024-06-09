@@ -5,6 +5,7 @@ namespace App\Services;
 
 use App\Models\ArsipSuratModel;
 use App\Models\CitizensModel;
+use App\Models\RTModel;
 use App\Models\TemplateSuratModel;
 use Dompdf\Dompdf;
 use IntlDateFormatter;
@@ -80,6 +81,61 @@ class LetterService
 		return $formatter->format($date);
 	}
 
+	private function formatRupiah($number)
+	{
+		return 'Rp' . number_format($number, 0, ',', '.');
+	}
+
+	private function gajiConvert($number)
+	{
+		$words = "";
+		$dictionary = array(
+			0 => 'nol',
+			1 => 'satu',
+			2 => 'dua',
+			3 => 'tiga',
+			4 => 'empat',
+			5 => 'lima',
+			6 => 'enam',
+			7 => 'tujuh',
+			8 => 'delapan',
+			9 => 'sembilan',
+			10 => 'sepuluh',
+			11 => 'sebelas',
+			100 => 'ratus',
+			1000 => 'ribu',
+			1000000 => 'juta'
+		);
+
+		if ($number < 12) {
+			$words .= $dictionary[$number];
+		} elseif ($number < 20) {
+			$words .= $this->gajiConvert($number - 10) . ' belas';
+		} elseif ($number < 100) {
+			$words .= $this->gajiConvert(intval($number / 10)) . ' puluh';
+			if ($number % 10 != 0) {
+				$words .= ' ' . $this->gajiConvert($number % 10);
+			}
+		} elseif ($number < 1000) {
+			$words .= $this->gajiConvert(intval($number / 100)) . ' ratus';
+			if ($number % 100 != 0) {
+				$words .= ' ' . $this->gajiConvert($number % 100);
+			}
+		} elseif ($number < 1000000) {
+			$words .= $this->gajiConvert(intval($number / 1000)) . ' ribu';
+			if ($number % 1000 != 0) {
+				$words .= ' ' . $this->gajiConvert($number % 1000);
+			}
+		} else {
+			$words .= $this->gajiConvert(intval($number / 1000000)) . ' juta';
+			if ($number % 1000000 != 0) {
+				$words .= ' ' . $this->gajiConvert($number % 1000000);
+			}
+		}
+
+		return strtoupper($words);
+	}
+
 	private function extendsGender($gender)
 	{
 		return $gender == 'L' ? 'Laki-laki' : 'Perempuan';
@@ -102,15 +158,71 @@ class LetterService
 			'no_ktp' => $citizen->nik,
 			'agama' => $citizen->agama,
 			'alamat' => $this->searchAlamatByCitizen($data['id_warga']),
+			'pekerjaan' => $citizen->pekerjaan,
 			'rt' => $RT,
 			'rt_rom' => $this->numberToRomans($RT),
-			'keperluan' => explode(';', $data['data_surat'])[0],
+			'gaji' => $this->formatRupiah(explode(';', $data['data_surat'])[0]),
+			'keperluan' => explode(';', $data['data_surat'])[1],
 			'tanggal_pengajuan' => $this->formatDate(new \DateTime()),
 			'tahun' => date('Y'),
-			'no_registrasi' => 'SK000012121'
 		]);
 
 		return $templateProcessor;
+	}
+
+	private function SuratPengantar($data)
+	{
+		$templateProcessor = new TemplateProcessor($this->searchDocx($data['id_template_surat']));
+		$citizen = $this->searchCitizenById($data['id_warga']);
+		$RT = $this->searchRTbyCitizen($data['id_warga']);
+
+		$templateProcessor->setValues([
+			'nama' => $citizen->nama_lengkap,
+			'ttl' => $citizen->asal_tempat . ', ' . $this->formatDate($citizen->tanggal_lahir),
+			'jenis_kelamin' => $this->extendsGender($citizen->jenis_kelamin),
+			'alamat' => $this->searchAlamatByCitizen($data['id_warga']),
+			'agama' => $citizen->agama,
+			'status_perkawinan' => $citizen->status_perkawinan,
+			'pekerjaan' => $citizen->pekerjaan,
+			'pendidikan_terakhir' => $citizen->pendidikan_terakhir,
+			'kewarganegaraan' => $citizen->kewarganegaraan,
+			'keperluan' => explode(';', $data['data_surat'])[0],
+			'keterangan_lain' => explode(';', $data['data_surat'])[1],
+			'nik' => $citizen->nik,
+			'rt' => $RT,
+			'rt_rom' => $this->numberToRomans($RT),
+			'tanggal_pengajuan' => $this->formatDate(new \DateTime()),
+			'tahun' => date('Y'),
+		]);
+
+		return $templateProcessor;
+	}
+
+	private function SuratPernyataan($data)
+	{
+		$templateProcessor = new TemplateProcessor($this->searchDocx($data['id_template_surat']));
+		$citizen = $this->searchCitizenById($data['id_warga']);
+		$RT = $this->searchRTbyCitizen($data['id_warga']);
+		$ketua_rt = RTModel::findOrFail($RT)->ketua_rt;
+
+		$templateProcessor->setValues([
+			'nama' => $citizen->nama_lengkap,
+			'nama_kapital' => strtoupper($citizen->nama_lengkap),
+			'ttl' => $citizen->asal_tempat . ', ' . $this->formatDate($citizen->tanggal_lahir),
+			'alamat' => $this->searchAlamatByCitizen($data['id_warga']),
+			'jenis_kelamin' => $this->extendsGender($citizen->jenis_kelamin),
+			'nik' => $citizen->nik,
+			'pekerjaan' => $citizen->pekerjaan,
+			'gaji' => $this->formatRupiah(explode(';', $data['data_surat'])[0]),
+			'gaji_convert' => strtoupper($this->gajiConvert(explode(';', $data['data_surat'])[0])) . ' RUPIAH',
+			'keperluan' => explode(';', $data['data_surat'])[1],
+			'rt_rom' => $this->numberToRomans($RT),
+			'ketua_rt' => $ketua_rt ?? "FAZA",
+			'tanggal_pengajuan' => $this->formatDate(new \DateTime()),
+		]);
+
+		return $templateProcessor;
+
 	}
 
 	public function semicolonArrayString($input)

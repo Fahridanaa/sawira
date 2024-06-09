@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\RTModel;
 use App\Models\UsersModel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -18,6 +19,13 @@ class AuthController extends Controller
 
 	public function settings()
 	{
+		if (!\App\Helpers\SidebarHelper::hasAnyRole(['warga', 'rw', 'amil'])) {
+			$roleRT = Auth::user()->role;
+
+			$no_rt = str_split($roleRT, 2)[1];
+			$rt = RTModel::findOrFail($no_rt);
+			return view('auth.settings', compact('rt'));
+		}
 		return view('auth.settings');
 	}
 
@@ -50,7 +58,7 @@ class AuthController extends Controller
 		$user->username = $request->new_username;
 		$user->save();
 
-		return back()->with('success', 'Username updated successfully');
+		return back()->with('toast_success', 'Username updated successfully');
 	}
 
 	public function resetPassword($id)

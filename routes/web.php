@@ -14,6 +14,7 @@ use App\Http\Controllers\views\ManageCitizens;
 use App\Http\Controllers\views\ManageHistoryController;
 use App\Http\Controllers\views\ManageZakatController;
 use App\Http\Controllers\views\ManageLetterArchivesController;
+use App\Http\Controllers\RTController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -61,10 +62,13 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
 
 	Route::resource('/letter', LetterController::class)->middleware('can:user');
 
-	Route::get('/settings', [AuthController::class, 'settings'])->name('settings');
-	Route::put('/settings', [AuthController::class, 'updatePassword'])->name('auth.update.password');
-	Route::put('/settings/username', [AuthController::class, 'updateUsername'])->name('auth.update.username')->middleware('can:user');
-	Route::get('/reset-password/{id}', [AuthController::class, 'resetPassword'])->name('auth.reset.password')->middleware('can:admin');
+	Route::prefix('/settings')->group(function () {
+		Route::get('/', [AuthController::class, 'settings'])->name('settings');
+		Route::put('/', [AuthController::class, 'updatePassword'])->name('auth.update.password');
+		Route::put('/username', [AuthController::class, 'updateUsername'])->name('auth.update.username')->middleware('can:user');
+		Route::get('/reset-password/{id}', [AuthController::class, 'resetPassword'])->name('auth.reset.password')->middleware('can:admin');
+		Route::put('/ketuart', [RTController::class, 'updateKetuaRT'])->name('rt.update.ketuart')->middleware('can:manager');
+	});
 
 	Route::resource('zakat', ManageZakatController::class)->middleware('can:amil');
 	Route::prefix('/zakat')->group(function () {
