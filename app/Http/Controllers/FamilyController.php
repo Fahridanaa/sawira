@@ -11,6 +11,7 @@ use App\Models\CitizensModel;
 use App\Models\KKModel;
 use App\Models\KondisiKeluargaModel;
 use App\Models\RiwayatKKModel;
+use App\Models\RiwayatWargaModel;
 use App\Models\UsersModel;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -176,7 +177,19 @@ class FamilyController extends Controller
 	{
 		DB::transaction(function () use ($storeHistoryRequest, $id_kk) {
 			$kk = KKModel::findOrFail($id_kk);
+			// Fetch all citizens related to this family
+			$citizens = CitizensModel::where('id_kk', $id_kk)->get();
 
+			// Soft delete each citizen and add to history
+			foreach ($citizens as $citizen) {
+				$citizen->delete();
+	
+				RiwayatWargaModel::create([
+					'id_warga' => $citizen->id_warga,
+					'tanggal' => Carbon::now(),
+					'status' => $storeHistoryRequest->status,
+				]);
+			}
 			$kk->delete();
 
 			RiwayatKKModel::create([
@@ -185,6 +198,10 @@ class FamilyController extends Controller
 				'status' => $storeHistoryRequest->status,
 			]);
 		});
+<<<<<<< Updated upstream
 		return redirect()->route('history');
+=======
+		return redirect('history')->with('toast_success', 'Data Keluarga dan Anggota keluarga Berhasil Dihapus!');
+>>>>>>> Stashed changes
 	}
 }

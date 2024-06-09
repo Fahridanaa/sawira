@@ -9,6 +9,7 @@ use App\Models\CitizensModel;
 use App\Models\KKModel;
 use App\DataTables\CitizensDataTable;
 use App\Models\RiwayatWargaModel;
+use App\Models\RiwayatKKModel;
 use App\Services\FamilyService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -132,13 +133,59 @@ class CitizenController extends Controller
 	{
 		DB::transaction(function () use ($storeHistoryRequest, $id_warga) {
 			$citizen = CitizensModel::findOrFail($id_warga);
+<<<<<<< Updated upstream
 			$citizen->delete();
+=======
+			// if ($citizen->id_hubungan === 1) {
+			// 	$kk = KKModel::findOrFail($citizen->id_kk);
+			// 	$kk->delete();
+			// }
+			// $citizen->delete();
+>>>>>>> Stashed changes
 
-			RiwayatWargaModel::create([
-				'id_warga' => $id_warga,
-				'tanggal' => Carbon::now(),
-				'status' => $storeHistoryRequest->status,
-			]);
+			// RiwayatWargaModel::create([
+			// 	'id_warga' => $id_warga,
+			// 	'tanggal' => Carbon::now(),
+			// 	'status' => $storeHistoryRequest->status,
+			// ]);
+			 // Check if the citizen is the head of the family
+			 if ($citizen->id_hubungan === 1) {
+				$kk = KKModel::findOrFail($citizen->id_kk);
+	
+				// Fetch all citizens related to this family
+				$citizens = CitizensModel::where('id_kk', $citizen->id_kk)->get();
+	
+				// Soft delete each citizen and add to history
+				foreach ($citizens as $citizen) {
+					$citizen->delete();
+	
+					RiwayatWargaModel::create([
+						'id_warga' => $citizen->id_warga,
+						'tanggal' => Carbon::now(),
+						'status' => $storeHistoryRequest->status,
+					]);
+				}
+	
+				// Soft delete the family
+				$kk->delete();
+	
+				// Add to family history
+				RiwayatKKModel::create([
+					'id_kk' => $citizen->id_kk,
+					'tanggal' => Carbon::now(),
+					'status' => $storeHistoryRequest->status,
+				]);
+			} else {
+				// Soft delete the citizen
+				$citizen->delete();
+	
+				// Add to citizen history
+				RiwayatWargaModel::create([
+					'id_warga' => $id_warga,
+					'tanggal' => Carbon::now(),
+					'status' => $storeHistoryRequest->status,
+				]);
+			}
 		});
 		return redirect()->route('history');
 	}
