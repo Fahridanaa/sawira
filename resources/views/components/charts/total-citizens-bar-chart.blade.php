@@ -20,27 +20,23 @@
 @push('js')
     <script type="module">
         var ctx = document.getElementById("myChart2").getContext('2d');
-        const genderManStatistics = @json($genderManStatistics);
-        const genderWomanStatistics = @json($genderWomanStatistics);
-
-        var labelss = @json($labelss);
+        
         var chart = new Chart(ctx, {
             type: 'bar',
             data: {
-                labels: labelss,
-
-                datasets: [{
-                    label: 'Pria',
-                    data: Object.values(genderManStatistics),
-                    borderWidth: 2,
-                    backgroundColor: "rgba(63,82,227,.8)",
-                    borderColor: "rgba(63,82,227,.8)",
-                    pointRadius: 4,
-                    pointBackgroundColor: "transparent",
-                },
+                datasets: [
+                    {
+                        label: 'Pria',
+                        data: @json($genderManStatistics),
+                        borderWidth: 2,
+                        backgroundColor: "rgba(63,82,227,.8)",
+                        borderColor: "rgba(63,82,227,.8)",
+                        pointRadius: 4,
+                        pointBackgroundColor: "transparent",
+                    },
                     {
                         label: 'Wanita',
-                        data: Object.values(genderWomanStatistics),
+                        data: @json($genderWomanStatistics),
                         borderWidth: 2,
                         backgroundColor: "rgba(254,86,83,.7)",
                         borderColor: "rgba(254,86,83,.7)",
@@ -50,14 +46,6 @@
                 ]
             },
             options: {
-                // plugins: {
-                //     title: {
-                //         display: true,
-                //         font: {
-                //             size: 14
-                //         }
-                //     },
-                // },
                 responsive: true,
                 maintainAspectRatio: false,
                 scales: {
