@@ -29,6 +29,7 @@ class AuthServiceProvider extends ServiceProvider
 	 */
 	protected static $permissions = [
 		'manager' => [],
+		'admin' => [],
 		'user' => [],
 		'amil' => []
 	];
@@ -39,6 +40,7 @@ class AuthServiceProvider extends ServiceProvider
 	protected static function initializePermissions(): void
 	{
 		self::$permissions['manager'] = self::generateRtRoles();
+		self::$permissions['admin'] = ['rw'];
 		self::$permissions['user'] = ['warga'];
 		self::$permissions['amil'] = ['amil'];
 	}

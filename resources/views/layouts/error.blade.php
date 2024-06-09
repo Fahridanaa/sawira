@@ -21,32 +21,11 @@
     <!-- CSS Libraries -->
 
     @vite(['resources/css/app.css', 'resources/sass/app.scss', 'resources/js/app.js'])
-    <style>
-        table {
-            width: 100% !important;
-        }
-    </style>
-    @stack('css')
 </head>
-
 <body>
 <div id="app">
-    <div class="main-wrapper">
-        <div class="navbar-bg"></div>
-        <nav class="navbar navbar-expand-lg main-navbar">
-            @include('layouts.navbar')
-        </nav>
-        <div class="main-sidebar sidebar-style-2">
-            @include('layouts.sidebar')
-        </div>
-
-        <!-- Main Content -->
-        <div class="main-content">
-            @yield('content')
-        </div>
-    </div>
+    @yield('content')
 </div>
-
 <!-- General JS Scripts -->
 <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"

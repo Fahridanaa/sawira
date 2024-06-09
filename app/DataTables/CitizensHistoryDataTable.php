@@ -37,8 +37,8 @@ class CitizensHistoryDataTable extends DataTable
 				} else {
 					$buttonHTML .= '<a href="' . route('citizens-history.download', $row->id_riwayatWarga) . '" class="btn btn-primary btn-sm">Download</a>';
 					$buttonHTML .= '<button class="upload-file-btn btn btn-warning btn-sm ml-2" data-toggle="modal" data-target="#upload-file-modal" data-id="' . $row->id_riwayatKK . '">Replace</button>';
-					if ($row->status !== 'Kematian') $buttonHTML .= '<a href="' . route('citizens.restore', $row->id_riwayatWarga) . '" class="restore-btn btn btn-danger btn-sm ml-2">Restore</button>';
 				}
+				if ($row->status !== 'Kematian') $buttonHTML .= '<a href="' . route('citizens.restore', $row->id_riwayatWarga) . '" class="restore-btn btn btn-danger btn-sm ml-2">Restore</a>';
 				$buttonHTML .= '</div>';
 
 				return $buttonHTML;

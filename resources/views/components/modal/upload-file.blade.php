@@ -25,18 +25,18 @@
                                    class="custom-file-input"
                                    id="file_surat">
                             <label class="custom-file-label"
-                                   for="customFile">Upload Surat Pengantar</label>
+                                   for="file_surat">Upload Surat Pengantar</label>
                         </div>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="submit"
-                            class="btn btn-danger btn-shadow"
-                            id="">Yes
-                    </button>
                     <button type="button"
-                            class="btn btn-secondary"
+                            class="btn btn-danger"
                             id="">Cancel
+                    </button>
+                    <button type="submit"
+                            class="btn btn-primary btn-shadow"
+                            id="">Confirm
                     </button>
                 </div>
             </div>
@@ -62,6 +62,11 @@
 
         uploadFileButton.on('click', function () {
             uploadFileForm.submit();
+        });
+
+        $('#file_surat').on('change', function () {
+            let fileName = $(this).val().split('\\').pop();
+            $(this).next('.custom-file-label').html(fileName);
         });
     </script>
 @endpush

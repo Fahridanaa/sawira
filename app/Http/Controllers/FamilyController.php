@@ -103,7 +103,7 @@ class FamilyController extends Controller
 						throw new \Exception(json_encode($citizenValidator->errors()->toArray()));
 					}
 
-					if ($citizen['id_warga']) CitizensModel::findOrFail($citizen['id_warga'])->delete();
+					if (isset($citizen['id_warga'])) CitizensModel::findOrFail($citizen['id_warga'])->delete();
 
 					CitizensModel::create($citizenValidator->validated());
 				}
@@ -127,7 +127,7 @@ class FamilyController extends Controller
 			Log::error($e);
 			return response()->json([
 				'status' => 'error',
-				'message' => json_decode($e->getMessage(), true)
+				'message' => $e->getMessage(),
 			], 400);
 		}
 	}

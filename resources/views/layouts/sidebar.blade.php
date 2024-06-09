@@ -71,6 +71,12 @@
                 </ul>
             </li>
         @endif
+        @if(\App\Helpers\SidebarHelper::hasAnyRole(['rw']))
+            <li class="{{ Request::is('letter-archives')  ? 'active' : '' }}">
+                <a class="nav-link"
+                   href="{{ route('letter-archives') }}"><i class="fas fa-mail-bulk"></i> <span>Arsip Surat</span></a>
+            </li>
+        @endif
         <div class="flex-grow-1"></div>
         <li class="{{ Request::is('settings') ? 'active' : '' }}">
             <a class="nav-link"

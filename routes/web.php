@@ -13,7 +13,7 @@ use App\Http\Controllers\views\LetterController;
 use App\Http\Controllers\views\ManageCitizens;
 use App\Http\Controllers\views\ManageHistoryController;
 use App\Http\Controllers\views\ManageZakatController;
-use App\Http\Controllers\views\pecahKKController;
+use App\Http\Controllers\views\ManageLetterArchivesController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -34,10 +34,10 @@ Route::get('/', function () {
 Route::get('/login', [AuthController::class, 'index'])->name('login');
 
 Route::middleware(['auth:sanctum', 'verified'])->group(function () {
-
 	Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 	Route::get('/penduduk', [ManageCitizens::class, 'index'])->name('penduduk')->middleware('can:manager');
 	Route::get('/history', [ManageHistoryController::class, 'index'])->name('history')->middleware('can:manager');
+	Route::get('letter-archives', [ManageLetterArchivesController::class, 'index'])->name('letter-archives')->middleware('can:admin');
 
 	Route::prefix('/tab-content/')->group(function () {
 		Route::resource('family-heads', FamilyController::class);
@@ -57,24 +57,28 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
 		Route::get('family-history/restore/{family_head}', [FamilyController::class, 'restore'])->name('family-history.restore');
 	});
 
-	Route::resource('/informasi-keluarga', FamilyInformationController::class);
+	Route::resource('/informasi-keluarga', FamilyInformationController::class)->middleware('can:user');
 
-	Route::resource('/letter', LetterController::class);
+	Route::resource('/letter', LetterController::class)->middleware('can:user');
 
 	Route::get('/settings', [AuthController::class, 'settings'])->name('settings');
 	Route::put('/settings', [AuthController::class, 'updatePassword'])->name('auth.update.password');
-	Route::put('/settings/username', [AuthController::class, 'updateUsername'])->name('auth.update.username');
+	Route::put('/settings/username', [AuthController::class, 'updateUsername'])->name('auth.update.username')->middleware('can:user');
 
-	Route::resource('/zakat', ManageZakatController::class);
-	Route::get('saw', [SAWController::class, 'index'])->name('saw');
-	Route::get('saw/next', [SAWController::class, 'nextStep'])->name('nextSawStep');
-	Route::get('saw/prev', [SAWController::class, 'previousStep'])->name('prevSawStep');
-	Route::get('saw/step/{step}', [SAWController::class, 'changeStep'])->name('changeSawStep');
+	Route::resource('zakat', ManageZakatController::class)->middleware('can:amil');
+	Route::prefix('/zakat')->group(function () {
+		Route::get('saw', [SAWController::class, 'index'])->name('saw');
+		Route::get('saw/next', [SAWController::class, 'nextStep'])->name('nextSawStep');
+		Route::get('saw/prev', [SAWController::class, 'previousStep'])->name('prevSawStep');
+		Route::get('saw/step/{step}', [SAWController::class, 'changeStep'])->name('changeSawStep');
 
-	Route::get('smart', [SMARTController::class, 'index'])->name('smart');
-	Route::get('smart/next', [SMARTController::class, 'nextStep'])->name('nextSmartStep');
-	Route::get('smart/prev', [SMARTController::class, 'previousStep'])->name('prevSmartStep');
-	Route::get('smart/step/{step}', [SMARTController::class, 'changeStep'])->name('changeSmartStep');
+		Route::get('smart', [SMARTController::class, 'index'])->name('smart');
+		Route::get('smart/next', [SMARTController::class, 'nextStep'])->name('nextSmartStep');
+		Route::get('smart/prev', [SMARTController::class, 'previousStep'])->name('prevSmartStep');
+		Route::get('smart/step/{step}', [SMARTController::class, 'changeStep'])->name('changeSmartStep');
+
+	})->middleware('can:amil');
+
 
 	Route::get('cities', [DependantDropdownController::class, 'cities'])->name('cities')->middleware('can:manager');
 	Route::get('districts', [DependantDropdownController::class, 'districts'])->name('districts')->middleware('can:manager');
