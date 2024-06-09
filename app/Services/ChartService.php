@@ -47,20 +47,6 @@ class ChartService
 		return $citizensCountByAgeCategory;
 	}
 
-	// public function getGenderStatisticsByRT($gender)
-	// {
-	//     $statistics = RTModel::all()
-	// 		->mapWithKeys(function ($rt, $gender) {
-	// 			$totalL = $rt->kk->reduce(function ($carry, $kk, $gender) {
-	// 				return $carry + $kk->citizens->where('jenis_kelamin', $gender)->count();
-	// 			}, 0);
-
-	// 			if($gender == 'L') return [$rt->id_rt => ['L' => $totalL]];
-	// 			return [$rt->id_rt => ['P' => $totalL]];
-	// 		});
-
-	//     return $statistics;
-	// }
 	public function getGenderStatisticsByRT()
 	{
 		$statistics = RTModel::all()

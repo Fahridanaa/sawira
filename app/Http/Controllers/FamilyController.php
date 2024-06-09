@@ -11,6 +11,7 @@ use App\Models\CitizensModel;
 use App\Models\KKModel;
 use App\Models\KondisiKeluargaModel;
 use App\Models\RiwayatKKModel;
+use App\Models\RiwayatWargaModel;
 use App\Models\UsersModel;
 use App\Services\HistoryService;
 use Carbon\Carbon;
@@ -202,7 +203,17 @@ class FamilyController extends Controller
 	{
 		DB::transaction(function () use ($storeHistoryRequest, $id_kk) {
 			$kk = KKModel::findOrFail($id_kk);
+			$citizens = CitizensModel::where('id_kk', $id_kk)->get();
 
+			foreach ($citizens as $citizen) {
+				$citizen->delete();
+	
+				RiwayatWargaModel::create([
+					'id_warga' => $citizen->id_warga,
+					'tanggal' => Carbon::now(),
+					'status' => $storeHistoryRequest->status,
+				]);
+			}
 			$kk->delete();
 
 			RiwayatKKModel::create([
