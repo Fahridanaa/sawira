@@ -28,6 +28,7 @@ class FamilyHeadsDataTable extends DataTable
 			->addColumn('action', function ($row) {
 				$buttonHTML = '<div class="btn-group" data-id="' . $row->id_kk . '">';
 				$buttonHTML .= '<button class="edit btn btn-info btn-sm">Tampilkan</button>';
+				$buttonHTML .= '<a href="' . route('family-heads.edit', $row->id_kk) . '" class="btn btn-warning text-white ml-2">Edit</a>';
 				$buttonHTML .= '<button class="btn btn-danger delete-btn ml-2" data-toggle="modal" data-target="#delete-modal">Hapus</button>';
 				$buttonHTML .= '</div>';
 				return $buttonHTML;

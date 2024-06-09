@@ -146,12 +146,30 @@ class FamilyController extends Controller
 	 */
 	public function edit(string $id)
 	{
-		//
+		$family = KKModel::findOrFail($id);
+		$provinces = \Indonesia::allProvinces();
+		$province = \Indonesia::findProvince($family->id_provinsi);
+		$cities = \Indonesia::findCity($family->id_kabupaten);
+		$districts = \Indonesia::findDistrict($family->id_kecamatan);
+		$villages = \Indonesia::findVillage($family->id_kelurahan);
+		return view('pages.familyHeads.edit', [
+			'provinces' => $provinces,
+			'province' => $province,
+			'cities' => $cities,
+			'districts' => $districts,
+			'villages' => $villages
+		], compact('family'));
 	}
 
 	/**
 	 * Update the specified resource in storage.
 	 */
+	public function update(StoreFamilyCardRequest $request, string $id)
+	{
+		KKModel::findOrFail($id)->update($request->validated());
+		return response()->json(['message' => 'Successfully updated family-card'], 200);
+	}
+
 	public function upload(Request $request, string $id)
 	{
 		$request->validate([

@@ -53,27 +53,27 @@ class KKModel extends Model
 
 	public function provinsi()
 	{
-		return $this->hasOne(IndonesiaProvincesModel::class, 'id', 'id_provinsi');
+		return $this->belongsTo(IndonesiaProvincesModel::class, 'id', 'id_provinsi');
 	}
 
 	public function kabupaten()
 	{
-		return $this->hasOne(IndonesiaCitiesModel::class, 'id', 'id_kabupaten');
+		return $this->belongsTo(IndonesiaCitiesModel::class, 'id', 'id_kabupaten');
 	}
 
 	public function kecamatan()
 	{
-		return $this->hasOne(IndonesiaDistrictsModel::class, 'id', 'id_kecamatan');
+		return $this->belongsTo(IndonesiaDistrictsModel::class, 'id', 'id_kecamatan');
 	}
 
 	public function kelurahan()
 	{
-		return $this->hasOne(IndonesiaVillagesModel::class, 'id', 'id_kelurahan');
+		return $this->belongsTo(IndonesiaVillagesModel::class, 'id', 'id_kelurahan');
 	}
 
 	public function rt()
 	{
-		return $this->hasOne(RTModel::class, 'id_rt', 'id_rt');
+		return $this->belongsTo(RTModel::class, 'id_rt', 'id_rt');
 	}
 
 	public function citizens()
