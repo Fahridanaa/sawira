@@ -33,13 +33,16 @@ class FamilyHeadsDataTable extends DataTable
 				$buttonHTML .= '</div>';
 				return $buttonHTML;
 			})
+			->editColumn('user Action', function ($row) {
+				return '<a href="' . route('auth.reset.password', $row->id_user) . '" class="btn btn-warning text-white ml-2">Reset Password</a>';
+			})
 			->addColumn('nama_lengkap', function ($row) {
 				return $row->citizens->where('id_hubungan', 1)->first()->nama_lengkap ?? 'N/A';
 			})
 			->addColumn('id_rt', function ($row) {
 				return $row->id_rt;
 			})
-			->rawColumns(['action', 'no_kk'])
+			->rawColumns(['action', 'no_kk', 'user Action'])
 			->setRowId('id');
 	}
 
@@ -113,6 +116,10 @@ class FamilyHeadsDataTable extends DataTable
 			->printable(false)
 			->width(60)
 			->addClass('text-center');
+
+		if (auth()->user()->role === 'rw') {
+			$columns[] = Column::computed('user Action');
+		}
 
 		return $columns;
 	}

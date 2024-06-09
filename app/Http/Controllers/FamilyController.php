@@ -65,7 +65,7 @@ class FamilyController extends Controller
 			$familyValidator = Validator::make($request->family, (new StoreFamilyCardRequest)->rules());
 
 			if ($familyValidator->fails()) {
-				throw new \Exception(json_encode($familyValidator->errors()->toArray()));
+				return back()->with('toast_error', $familyValidator->messages()->all()[0])->withInput();
 			}
 
 			$familyData = $familyValidator->validated();
@@ -100,7 +100,7 @@ class FamilyController extends Controller
 					]), (new StoreCitizenRequest)->rules());
 
 					if ($citizenValidator->fails()) {
-						throw new \Exception(json_encode($citizenValidator->errors()->toArray()));
+						return back()->with('toast_error', $citizenValidator->messages()->all()[0])->withInput();
 					}
 
 					if (isset($citizen['id_warga'])) CitizensModel::findOrFail($citizen['id_warga'])->delete();
@@ -108,7 +108,7 @@ class FamilyController extends Controller
 					CitizensModel::create($citizenValidator->validated());
 				}
 
-				return response()->json(['message' => 'success coy'], 201);
+				return redirect('penduduk')->with('toast_success', 'Data Keluarga Berhasil Ditambah!');
 			}, 3);
 
 			return response()->json(['message' => 'Successfully created family-card'], 201);
@@ -167,7 +167,7 @@ class FamilyController extends Controller
 	public function update(StoreFamilyCardRequest $request, string $id)
 	{
 		KKModel::findOrFail($id)->update($request->validated());
-		return response()->json(['message' => 'Successfully updated family-card'], 200);
+		return redirect('penduduk')->with('toast_success', 'Data Kartu Keluarga Berhasil Diupdate!');
 	}
 
 	public function upload(Request $request, string $id)
@@ -191,7 +191,7 @@ class FamilyController extends Controller
 
 		$file = $this->historyService->downloadFile($history);
 
-		if ($file === null) return redirect()->back()->with('error', 'File not found.');
+		if ($file === null) return back()->with('toast_error', 'File tidak ditemukan');
 		return $file;
 	}
 
@@ -211,7 +211,7 @@ class FamilyController extends Controller
 				'status' => $storeHistoryRequest->status,
 			]);
 		});
-		return redirect()->route('history');
+		return redirect('history')->with('toast_success', 'Data Keluarga Berhasil Dihapus!');
 	}
 
 	public function restore($id)
@@ -220,7 +220,7 @@ class FamilyController extends Controller
 		$kk = KKModel::withTrashed()->find($kkHistory->id_kk);
 
 		if (!$kk || $kkHistory->status === 'Kematian') {
-			return response()->json(['message' => 'Citizen not found'], 404);
+			return back()->with('toast_error', 'Data tidak ditemukan');
 		}
 
 		if ($kk->file_surat) {
@@ -228,8 +228,7 @@ class FamilyController extends Controller
 		}
 		$kkHistory->delete();
 		$kk->restore();
-		return redirect()->route('penduduk');
-
+		return redirect('penduduk')->with('toast_success', 'Data Keluarga Berhasil Dikembalikan!');
 	}
 
 }

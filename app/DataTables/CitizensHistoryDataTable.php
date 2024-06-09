@@ -36,9 +36,9 @@ class CitizensHistoryDataTable extends DataTable
 					$buttonHTML .= '<button class="upload-file-btn btn btn-success btn-sm" data-toggle="modal" data-target="#upload-file-modal" data-id="' . $row->id_riwayatWarga . '">Upload</button>';
 				} else {
 					$buttonHTML .= '<a href="' . route('citizens-history.download', $row->id_riwayatWarga) . '" class="btn btn-primary btn-sm">Download</a>';
-					$buttonHTML .= '<button class="upload-file-btn btn btn-warning btn-sm ml-2" data-toggle="modal" data-target="#upload-file-modal" data-id="' . $row->id_riwayatKK . '">Replace</button>';
+					$buttonHTML .= '<button class="upload-file-btn btn btn-warning btn-sm ml-2" data-toggle="modal" data-target="#upload-file-modal" data-id="' . $row->id_riwayatKK . '">Reupload</button>';
 				}
-				if ($row->status !== 'Kematian') $buttonHTML .= '<a href="' . route('citizens.restore', $row->id_riwayatWarga) . '" class="restore-btn btn btn-danger btn-sm ml-2">Restore</a>';
+				if ($row->status !== 'Kematian') $buttonHTML .= '<a href="' . route('citizens.restore', $row->id_riwayatWarga) . '" class="restore-btn btn btn-danger btn-sm ml-2" data-confirm-delete="true">Restore</a>';
 				$buttonHTML .= '</div>';
 
 				return $buttonHTML;

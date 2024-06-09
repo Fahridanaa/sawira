@@ -64,6 +64,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
 	Route::get('/settings', [AuthController::class, 'settings'])->name('settings');
 	Route::put('/settings', [AuthController::class, 'updatePassword'])->name('auth.update.password');
 	Route::put('/settings/username', [AuthController::class, 'updateUsername'])->name('auth.update.username')->middleware('can:user');
+	Route::get('/reset-password/{id}', [AuthController::class, 'resetPassword'])->name('auth.reset.password')->middleware('can:admin');
 
 	Route::resource('zakat', ManageZakatController::class)->middleware('can:amil');
 	Route::prefix('/zakat')->group(function () {
