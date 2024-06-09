@@ -2,7 +2,7 @@
 @section('content')
     <section class="section">
         <div class="section-header justify-content-between">
-            <h1>Menambah Kartu Keluarga</h1>
+            <h1>Edit Kartu Keluarga</h1>
             <div class="btn-group p-1">
                 <a href="{{ route('penduduk') }}">
                     <button class="btn btn-danger mr-2">
@@ -24,6 +24,7 @@
                         <div class="card-body">
                             <form id="family-form">
                                 @csrf
+                                {!! method_field('PUT') !!}
                                 <div class="row">
                                     <div class="col-6">
                                         <div class="form-group">
@@ -32,6 +33,7 @@
                                                    class="form-control"
                                                    name="no_kk"
                                                    id="no_kk"
+                                                   {{ $family->no_kk ? 'value= ' . $family->no_kk : ''}}
                                                    required>
                                             <div class="invalid-feedback"
                                                  id="no_kk-error-message-feedback">
@@ -53,10 +55,14 @@
                                                 @if(isset($provinces))
                                                     <option disabled
                                                             hidden
-                                                            selected>Pilih Salah Satu
+                                                            {{ ($family) ? '' : 'selected' }}>Pilih Salah Satu
                                                     </option>
                                                     @foreach ($provinces as $item)
-                                                        <option value="{{ $item->id ?? '' }}">{{ $item->name ?? '' }}</option>
+                                                        <option value="{{ $item->id ?? '' }}"
+                                                        @if($family)
+                                                            {{ ($family->id_provinsi === $item->id) ? 'selected' : ''}}
+                                                                @endif
+                                                        >{{ $item->name ?? '' }}</option>
                                                     @endforeach
                                                 @endif
                                             </select>
@@ -110,6 +116,7 @@
                                             <input type="text"
                                                    class="form-control @error('kode_pos') is-invalid @enderror"
                                                    name="kode_pos"
+                                                   {{ $family->kode_pos ? 'value= ' . $family->kode_pos : ''}}
                                                    id="kode_pos"
                                                    required>
                                             <div class="invalid-feedback">
@@ -124,6 +131,7 @@
                                             <input type="text"
                                                    class="form-control"
                                                    name="alamat"
+                                                   {{ $family->alamat ? 'value= ' . $family->alamat : ''}}
                                                    id="alamat"
                                                    required>
                                             <div class="invalid-feedback">
@@ -134,19 +142,6 @@
                             </form>
                         </div>
                     </div>
-                    <x-forms.family-member-form
-                            :citizen="$citizen"
-                            id="headFamily"
-                            status="headFamily"
-                            iteration=0
-                    />
-                    <div class="row pb-5">
-                        <div class="col-12 d-flex justify-content-center">
-                            <button class="btn btn-primary"
-                                    id="add-member">Tambah Anggota Keluarga Lainnya
-                            </button>
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>
@@ -154,14 +149,25 @@
 @endsection
 @push('js')
     <script type="module">
-        $(document).ready(() => {
-            const url = window.location.pathname;
-            const urlParts = url.split('/');
-            const lastPart = urlParts[urlParts.length - 1];
+        $(document).ready(function () {
+            const id_provinsi = $('#id_provinsi');
+            const id_kabupaten = $('#id_kabupaten');
+            const id_kecamatan = $('#id_kecamatan');
+            onChangeSelect('{{ route("cities") }}', {{ $province->id }}, {{ $cities->id }}, '{{ $cities->name }}', 'id_kabupaten');
+            onChangeSelect('{{ route("districts") }}', {{ $cities->id }}, {{ $districts->id }}, '{{ $districts->name }}', 'id_kecamatan');
+            onChangeSelect('{{ route("villages") }}', {{ $districts->id }}, {{ $villages->id }}, '{{ $villages->name }}', 'id_kelurahan');
 
-            // console.log('lastPart: ',);
+            id_provinsi.on('change', function () {
+                onChangeSelect('{{ route("cities") }}', $(this).val(), 'id_kabupaten');
+            });
+            id_kabupaten.on('change', function () {
+                onChangeSelect('{{ route("districts") }}', $(this).val(), 'id_kecamatan');
+            })
+            id_kecamatan.on('change', function () {
+                onChangeSelect('{{ route("villages") }}', $(this).val(), 'id_kelurahan');
+            })
 
-            function onChangeSelect(url, id, name) {
+            function onChangeSelect(url, id, requestId, requestName, name) {
                 $.ajax({
                     url: url,
                     type: 'GET',
@@ -171,7 +177,8 @@
                     success: function (data) {
                         const $elementId = $('#' + name);
                         $elementId.empty();
-                        $elementId.append('<option hidden selected disabled>Pilih Salah Satu</option>');
+                        {{--$elementId.append('<option hidden disabled {{ ($family) ? '' : 'selected' }}>Pilih Salah Satu</option>');--}}
+                        $($elementId).append('<option value="' + requestId + '" selected hidden>' + requestName + '</option>');
                         $.each(data, function (key, value) {
                             $('#' + name).append('<option value="' + key + '">' + value + '</option>');
                         });
@@ -182,62 +189,28 @@
                 });
             }
 
-            $('#id_provinsi').on('change', function () {
-                onChangeSelect('{{ route("cities") }}', $(this).val(), 'id_kabupaten');
-            });
-            $('#id_kabupaten').on('change', function () {
-                onChangeSelect('{{ route("districts") }}', $(this).val(), 'id_kecamatan');
-            })
-            $('#id_kecamatan').on('change', function () {
-                onChangeSelect('{{ route("villages") }}', $(this).val(), 'id_kelurahan');
-            })
-
             $('#add-btn').click(function (e) {
                 e.preventDefault();
 
                 $('#family-form').trigger('submit');
             });
 
-            $('.citizen-form-class').on('submit', function (e) {
-                e.preventDefault();
-            });
-
             $('#family-form').submit(function (e) {
                 e.preventDefault();
 
                 let familyData = {};
-                let citizens = [];
 
                 $(this).serializeArray().map(function (x) {
                     familyData[x.name] = x.value;
                 });
 
-                $('.citizen-form-class').each(function () {
-                    let form = $(this);
-                    let citizenData = {};
-
-                    let inputs = form.serializeArray();
-                    $.each(inputs, function (i, input) {
-                        citizenData[input.name] = input.value;
-                    });
-
-                    citizens.push(citizenData);
-                });
-
-                if (/^\d+$/.test(lastPart)) citizens[0]['id_warga'] = lastPart;
-
-                const postData = {
-                    family: familyData,
-                    citizens: citizens,
-                    _token: "{{ csrf_token() }}"
-                };
 
                 $.ajax({
                     type: 'POST',
-                    url: '{{ route('family-heads.store') }}',
+                    url: '{{ route('family-heads.update', $family->id_kk) }}',
                     data: {
                         _token: "{{ csrf_token() }}",
-                        ...postData,
+                        ...familyData,
                     },
                     success: function () {
                         window.location.href = '{{ route('penduduk') }}';
@@ -264,21 +237,7 @@
 
                     }
                 });
-            });
-
-            function addClickHandlerToDeleteButton(iteration) {
-                $(`#familyMember-${iteration}`).find("button#delete-family-member-card").click(function () {
-                    $(`#familyMember-${iteration}`).remove();
-                });
-            }
-
-            $("#add-member").click(function () {
-                const iteration = $("[id^=familyMember-]").length;
-                const newCard = `<x-forms.family-member-form id="familyMember-${iteration}" status="familyMember" iteration="${iteration}" />`;
-
-                $(this).closest('.row').before(newCard);
-                addClickHandlerToDeleteButton(iteration);
-            });
-        });
+            })
+        })
     </script>
 @endpush

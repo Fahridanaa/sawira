@@ -49,10 +49,11 @@ class FamilyController extends Controller
 	/**
 	 * Show the form for creating a new resource.
 	 */
-	public function create()
+	public function create($id = null)
 	{
+		$citizen = ($id) ? CitizensModel::where('id_warga', $id)->first() : null;
 		$provinces = \Indonesia::allProvinces();
-		return view('pages.familyHeads.create', ['provinces' => $provinces]);
+		return view('pages.familyHeads.create', ['provinces' => $provinces], compact('citizen'));
 	}
 
 	/**
@@ -102,6 +103,8 @@ class FamilyController extends Controller
 						throw new \Exception(json_encode($citizenValidator->errors()->toArray()));
 					}
 
+					if ($citizen['id_warga']) CitizensModel::findOrFail($citizen['id_warga'])->delete();
+
 					CitizensModel::create($citizenValidator->validated());
 				}
 
@@ -143,12 +146,30 @@ class FamilyController extends Controller
 	 */
 	public function edit(string $id)
 	{
-		//
+		$family = KKModel::findOrFail($id);
+		$provinces = \Indonesia::allProvinces();
+		$province = \Indonesia::findProvince($family->id_provinsi);
+		$cities = \Indonesia::findCity($family->id_kabupaten);
+		$districts = \Indonesia::findDistrict($family->id_kecamatan);
+		$villages = \Indonesia::findVillage($family->id_kelurahan);
+		return view('pages.familyHeads.edit', [
+			'provinces' => $provinces,
+			'province' => $province,
+			'cities' => $cities,
+			'districts' => $districts,
+			'villages' => $villages
+		], compact('family'));
 	}
 
 	/**
 	 * Update the specified resource in storage.
 	 */
+	public function update(StoreFamilyCardRequest $request, string $id)
+	{
+		KKModel::findOrFail($id)->update($request->validated());
+		return response()->json(['message' => 'Successfully updated family-card'], 200);
+	}
+
 	public function upload(Request $request, string $id)
 	{
 		$request->validate([

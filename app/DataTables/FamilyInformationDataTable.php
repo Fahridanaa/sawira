@@ -40,6 +40,9 @@ class FamilyInformationDataTable extends DataTable
 			->addColumn('action', function ($row) {
 				$buttonHTML = '<div class="btn-group" data-id="' . $row->id_warga . '">';
 				$buttonHTML .= '<button class="btn btn-primary detail-btn" data-toggle="modal"  data-target="#detailModal">Detail</button>';
+				if ($row->id_hubungan != 1) {
+					$buttonHTML .= '<a href="' . route('family-heads.pecah', $row->id_warga) . '" class="btn btn-warning text-white ml-2">Pecah</a>';
+				}
 				$buttonHTML .= '</div>';
 				return $buttonHTML;
 			})
