@@ -45,6 +45,11 @@ class ArsipSuratModel extends Model
 
 	public function user(): BelongsTo
 	{
-		return $this->belongsTo(User::class, 'id_user', 'id_user');
+		return $this->belongsTo(UsersModel::class, 'id_user', 'id_user');
+	}
+
+	public function warga(): BelongsTo
+	{
+		return $this->belongsTo(CitizensModel::class, 'id_warga', 'id_warga');
 	}
 }

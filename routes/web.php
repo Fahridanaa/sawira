@@ -13,7 +13,7 @@ use App\Http\Controllers\views\LetterController;
 use App\Http\Controllers\views\ManageCitizens;
 use App\Http\Controllers\views\ManageHistoryController;
 use App\Http\Controllers\views\ManageZakatController;
-use App\Http\Controllers\views\pecahKKController;
+use App\Http\Controllers\views\ManageLetterArchivesController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -37,6 +37,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
 	Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 	Route::get('/penduduk', [ManageCitizens::class, 'index'])->name('penduduk')->middleware('can:manager');
 	Route::get('/history', [ManageHistoryController::class, 'index'])->name('history')->middleware('can:manager');
+	Route::get('letter-archives', [ManageLetterArchivesController::class, 'index'])->name('letter-archives')->middleware('can:admin');
 
 	Route::prefix('/tab-content/')->group(function () {
 		Route::resource('family-heads', FamilyController::class);
