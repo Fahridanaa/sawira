@@ -2,6 +2,7 @@
 
 namespace App\DataTables;
 
+use App\Models\KKModel;
 use App\Models\RiwayatWargaModel;
 use Illuminate\Database\Eloquent\Builder as QueryBuilder;
 use Illuminate\Support\Carbon;
@@ -42,6 +43,9 @@ class CitizensHistoryDataTable extends DataTable
 
 				return $buttonHTML;
 			})
+			->addColumn('id_rt', function ($row) {
+				return $row->warga->kk->id_rt ?? 'N/A';
+			})
 			->rawColumns(['nama_warga', 'action'])
 			->setRowId('id');
 	}
@@ -53,7 +57,7 @@ class CitizensHistoryDataTable extends DataTable
 	{
 		$role = auth()->user()->role;
 		$query = $model->newQuery()->with(['warga' => function ($query) {
-			$query->withTrashed();
+			$query->withTrashed()->with('kk');
 		}]);
 
 		if ($role !== 'rw') {
@@ -61,8 +65,9 @@ class CitizensHistoryDataTable extends DataTable
 			$query->whereHas('warga.kk', function ($query) use ($rt) {
 				$query->withTrashed()->where('id_rt', $rt);
 			});
+		}
 
-		} else if (request()->has('id_rt') && request('id_rt') != '') {
+		if (request()->has('id_rt') && request('id_rt') != '') {
 			$query->whereHas('warga.kk', function ($query) {
 				$query->withTrashed()->where('id_rt', request('id_rt'));
 			});
