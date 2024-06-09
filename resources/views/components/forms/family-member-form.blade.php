@@ -1,8 +1,8 @@
-@props(['status' => 'familyMember', 'id' => '', 'iteration' => 0])
+@props(['status' => 'familyMember', 'id' => '', 'iteration' => 0, 'citizen' => null])
 
 @php
     $isHeadFamily = $status === 'headFamily';
-    $isFamilyMember = $status === 'familyMember';
+    $isFamilyMember = !$isHeadFamily;
 @endphp
 
 <div class="card"
@@ -13,7 +13,7 @@
             @else
             Anggota Keluarga
             @endif</h4>
-        @if($isFamilyMember && url()->current() === route('family-heads.create'))
+        @if($isFamilyMember)
             <div class="btn-group p-1">
                 <button class="btn btn-danger mr-2"
                         id="delete-family-member-card"
@@ -74,6 +74,7 @@
                                    class="form-control @error('nik') is-invalid @enderror"
                                    name="nik"
                                    id="nik"
+                                   {{ $citizen ? 'value=' . $citizen->nik : '' }}
                                    required>
                             <div class="invalid-feedback"
                                  id="nik-error-message-feedback">
@@ -94,6 +95,7 @@
                                    class="form-control @error('nama_lengkap') is-invalid @enderror"
                                    name="nama_lengkap"
                                    id="nama_lengkap"
+                                   {{ $citizen ? 'value=' . $citizen->nama_lengkap : '' }}
                                    required>
                             <div class="invalid-feedback">
                             </div>
@@ -114,6 +116,7 @@
                             <input type="text"
                                    class="form-control phone-number @error('no_telp') is-invalid @enderror"
                                    name="no_telp"
+                                   {{ $citizen ? 'value=' . $citizen->no_telp : '' }}
                                    id="no_telp">
                             <div class="invalid-feedback">
                             </div>
@@ -134,14 +137,32 @@
                                     name="agama">
                                 <option disabled
                                         hidden
-                                        selected>Pilih Agama
+                                        {{ $citizen ? '' : 'selected'}}>Pilih Agama
                                 </option>
-                                <option value="Islam">Islam</option>
-                                <option value="Kristen Protestan">Kristen Protestan</option>
-                                <option value="Katolik">Katolik</option>
-                                <option value="Hindu">Hindu</option>
-                                <option value="Buddha">Buddha</option>
-                                <option value="Konghucu">Konghucu</option>
+                                <option value="Islam" @if($citizen)
+                                    {{ $citizen->agama === 'Islam' ? 'selected' : '' }}
+                                        @endif>Islam
+                                </option>
+                                <option value="Kristen Protestan" @if($citizen)
+                                    {{ $citizen->agama === 'Kristen Protestan' ? 'selected' : '' }}
+                                        @endif>Kristen Protestan
+                                </option>
+                                <option value="Katolik" @if($citizen)
+                                    {{ $citizen->agama === 'Katolik' ? 'selected' : '' }}
+                                        @endif>Katolik
+                                </option>
+                                <option value="Hindu" @if($citizen)
+                                    {{ $citizen->agama === 'Hindu' ? 'selected' : '' }}
+                                        @endif>Hindu
+                                </option>
+                                <option value="Buddha" @if($citizen)
+                                    {{ $citizen->agama === 'Buddha' ? 'selected' : '' }}
+                                        @endif>Buddha
+                                </option>
+                                <option value="Konghucu" @if($citizen)
+                                    {{ $citizen->agama === 'Konghucu' ? 'selected' : '' }}
+                                        @endif>Konghucu
+                                </option>
                             </select>
                             <div class="invalid-feedback">
                             </div>
@@ -161,14 +182,18 @@
                                        name="jenis_kelamin"
                                        value="L"
                                        class="selectgroup-input"
-                                       checked="">
+                                @if($citizen)
+                                    {{ $citizen->jenis_kelamin !== 'P' ? 'checked' : '' }}
+                                        @endif>
                                 <span class="selectgroup-button selectgroup-button-icon"><i class="fas fa-mars"></i></span>
                             </label>
                             <label class="selectgroup-item">
                                 <input type="radio"
                                        name="jenis_kelamin"
                                        value="P"
-                                       class="selectgroup-input">
+                                       class="selectgroup-input"@if($citizen)
+                                    {{ $citizen->jenis_kelamin === 'P' ? 'checked' : '' }}
+                                        @endif>
                                 <span class="selectgroup-button selectgroup-button-icon"><i class="fas fa-venus"></i></span>
                             </label>
                         </div>
@@ -190,6 +215,7 @@
                             <input type="text"
                                    class="form-control @error('asal_tempat') is-invalid @enderror"
                                    name="asal_tempat"
+                                   {{ $citizen ? 'value=' . $citizen->asal_tempat : '' }}
                                    id="asal_tempat">
                             @error('asal_tempat')
                             <div class="invalid-feedback">
@@ -211,6 +237,7 @@
                             <input type="date"
                                    class="form-control datepicker @error('tanggal_lahir') is-invalid @enderror"
                                    name="tanggal_lahir"
+                                   {{ $citizen ? 'value=' . $citizen->tanggal_lahir : '' }}
                                    id="tanggal_lahir">
                             <div class="invalid-feedback">
                             </div>
@@ -233,12 +260,24 @@
                                     name="status_perkawinan">
                                 <option disabled
                                         hidden
-                                        selected>Pilih Status
+                                        {{ $citizen ? '' : 'selected' }}>Pilih Status
                                 </option>
-                                <option value="Kawin">Kawin</option>
-                                <option value="Belum Kawin">Belum Kawin</option>
-                                <option value="Cerai Hidup">Cerai Hidup</option>
-                                <option value="Cerai Mati">Cerai Mati</option>
+                                <option value="Kawin" @if($citizen)
+                                    {{ $citizen->status_perkawinan === 'Kawin' ? 'selected' : '' }}
+                                        @endif>Kawin
+                                </option>
+                                <option value="Belum Kawin" @if($citizen)
+                                    {{ $citizen->status_perkawinan === 'Belum Kawin' ? 'selected' : '' }}
+                                        @endif>Belum Kawin
+                                </option>
+                                <option value="Cerai Hidup" @if($citizen)
+                                    {{ $citizen->status_perkawinan === 'Cerai Hidup' ? 'selected' : '' }}
+                                        @endif>Cerai Hidup
+                                </option>
+                                <option value="Cerai Mati" @if($citizen)
+                                    {{ $citizen->status_perkawinan === 'Cerai Mati' ? 'selected' : '' }}
+                                        @endif>Cerai Mati
+                                </option>
                             </select>
                             <div class="invalid-feedback">
                             </div>
@@ -259,10 +298,16 @@
                                     name="kewarganegaraan">
                                 <option disabled
                                         hidden
-                                        selected>Pilih Kewarganegaraan
+                                        {{ $citizen ? '' : 'selected' }}>Pilih Kewarganegaraan
                                 </option>
-                                <option value="WNI">WNI</option>
-                                <option value="WNA">WNA</option>
+                                <option value="WNI" @if($citizen)
+                                    {{ $citizen->kewarganegaraan === 'WNI' ? 'selected' : '' }}
+                                        @endif>WNI
+                                </option>
+                                <option value="WNA" @if($citizen)
+                                    {{ $citizen->kewarganegaraan === 'WNA' ? 'selected' : '' }}
+                                        @endif>WNA
+                                </option>
                             </select>
                             <div class="invalid-feedback">
                             </div>
@@ -283,6 +328,7 @@
                             <input type="text"
                                    class="form-control @error('pendidikan_terakhir') is-invalid @enderror"
                                    name="pendidikan_terakhir"
+                                   {{ $citizen ? 'value=' . $citizen->pendidikan_terakhir : '' }}
                                    id="pendidikan_terakhir">
                             @error('pendidikan_terakhir')
                             <div class="invalid-feedback">
@@ -304,6 +350,7 @@
                             <input type="text"
                                    class="form-control @error('pekerjaan') is-invalid @enderror"
                                    name="pekerjaan"
+                                   {{ $citizen ? 'value=' . $citizen->pekerjaan : '' }}
                                    id="pekerjaan">
                             <div class="invalid-feedback">
                             </div>

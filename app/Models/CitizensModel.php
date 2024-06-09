@@ -49,18 +49,13 @@ class CitizensModel extends Model
 		'id_rt' => 'integer'
 	];
 
-	public function kk(): belongsTo
+	public function kk(): BelongsTo
 	{
-		return $this->belongsTo(KKModel::class, 'id_kk', 'id_kk');
+		return $this->belongsTo(KKModel::class, 'id_kk', 'id_kk')->withTrashed();
 	}
 
 	public function statusHubunganWarga(): BelongsTo
 	{
 		return $this->belongsTo(StatusHubunganWargaModel::class, 'id_hubungan', 'id_hubungan');
-	}
-
-	public function rt(): BelongsTo
-	{
-		return $this->belongsTo(RTModel::class, 'id_rt', 'id_rt');
 	}
 }

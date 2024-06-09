@@ -41,7 +41,7 @@
                                             <div class="row">
                                                 <div class="col-md-12">
                                                     <div class="form-group row">
-                                                        <label class="col-md-1 col-sm-2 control-label col-form-label">Filter:</label>
+                                                        <label class="col-md-3 col-sm-2 col-xl-1 control-label col-form-label">Filter:</label>
                                                         <div class="col-md-3 col-sm-6">
                                                             <select class="form-control"
                                                                     name="id_rt"

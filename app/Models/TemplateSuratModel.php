@@ -17,7 +17,6 @@ class TemplateSuratModel extends Model
 	 * @var array
 	 */
 	protected $fillable = [
-		'no_registrasi',
 		'nama_surat',
 	];
 

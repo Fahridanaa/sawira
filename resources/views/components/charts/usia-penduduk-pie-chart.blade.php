@@ -4,9 +4,15 @@
         <div class="card-header">
             <h4 class="card-title">{{ $cardTitle }}</h4>
         </div>
-        <div class="card-body d-flex justify-content-center"
-             style="max-width: 500px; max-height: 500px;">
+        <div class="card-body d-flex justify-content-center">
+            <div class="chartjs-size-monitor">
+                <div class="chartjs-size-monitor-expand">
+                </div>
+                <div class="chartjs-size-monitor-shrink">
+                </div>
+            </div>
             <canvas id="{{ $chartId }}"
+                    height="500"
                     class="flex-grow-1"></canvas>
         </div>
     </div>

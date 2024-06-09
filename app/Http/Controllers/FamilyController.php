@@ -12,6 +12,7 @@ use App\Models\KKModel;
 use App\Models\KondisiKeluargaModel;
 use App\Models\RiwayatKKModel;
 use App\Models\UsersModel;
+use App\Services\HistoryService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -22,6 +23,13 @@ use Illuminate\Support\Str;
 
 class FamilyController extends Controller
 {
+	protected HistoryService $historyService;
+
+	public function __construct()
+	{
+		$this->historyService = new HistoryService();
+	}
+
 	/**
 	 * Display a listing of the resource.
 	 */
@@ -41,10 +49,11 @@ class FamilyController extends Controller
 	/**
 	 * Show the form for creating a new resource.
 	 */
-	public function create()
+	public function create($id = null)
 	{
+		$citizen = ($id) ? CitizensModel::where('id_warga', $id)->first() : null;
 		$provinces = \Indonesia::allProvinces();
-		return view('pages.familyHeads.create', ['provinces' => $provinces]);
+		return view('pages.familyHeads.create', ['provinces' => $provinces], compact('citizen'));
 	}
 
 	/**
@@ -56,7 +65,7 @@ class FamilyController extends Controller
 			$familyValidator = Validator::make($request->family, (new StoreFamilyCardRequest)->rules());
 
 			if ($familyValidator->fails()) {
-				throw new \Exception(json_encode($familyValidator->errors()->toArray()));
+				return back()->with('toast_error', $familyValidator->messages()->all()[0])->withInput();
 			}
 
 			$familyData = $familyValidator->validated();
@@ -91,13 +100,15 @@ class FamilyController extends Controller
 					]), (new StoreCitizenRequest)->rules());
 
 					if ($citizenValidator->fails()) {
-						throw new \Exception(json_encode($citizenValidator->errors()->toArray()));
+						return back()->with('toast_error', $citizenValidator->messages()->all()[0])->withInput();
 					}
+
+					if (isset($citizen['id_warga'])) CitizensModel::findOrFail($citizen['id_warga'])->delete();
 
 					CitizensModel::create($citizenValidator->validated());
 				}
 
-				return response()->json(['message' => 'success coy'], 201);
+				return redirect('penduduk')->with('toast_success', 'Data Keluarga Berhasil Ditambah!');
 			}, 3);
 
 			return response()->json(['message' => 'Successfully created family-card'], 201);
@@ -116,7 +127,7 @@ class FamilyController extends Controller
 			Log::error($e);
 			return response()->json([
 				'status' => 'error',
-				'message' => json_decode($e->getMessage(), true)
+				'message' => $e->getMessage(),
 			], 400);
 		}
 	}
@@ -135,12 +146,30 @@ class FamilyController extends Controller
 	 */
 	public function edit(string $id)
 	{
-		//
+		$family = KKModel::findOrFail($id);
+		$provinces = \Indonesia::allProvinces();
+		$province = \Indonesia::findProvince($family->id_provinsi);
+		$cities = \Indonesia::findCity($family->id_kabupaten);
+		$districts = \Indonesia::findDistrict($family->id_kecamatan);
+		$villages = \Indonesia::findVillage($family->id_kelurahan);
+		return view('pages.familyHeads.edit', [
+			'provinces' => $provinces,
+			'province' => $province,
+			'cities' => $cities,
+			'districts' => $districts,
+			'villages' => $villages
+		], compact('family'));
 	}
 
 	/**
 	 * Update the specified resource in storage.
 	 */
+	public function update(StoreFamilyCardRequest $request, string $id)
+	{
+		KKModel::findOrFail($id)->update($request->validated());
+		return redirect('penduduk')->with('toast_success', 'Data Kartu Keluarga Berhasil Diupdate!');
+	}
+
 	public function upload(Request $request, string $id)
 	{
 		$request->validate([
@@ -149,24 +178,21 @@ class FamilyController extends Controller
 
 		DB::transaction(function () use ($request, $id) {
 			$family = RiwayatKKModel::findOrFail($id);
-		
 
-			if ($family->file_surat) {
-				Storage::delete('public/surat/' . $family->file_surat);
-			}
-
-			if ($request->hasFile('file_surat')) {
-				$file = $request->file('file_surat');
-				$filename = time() . '_' . $file->getClientOriginalName();
-				$path = $file->storeAs('public/surat', $filename);
-	
-				// Simpan nama file ke database
-				$family->file_surat = $filename;
-				$family->save();
-			}
+			$this->historyService->uploadFile($family, $request);
 		});
 
-		return redirect()->route('history');
+		return redirect()->back();
+	}
+
+	public function download($id)
+	{
+		$history = RiwayatKKModel::findOrFail($id);
+
+		$file = $this->historyService->downloadFile($history);
+
+		if ($file === null) return back()->with('toast_error', 'File tidak ditemukan');
+		return $file;
 	}
 
 	/**
@@ -185,6 +211,24 @@ class FamilyController extends Controller
 				'status' => $storeHistoryRequest->status,
 			]);
 		});
-		return redirect()->route('history');
+		return redirect('history')->with('toast_success', 'Data Keluarga Berhasil Dihapus!');
 	}
+
+	public function restore($id)
+	{
+		$kkHistory = RiwayatKKModel::findOrFail($id);
+		$kk = KKModel::withTrashed()->find($kkHistory->id_kk);
+
+		if (!$kk || $kkHistory->status === 'Kematian') {
+			return back()->with('toast_error', 'Data tidak ditemukan');
+		}
+
+		if ($kk->file_surat) {
+			Storage::delete('public/surat/' . $kkHistory->file_surat);
+		}
+		$kkHistory->delete();
+		$kk->restore();
+		return redirect('penduduk')->with('toast_success', 'Data Keluarga Berhasil Dikembalikan!');
+	}
+
 }

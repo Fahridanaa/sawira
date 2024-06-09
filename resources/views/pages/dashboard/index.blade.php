@@ -30,7 +30,6 @@
         <div class="row flex-grow-1 d-flex">
             <x-charts.total-citizens-bar-chart
                     cardTitle="Jumlah Penduduk"
-                    :labelss="$labelss"
                     :genderManStatistics="$genderManStatistics"
                     :genderWomanStatistics="$genderWomanStatistics"
             />
@@ -43,9 +42,9 @@
     </section>
 @endsection
 @push('js')
-<script type="module">
-    $.(document).ready(function() {
-        console.log('ready');
-    });
-</script>
+    <script type="module">
+        $.(document).ready(function () {
+            console.log('ready');
+        });
+    </script>
 @endpush

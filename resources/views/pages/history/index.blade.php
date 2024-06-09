@@ -38,27 +38,31 @@
                                     <div class="tab-content no-padding"
                                          id="myTab2Content">
                                         <div class="row">
-                                            <div class="col-md-12">
-                                                <div class="form-group row">
-                                                    <label class="col-md-1 col-sm-2 control-label col-form-label">Filter:</label>
+                                            @if(\App\Helpers\SidebarHelper::hasAnyRole(['rw']))
+                                                <div class="col-md-12">
+                                                    <div class="form-group row">
+                                                        <label class="col-md-3 col-sm-2 col-xl-1 control-label col-form-label">Filter:</label>
                                                         <div class="col-md-3 col-sm-6">
-                                                        <select class="form-control"
-                                                                name="id_rt"
-                                                                id="id_rt"
-                                                                required>
-                                                            <option disabled
-                                                                    hidden
-                                                                    selected>- RT -
-                                                            </option>
-                                                            @foreach ($rts as $rt)
-                                                                <option value="{{ $rt->id_rt }}">{{ $rt->no_rt }}</option>
-                                                            @endforeach
-                                                        </select>
-                                                        <small class="form-text text-muted">Pilih Berdasarkan RT</small>
+                                                            <select class="form-control"
+                                                                    name="id_rt"
+                                                                    id="id_rt"
+                                                                    required>
+                                                                <option disabled
+                                                                        hidden
+                                                                        selected>
+                                                                    - RT -
+                                                                </option>
+                                                                @foreach ($rts as $rt)
+                                                                    <option value="{{ $rt->id_rt }}">{{ $rt->no_rt }}</option>
+                                                                @endforeach
+                                                            </select>
+                                                            <small class="form-text text-muted">Pilih Berdasarkan
+                                                                                                RT</small>
+                                                        </div>
                                                     </div>
                                                 </div>
-                                            </div>
-                                        @endif
+                                            @endif
+                                        </div>
                                         <div class="tab-pane fade"
                                              id="family-history"
                                              role="tabpanel"

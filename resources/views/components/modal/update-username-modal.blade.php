@@ -1,14 +1,14 @@
 <div class="modal fade"
      tabindex="-1"
      role="dialog"
-     id="beras-input-modal"
+     id="updateUsername"
      style="display: none;"
      aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered  modal-md"
          role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Masukkan Jumlah Beras</h5>
+                <h5 class="modal-title">Ubah Username</h5>
                 <button type="button"
                         class="close"
                         data-dismiss="modal"
@@ -16,25 +16,31 @@
                     <span aria-hidden="true">×</span>
                 </button>
             </div>
-            <form action="">
-                <div class="modal-body">
+            <div class="modal-body">
+                <form action="{{ route('auth.update.username') }}"
+                      method="POST">
+                    {!! method_field('PUT') !!}
+                    @csrf
                     <div class="row">
                         <div class="col-12">
                             <div class="form-group">
-                                <label for="beras">Jumlah Beras(kg)</label>
+                                <label for="new_username">Username Baru</label>
                                 <input type="text"
-                                       class="form-control datepicker"
-                                       name="beras"
-                                       placeholder="50"
-                                       id="beras">
+                                       class="form-control"
+                                       id="new_username"
+                                       name="new_username"
+                                       required>
                             </div>
+
                         </div>
                     </div>
                     <div class="row justify-content-end">
-                        <div class="btn btn-primary">Submit</div>
+                        <button type="submit"
+                                class="btn btn-primary">Simpan
+                        </button>
                     </div>
-                </div>
-            </form>
+                </form>
+            </div>
         </div>
     </div>
 </div>

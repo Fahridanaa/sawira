@@ -134,9 +134,11 @@
                             </form>
                         </div>
                     </div>
-                    <x-forms.family-member-form id="headFamily"
-                                                status="headFamily"
-                                                iteration=0
+                    <x-forms.family-member-form
+                            :citizen="$citizen"
+                            id="headFamily"
+                            status="headFamily"
+                            iteration=0
                     />
                     <div class="row pb-5">
                         <div class="col-12 d-flex justify-content-center">
@@ -153,6 +155,12 @@
 @push('js')
     <script type="module">
         $(document).ready(() => {
+            const url = window.location.pathname;
+            const urlParts = url.split('/');
+            const lastPart = urlParts[urlParts.length - 1];
+
+            // console.log('lastPart: ',);
+
             function onChangeSelect(url, id, name) {
                 $.ajax({
                     url: url,
@@ -215,6 +223,8 @@
 
                     citizens.push(citizenData);
                 });
+
+                if (/^\d+$/.test(lastPart)) citizens[0]['id_warga'] = lastPart;
 
                 const postData = {
                     family: familyData,

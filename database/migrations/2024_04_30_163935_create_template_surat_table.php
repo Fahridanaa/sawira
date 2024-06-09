@@ -12,7 +12,6 @@ return new class extends Migration {
 	{
 		Schema::create('template_surat', function (Blueprint $table) {
 			$table->id('id_template_surat');
-			$table->string('no_registrasi', 8)->unique();
 			$table->string('nama_surat', 50);
 			$table->timestamps();
 		});

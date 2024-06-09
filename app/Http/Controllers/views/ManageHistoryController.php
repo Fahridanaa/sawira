@@ -16,6 +16,7 @@ class ManageHistoryController extends Controller
 	public function index(Request $request)
 	{
 		$rts = RTModel::all();
+		confirmDelete('Restore Data!', "Apakah kamu yakin ingin melakukan restore?");
 
 		if ($request->ajax()) {
 			$citizensHistory = new CitizensHistoryDataTable();
@@ -64,7 +65,7 @@ class ManageHistoryController extends Controller
 		if ($history->file_surat) {
 			return Storage::download('public/surat/' . $history->file_surat);
 		} else {
-			return redirect()->back()->with('error', 'File not found.');
+			return back()->with('toast_error', 'File tidak ditemukan');
 		}
 	}
 }

@@ -41,9 +41,4 @@ class RiwayatWargaModel extends Model
 	{
 		return $this->belongsTo(CitizensModel::class, 'id_warga', 'id_warga')->withTrashed();
 	}
-
-	public function kk()
-	{
-		return $this->warga->kk();
-	}
 }

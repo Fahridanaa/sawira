@@ -19,20 +19,24 @@
                 </div>
                 <div class="modal-body">
                     <div class="form-group mb-0">
-                        <label class="form-label">Upload Surat Pengantar</label>
-                        <input type="file"
-                               name="file_surat"
-                               id="file_surat">
+                        <div class="custom-file">
+                            <input type="file"
+                                   name="file_surat"
+                                   class="custom-file-input"
+                                   id="file_surat">
+                            <label class="custom-file-label"
+                                   for="file_surat">Upload Surat Pengantar</label>
+                        </div>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="submit"
-                            class="btn btn-danger btn-shadow"
-                            id="">Yes
-                    </button>
                     <button type="button"
-                            class="btn btn-secondary"
+                            class="btn btn-danger"
                             id="">Cancel
+                    </button>
+                    <button type="submit"
+                            class="btn btn-primary btn-shadow"
+                            id="">Confirm
                     </button>
                 </div>
             </div>
@@ -58,6 +62,11 @@
 
         uploadFileButton.on('click', function () {
             uploadFileForm.submit();
+        });
+
+        $('#file_surat').on('change', function () {
+            let fileName = $(this).val().split('\\').pop();
+            $(this).next('.custom-file-label').html(fileName);
         });
     </script>
 @endpush
