@@ -70,8 +70,9 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
 		Route::put('/ketuart', [RTController::class, 'updateKetuaRT'])->name('rt.update.ketuart')->middleware('can:manager');
 	});
 
-	Route::resource('zakat', ManageZakatController::class)->middleware('can:amil');
 	Route::prefix('/zakat')->group(function () {
+		Route::get('/', [ManageZakatController::class, 'index'])->name('zakat.index');
+		Route::post('/', [ManageZakatController::class, 'store'])->name('zakat.store');
 		Route::get('saw', [SAWController::class, 'index'])->name('saw');
 		Route::get('saw/next', [SAWController::class, 'nextStep'])->name('nextSawStep');
 		Route::get('saw/prev', [SAWController::class, 'previousStep'])->name('prevSawStep');

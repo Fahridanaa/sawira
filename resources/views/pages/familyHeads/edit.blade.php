@@ -216,23 +216,16 @@
                         window.location.href = '{{ route('penduduk') }}';
                     },
                     error: function (response) {
-                        $('input').removeClass('is-invalid');
-                        $('select').removeClass('is-invalid');
+                        $('input, select').removeClass('is-invalid');
+                        $('.invalid-feedback').text('');
                         if (response.status === 400) {
                             const errors = response.responseJSON.message;
-                            $('.invalid-feedback').text('');
-                            for (const error in errors) {
-                                const element = $('#' + error);
-                                const invalidDiv = element.closest('.form-group').find('.invalid-feedback');
-                                element.addClass('is-invalid');
-                                invalidDiv.text(errors[error]);
+
+                            for (const [inputName, errorMessage] of Object.entries(errors)) {
+                                let $input = $(`#family-form`).find(`input[name=${inputName}], select[name=${inputName}]`);
+                                $input.addClass('is-invalid');
+                                $input.siblings('.invalid-feedback').text(errorMessage[0]);
                             }
-                        } else if (response.status === 401) {
-                            $('#no_kk').addClass('is-invalid');
-                            $('#no_kk-error-message-feedback').text(response.responseJSON.message)
-                        } else if (response.status === 402) {
-                            $('#nik').addClass('is-invalid');
-                            $('#nik-error-message-feedback').text(response.responseJSON.message)
                         }
 
                     }

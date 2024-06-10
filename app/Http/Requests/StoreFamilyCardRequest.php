@@ -3,9 +3,17 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class StoreFamilyCardRequest extends FormRequest
 {
+	protected $familyId;
+
+	public function __construct($familyId = null)
+	{
+		$this->familyId = $familyId;
+	}
+
 	/**
 	 * Determine if the user is authorized to make this request.
 	 */
@@ -26,7 +34,11 @@ class StoreFamilyCardRequest extends FormRequest
 			'id_kabupaten' => 'required|string|max:255',
 			'id_kecamatan' => 'required|string|max:255',
 			'id_kelurahan' => 'required|string|max:255',
-			'no_kk' => 'required|string|size:16',
+			'no_kk' => [
+				'required',
+				'string',
+				'size:16',
+				Rule::unique('kk', 'no_kk')->ignore($this->familyId, 'id_kk')],
 			'kode_pos' => 'required|numeric',
 			'alamat' => 'required|string|max:255',
 		];

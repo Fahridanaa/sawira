@@ -33,8 +33,7 @@
                                                    name="no_kk"
                                                    id="no_kk"
                                                    required>
-                                            <div class="invalid-feedback"
-                                                 id="no_kk-error-message-feedback">
+                                            <div class="invalid-feedback">
                                             </div>
                                         </div>
                                     </div>
@@ -136,7 +135,7 @@
                     </div>
                     <x-forms.family-member-form
                             :citizen="$citizen"
-                            id="headFamily"
+                            id="familyMember-0"
                             status="headFamily"
                             iteration=0
                     />
@@ -155,12 +154,6 @@
 @push('js')
     <script type="module">
         $(document).ready(() => {
-            const url = window.location.pathname;
-            const urlParts = url.split('/');
-            const lastPart = urlParts[urlParts.length - 1];
-
-            // console.log('lastPart: ',);
-
             function onChangeSelect(url, id, name) {
                 $.ajax({
                     url: url,
@@ -224,8 +217,6 @@
                     citizens.push(citizenData);
                 });
 
-                if (/^\d+$/.test(lastPart)) citizens[0]['id_warga'] = lastPart;
-
                 const postData = {
                     family: familyData,
                     citizens: citizens,
@@ -235,33 +226,39 @@
                 $.ajax({
                     type: 'POST',
                     url: '{{ route('family-heads.store') }}',
-                    data: {
-                        _token: "{{ csrf_token() }}",
-                        ...postData,
-                    },
+                    data: postData,
                     success: function () {
                         window.location.href = '{{ route('penduduk') }}';
                     },
                     error: function (response) {
-                        $('input').removeClass('is-invalid');
-                        $('select').removeClass('is-invalid');
+                        $('input, select').removeClass('is-invalid');
+                        $('.invalid-feedback').text('');
+
                         if (response.status === 400) {
                             const errors = response.responseJSON.message;
-                            $('.invalid-feedback').text('');
-                            for (const error in errors) {
-                                const element = $('#' + error);
-                                const invalidDiv = element.closest('.form-group').find('.invalid-feedback');
-                                element.addClass('is-invalid');
-                                invalidDiv.text(errors[error]);
-                            }
-                        } else if (response.status === 401) {
-                            $('#no_kk').addClass('is-invalid');
-                            $('#no_kk-error-message-feedback').text(response.responseJSON.message)
-                        } else if (response.status === 402) {
-                            $('#nik').addClass('is-invalid');
-                            $('#nik-error-message-feedback').text(response.responseJSON.message)
-                        }
 
+                            // Family form errors
+                            if (errors.family) {
+                                for (const [inputName, errorMessage] of Object.entries(errors.family)) {
+                                    let $input = $(`#family-form`).find(`input[name=${inputName}], select[name=${inputName}]`);
+                                    $input.addClass('is-invalid');
+                                    $input.siblings('.invalid-feedback').text(errorMessage[0]);
+                                }
+                            }
+
+                            // Citizens form errors
+                            if (errors.citizens) {
+                                errors.citizens.forEach((citizenErrors, index) => {
+                                    let $formError = $(`#familyMember-${index}`);
+
+                                    for (const [inputName, errorMessage] of Object.entries(citizenErrors)) {
+                                        let $input = $formError.find(`input[name=${inputName}], select[name=${inputName}]`);
+                                        $input.addClass('is-invalid');
+                                        $input.siblings('.invalid-feedback').text(errorMessage[0]);
+                                    }
+                                });
+                            }
+                        }
                     }
                 });
             });
@@ -273,7 +270,7 @@
             }
 
             $("#add-member").click(function () {
-                const iteration = $("[id^=familyMember-]").length;
+                const iteration = $("[id^=familyMember-]").length - 1;
                 const newCard = `<x-forms.family-member-form id="familyMember-${iteration}" status="familyMember" iteration="${iteration}" />`;
 
                 $(this).closest('.row').before(newCard);

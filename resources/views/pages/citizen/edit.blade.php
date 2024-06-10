@@ -22,9 +22,10 @@
                             <h4>Pilih Data No. KK</h4>
                         </div>
                         <div class="card-body">
-                            <form id="no-kk-form">
+                            <form id="no-kk-form"
+                                  method="POST">
                                 @csrf
-                                {!! method_field('PUT') !!}
+                                {{ method_field('PUT') }}
                                 <div class="row">
                                     <div class="col-6">
                                         <div class="form-group">
@@ -62,20 +63,11 @@
                     </div>
                     <div class="card">
                         <div class="card-body">
-                            <x-forms.edit-citizen-form
-                                    :citizen_id="$citizen->id_warga"
-                                    :id_hubungan="$citizen->id_hubungan"
-                                    :nik="$citizen->nik"
-                                    :name="$citizen->nama_lengkap"
-                                    :no_telp="$citizen->no_telp"
-                                    :agama="$citizen->agama"
-                                    :kelamin="$citizen->jenis_kelamin"
-                                    :asal_tempat="$citizen->asal_tempat"
-                                    :tanggal_lahir="$citizen->tanggal_lahir"
-                                    :status_perkawinan="$citizen->status_perkawinan"
-                                    :kewarganegaraan="$citizen->kewarganegaraan"
-                                    :pendidikan="$citizen->pendidikan_terakhir"
-                                    :pekerjaan="$citizen->pekerjaan"
+                            <x-forms.family-member-form
+                                    :citizen="$citizen"
+                                    id="familyMember-0"
+                                    status="{{ ($citizen->id_hubungan) ? 'headFamily' : 'familyMember' }}"
+                                    state="edit"
                             />
                         </div>
                     </div>
@@ -100,33 +92,30 @@
 
             $('#submit-button').click(function (e) {
                 e.preventDefault();
-
-                // Get data from the first form
-                const formData1 = $('#no-kk-form').serializeArray();
-
-                // Get data from the second form
-                const formData2 = $('#edit-citizen-form').serializeArray();
-
-                // Merge both data
-                const mergedData = $.extend(formData1, formData2);
-                var requestData = mergedData.reduce(function (obj, item) {
+                const kkForm = $('#no-kk-form');
+                const familyMemberForm = $('form#familyMember-0');
+                const mergedData = $.extend(kkForm.serializeArray(), familyMemberForm.serializeArray());
+                const requestData = mergedData.reduce(function (obj, item) {
                     obj[item.name] = item.value;
                     return obj;
                 }, {});
                 requestData.id_kk = $('#id_kk').val();
-
-                console.log('requestData: ', requestData);
 
                 // Send the merged data
                 $.ajax({
                     type: 'POST',
                     url: '{{ route('citizens.update', $citizen->id_warga) }}',
                     data: requestData,
-                    success: function (data) {
+                    success: function () {
                         window.location.href = '{{ route('penduduk') }}';
                     },
-                    error: function (xhr, status, error) {
-                        console.log('error: ', xhr.responseText);
+                    error: function (response) {
+                        const errors = response.responseJSON.message;
+                        for (const [inputName, errorMessage] of Object.entries(errors)) {
+                            let $input = familyMemberForm.find(`input[name=${inputName}], select[name=${inputName}]`);
+                            $input.addClass('is-invalid');
+                            $input.siblings('.invalid-feedback').text(errorMessage[0]);
+                        }
                     }
                 });
             });

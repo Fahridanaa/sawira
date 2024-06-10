@@ -62,18 +62,36 @@ class FamilyController extends Controller
 	 */
 	public function store(Request $request)
 	{
-		try {
-			$familyValidator = Validator::make($request->family, (new StoreFamilyCardRequest)->rules());
+		$index = 0;
+		$errors = [];
 
+		try {
+			// Validate family data
+			$familyValidator = Validator::make($request->family, (new StoreFamilyCardRequest)->rules());
 			if ($familyValidator->fails()) {
-				return back()->with('toast_error', $familyValidator->messages()->all()[0])->withInput();
+				$errors['family'] = $familyValidator->errors()->toArray();
 			}
 
-			$familyData = $familyValidator->validated();
-
+			// Validate citizens data without id_kk
 			$citizens = $request->citizens;
+			$citizenRules = (new StoreCitizenRequest)->rules();
+			unset($citizenRules['id_kk']); // Remove id_kk rule temporarily
+			foreach ($citizens as $i => $citizen) {
+				$citizenValidator = Validator::make($citizen, $citizenRules);
+				if ($citizenValidator->fails()) {
+					$errors['citizens'][$i] = $citizenValidator->errors()->toArray();
+				}
+			}
 
-			DB::transaction(function () use ($familyData, $citizens) {
+			// If any errors found, return immediately
+			if (!empty($errors)) {
+				return response()->json(['status' => 'error', 'message' => $errors], 400);
+			}
+
+			DB::transaction(function () use ($familyValidator, $citizens, &$index) {
+				$familyData = $familyValidator->validated();
+
+				// Create user
 				$roleUser = auth()->user()->role;
 				$rt = preg_replace("/[^0-9]/", "", $roleUser);
 				$tanggalHariIni = Carbon::now();
@@ -85,51 +103,42 @@ class FamilyController extends Controller
 					'role' => 'warga',
 				]);
 
+				// Create family
 				$newFamily = KKModel::create(array_merge($familyData, [
 					'id_user' => $user->id_user,
 					'id_rt' => $rt,
-					'tanggal_masuk' => $tanggalHariIni
+					'tanggal_masuk' => $tanggalHariIni,
 				]));
 
 				KondisiKeluargaModel::create([
 					'id_kk' => $newFamily->id_kk,
 				]);
 
+				// Validate and create each citizen with id_kk
 				foreach ($citizens as $citizen) {
 					$citizenValidator = Validator::make(array_merge($citizen, [
 						'id_kk' => $newFamily->id_kk,
 					]), (new StoreCitizenRequest)->rules());
 
 					if ($citizenValidator->fails()) {
-						return back()->with('toast_error', $citizenValidator->messages()->all()[0])->withInput();
+						throw new \Exception(json_encode($citizenValidator->errors()->toArray()));
 					}
 
-					if (isset($citizen['id_warga'])) CitizensModel::findOrFail($citizen['id_warga'])->delete();
+					if (isset($citizen['id_warga'])) {
+						CitizensModel::findOrFail($citizen['id_warga'])->delete();
+					}
 
 					CitizensModel::create($citizenValidator->validated());
+					$index++;
 				}
 
 				return redirect('penduduk')->with('toast_success', 'Data Keluarga Berhasil Ditambah!');
 			}, 3);
 
 			return response()->json(['message' => 'Successfully created family-card'], 201);
-		} catch (\Illuminate\Database\UniqueConstraintViolationException $e) {
-			return response()->json([
-				'status' => 'error',
-				'message' => 'The provided No. KK already exists. Please use a different value.'
-			], 401);
-		} catch (\Illuminate\Database\QueryException $e) {
-			return response()->json([
-				'status' => 'error',
-				'message' => 'NIK sudah ada. Silahkan gunakan NIK yang berbeda.'
-			], 402);
 		} catch (\Exception $e) {
-			// Handle other exceptions
-			Log::error($e);
-			return response()->json([
-				'status' => 'error',
-				'message' => $e->getMessage(),
-			], 400);
+			$errors['citizens'][$index] = json_decode($e->getMessage(), true);
+			return response()->json(['status' => 'error', 'message' => $errors], 400);
 		}
 	}
 
@@ -165,10 +174,21 @@ class FamilyController extends Controller
 	/**
 	 * Update the specified resource in storage.
 	 */
-	public function update(StoreFamilyCardRequest $request, string $id)
+	public function update(Request $request, string $id)
 	{
-		KKModel::findOrFail($id)->update($request->validated());
-		return redirect('penduduk')->with('toast_success', 'Data Kartu Keluarga Berhasil Diupdate!');
+		try {
+			$storeFamilyCardRequest = new StoreFamilyCardRequest($id);
+			$familyValidator = Validator::make($request->all(), $storeFamilyCardRequest->rules());
+
+			if ($familyValidator->fails()) {
+				return response()->json(['status' => 'error', 'message' => $familyValidator->errors()->toArray()], 400);
+			}
+
+			KKModel::findOrFail($id)->update($familyValidator->validated());
+			return redirect('penduduk')->with('toast_success', 'Data Kartu Keluarga Berhasil Diupdate!');
+		} catch (\Exception $e) {
+			return response()->json(['status' => 'error', 'message' => $e->getMessage()], 400);
+		}
 	}
 
 	public function upload(Request $request, string $id)
@@ -207,7 +227,7 @@ class FamilyController extends Controller
 
 			foreach ($citizens as $citizen) {
 				$citizen->delete();
-	
+
 				RiwayatWargaModel::create([
 					'id_warga' => $citizen->id_warga,
 					'tanggal' => Carbon::now(),

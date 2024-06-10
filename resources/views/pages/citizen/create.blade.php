@@ -117,8 +117,20 @@
                     success: function (data) {
                         window.location.href = '{{ route('penduduk') }}';
                     },
-                    error: function (xhr, status, error) {
-                        console.log('error: ', xhr.responseText);
+                    error: function (response) {
+                        $('input, select').removeClass('is-invalid');
+                        console.log(response.responseJSON.message);
+                        if (response.status === 400) {
+                            const errors = response.responseJSON.message;
+                            $('.invalid-feedback').text('');
+                            for (const error in errors) {
+                                const errorKey = error.replace(/\./g, '_');
+                                const element = $('#' + errorKey);
+                                const invalidDiv = element.closest('.form-group').find('.invalid-feedback');
+                                element.addClass('is-invalid');
+                                invalidDiv.text(errors[error]);
+                            }
+                        }
                     }
                 });
             });

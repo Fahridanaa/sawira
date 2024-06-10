@@ -1,4 +1,4 @@
-@props(['status' => 'familyMember', 'id' => '', 'iteration' => 0, 'citizen' => null])
+@props(['status' => 'familyMember', 'id' => '', 'iteration' => 0, 'citizen' => null, 'state' => 'create'])
 
 @php
     $isHeadFamily = $status === 'headFamily';
@@ -6,14 +6,15 @@
 @endphp
 
 <div class="card"
-     id="{{ $id }}">
+     id="{{ $id }}"
+     data-iteration="{{ $iteration }}">
     <div class="card-header justify-content-between">
         <h4>Masukkan Data @if($isHeadFamily)
             Kepala Keluarga
             @else
             Anggota Keluarga
             @endif</h4>
-        @if($isFamilyMember)
+        @if($isFamilyMember && $iteration !== 0)
             <div class="btn-group p-1">
                 <button class="btn btn-danger mr-2"
                         id="delete-family-member-card"
@@ -23,7 +24,12 @@
         @endif
     </div>
     <div class="card-body">
-        <form class="citizen-form-class">
+        <form class="citizen-form-class"
+              id="{{ $id }}">
+            @csrf
+            @if($state === 'edit')
+                {{ method_field('PUT') }}
+            @endif
             <div class="row">
                 <div class="col-12 col-lg-6">
                     <div class="form-group">
@@ -46,8 +52,14 @@
                                     @endif
                                     hidden>Kepala Keluarga
                             </option>
-                            <option value="2">Istri</option>
-                            <option value="3">Anak</option>
+                            <option value="2"@if($citizen)
+                                {{ $citizen->id_hubungan === 2 ? 'selected' : '' }}
+                                    @endif>Istri
+                            </option>
+                            <option value="3" @if($citizen)
+                                {{ $citizen->id_hubungan === 3 ? 'selected' : '' }}
+                                    @endif>Anak
+                            </option>
                         </select>
                         @if($isHeadFamily)
                             <input type="hidden"
@@ -55,7 +67,8 @@
                                    id="id_hubungan"
                                    value="1">
                         @endif
-                        <div class="invalid-feedback">
+                        <div class="invalid-feedback"
+                             id="id_hubungan-error-message-feedback">
                         </div>
                     </div>
                 </div>
@@ -217,11 +230,8 @@
                                    name="asal_tempat"
                                    {{ $citizen ? 'value=' . $citizen->asal_tempat : '' }}
                                    id="asal_tempat">
-                            @error('asal_tempat')
                             <div class="invalid-feedback">
-                                {{ $message }}
                             </div>
-                            @enderror
                         </div>
                     </div>
                 </div>
@@ -330,11 +340,8 @@
                                    name="pendidikan_terakhir"
                                    {{ $citizen ? 'value=' . $citizen->pendidikan_terakhir : '' }}
                                    id="pendidikan_terakhir">
-                            @error('pendidikan_terakhir')
                             <div class="invalid-feedback">
-                                {{ $message }}
                             </div>
-                            @enderror
                         </div>
                     </div>
                 </div>
