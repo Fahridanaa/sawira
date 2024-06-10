@@ -24,9 +24,9 @@ class StoreCitizenRequest extends FormRequest
 		return [
 			'id_kk' => 'required|numeric',
 			'id_hubungan' => 'required|in:1,2,3',
-			'nik' => 'required|string|size:16',
+			'nik' => 'required|string|size:16|unique:warga,nik',
 			'nama_lengkap' => 'required|string|max:255',
-			'no_telp' => 'required|string|min:8|max:15',
+			'no_telp' => 'required|string|min:8|max:15|unique:warga,no_telp',
 			'agama' => 'required|in:Islam,Kristen Protestan,Katolik,Hindu,Buddha,Konghucu',
 			'status_perkawinan' => 'required|in:Kawin,Belum Kawin,Cerai Hidup,Cerai Mati',
 			'kewarganegaraan' => 'required|in:WNI,WNA',

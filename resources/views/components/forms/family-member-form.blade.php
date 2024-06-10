@@ -6,7 +6,8 @@
 @endphp
 
 <div class="card"
-     id="{{ $id }}">
+     id="{{ $id }}"
+     data-iteration="{{ $iteration }}">
     <div class="card-header justify-content-between">
         <h4>Masukkan Data @if($isHeadFamily)
             Kepala Keluarga
@@ -23,7 +24,8 @@
         @endif
     </div>
     <div class="card-body">
-        <form class="citizen-form-class">
+        <form class="citizen-form-class"
+              id="{{ $id }}">
             @csrf
             @if($state === 'edit')
                 {{ method_field('PUT') }}
@@ -228,11 +230,8 @@
                                    name="asal_tempat"
                                    {{ $citizen ? 'value=' . $citizen->asal_tempat : '' }}
                                    id="asal_tempat">
-                            @error('asal_tempat')
                             <div class="invalid-feedback">
-                                {{ $message }}
                             </div>
-                            @enderror
                         </div>
                     </div>
                 </div>
@@ -341,11 +340,8 @@
                                    name="pendidikan_terakhir"
                                    {{ $citizen ? 'value=' . $citizen->pendidikan_terakhir : '' }}
                                    id="pendidikan_terakhir">
-                            @error('pendidikan_terakhir')
                             <div class="invalid-feedback">
-                                {{ $message }}
                             </div>
-                            @enderror
                         </div>
                     </div>
                 </div>

@@ -33,8 +33,7 @@
                                                    name="no_kk"
                                                    id="no_kk"
                                                    required>
-                                            <div class="invalid-feedback"
-                                                 id="no_kk-error-message-feedback">
+                                            <div class="invalid-feedback">
                                             </div>
                                         </div>
                                     </div>
@@ -60,8 +59,7 @@
                                                     @endforeach
                                                 @endif
                                             </select>
-                                            <div class="invalid-feedback"
-                                                 id="id_provinsi-error-message-feedback">
+                                            <div class="invalid-feedback">
                                             </div>
                                         </div>
                                     </div>
@@ -73,8 +71,7 @@
                                                     id="id_kabupaten"
                                                     required>
                                             </select>
-                                            <div class="invalid-feedback"
-                                                 id="id_kabupaten-error-message-feedback">
+                                            <div class="invalid-feedback">
                                             </div>
                                         </div>
                                     </div>
@@ -88,8 +85,7 @@
                                                     id="id_kecamatan"
                                                     required>
                                             </select>
-                                            <div class="invalid-feedback"
-                                                 id="id_kecamatan-error-message-feedback">
+                                            <div class="invalid-feedback">
                                             </div>
                                         </div>
                                     </div>
@@ -101,8 +97,7 @@
                                                     id="id_kelurahan"
                                                     required>
                                             </select>
-                                            <div class="invalid-feedback"
-                                                 id="id_kelurahan-error-message-feedback">
+                                            <div class="invalid-feedback">
                                             </div>
                                         </div>
                                     </div>
@@ -116,8 +111,7 @@
                                                    name="kode_pos"
                                                    id="kode_pos"
                                                    required>
-                                            <div class="invalid-feedback"
-                                                 id="kode_pos-error-message-feedback">
+                                            <div class="invalid-feedback">
                                             </div>
                                         </div>
                                     </div>
@@ -131,8 +125,7 @@
                                                    name="alamat"
                                                    id="alamat"
                                                    required>
-                                            <div class="invalid-feedback"
-                                                 id="alamat-error-message-feedback">
+                                            <div class="invalid-feedback">
                                             </div>
                                         </div>
                                     </div>
@@ -142,7 +135,7 @@
                     </div>
                     <x-forms.family-member-form
                             :citizen="$citizen"
-                            id="headFamily"
+                            id="headFamily-0"
                             status="headFamily"
                             iteration=0
                     />
@@ -161,6 +154,7 @@
 @push('js')
     <script type="module">
         $(document).ready(() => {
+            const form = ['#headFamily', '#familyMember'];
             const url = window.location.pathname;
             const urlParts = url.split('/');
             const lastPart = urlParts[urlParts.length - 1];
@@ -251,15 +245,17 @@
                     error: function (response) {
                         $('input, select').removeClass('is-invalid');
                         if (response.status === 400) {
+                            let $formError = $('#family-form');
                             const errors = response.responseJSON.message;
+                            if (response.responseJSON.iteration !== undefined) {
+                                $formError = (response.responseJSON.iteration === 0) ? $('#headFamily-0') : $(`#familyMember-${response.responseJSON.iteration}`);
+                            }
+                            console.log($formError, response.responseJSON.iteration);
+                            console.log(errors);
                             $('.invalid-feedback').text('');
                             for (const error in errors) {
-                                // Replace periods with underscores for valid ID selectors
-                                const errorKey = error.replace(/\./g, '_');
-                                const element = $('#' + errorKey);
-                                const invalidDiv = element.closest('.form-group').find('.invalid-feedback');
-                                element.addClass('is-invalid');
-                                invalidDiv.text(errors[error]);
+                                $formError.find(`input[name=${error}], select[name=${error}]`).addClass('is-invalid');
+                                $formError.find(`input[name=${error}], select[name=${error}]`).siblings('.invalid-feedback').text(errors[error][0]);
                             }
                         }
                     }
@@ -273,7 +269,7 @@
             }
 
             $("#add-member").click(function () {
-                const iteration = $("[id^=familyMember-]").length;
+                const iteration = $("[id^=familyMember-]").length + 1;
                 const newCard = `<x-forms.family-member-form id="familyMember-${iteration}" status="familyMember" iteration="${iteration}" />`;
 
                 $(this).closest('.row').before(newCard);

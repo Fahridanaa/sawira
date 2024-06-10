@@ -62,6 +62,7 @@ class FamilyController extends Controller
 	 */
 	public function store(Request $request)
 	{
+		$index = 0;
 		try {
 			$familyValidator = Validator::make($request->family, (new StoreFamilyCardRequest)->rules());
 
@@ -73,7 +74,7 @@ class FamilyController extends Controller
 
 			$citizens = $request->citizens;
 
-			DB::transaction(function () use ($familyData, $citizens) {
+			DB::transaction(function () use ($familyData, $citizens, &$index) {
 				$roleUser = auth()->user()->role;
 				$rt = preg_replace("/[^0-9]/", "", $roleUser);
 				$tanggalHariIni = Carbon::now();
@@ -107,6 +108,7 @@ class FamilyController extends Controller
 					if (isset($citizen['id_warga'])) CitizensModel::findOrFail($citizen['id_warga'])->delete();
 
 					CitizensModel::create($citizenValidator->validated());
+					$index++;
 				}
 
 				return redirect('penduduk')->with('toast_success', 'Data Keluarga Berhasil Ditambah!');
@@ -114,7 +116,7 @@ class FamilyController extends Controller
 
 			return response()->json(['message' => 'Successfully created family-card'], 201);
 		} catch (\Exception $e) {
-			return response()->json(['status' => 'error', 'message' => $e->getMessage()], 400);
+			return response()->json(['status' => 'error', 'message' => json_decode($e->getMessage()), 'iteration' => $index], 400);
 		}
 	}
 

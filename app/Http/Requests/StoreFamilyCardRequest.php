@@ -26,7 +26,7 @@ class StoreFamilyCardRequest extends FormRequest
 			'id_kabupaten' => 'required|string|max:255',
 			'id_kecamatan' => 'required|string|max:255',
 			'id_kelurahan' => 'required|string|max:255',
-			'no_kk' => 'required|string|size:16',
+			'no_kk' => 'required|string|size:16|unique:kk,no_kk',
 			'kode_pos' => 'required|numeric',
 			'alamat' => 'required|string|max:255',
 		];
