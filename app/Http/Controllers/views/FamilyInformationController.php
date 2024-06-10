@@ -44,10 +44,14 @@ class FamilyInformationController extends Controller
 
 	public function update(Request $request)
 	{
-		$id_user = auth()->user()->id_user;
-		$kk = KKModel::where('id_user', $id_user)->first();
-		$kondisiKeluarga = KondisiKeluargaModel::where('id_kk', $kk->id_kk)->first();
-		$kondisiKeluarga->update($request->all());
-		return redirect('informasi-keluarga.index')->with('toast_success', 'Data berhasil diubah!');
+		try {
+			$id_user = auth()->user()->id_user;
+			$kk = KKModel::where('id_user', $id_user)->first();
+			$kondisiKeluarga = KondisiKeluargaModel::where('id_kk', $kk->id_kk)->first();
+			$kondisiKeluarga->update($request->input());
+			return redirect('informasi-keluarga')->with('toast_success', 'Data berhasil diubah!');
+		} catch (\Exception $e) {
+			return redirect('informasi-keluarga')->with('toast_error', 'Data gagal diubah!');
+		}
 	}
 }
