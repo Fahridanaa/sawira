@@ -62,20 +62,9 @@
                     </div>
                     <div class="card">
                         <div class="card-body">
-                            <x-forms.edit-citizen-form
-                                    :citizen_id="$citizen->id_warga"
-                                    :id_hubungan="$citizen->id_hubungan"
-                                    :nik="$citizen->nik"
-                                    :name="$citizen->nama_lengkap"
-                                    :no_telp="$citizen->no_telp"
-                                    :agama="$citizen->agama"
-                                    :kelamin="$citizen->jenis_kelamin"
-                                    :asal_tempat="$citizen->asal_tempat"
-                                    :tanggal_lahir="$citizen->tanggal_lahir"
-                                    :status_perkawinan="$citizen->status_perkawinan"
-                                    :kewarganegaraan="$citizen->kewarganegaraan"
-                                    :pendidikan="$citizen->pendidikan_terakhir"
-                                    :pekerjaan="$citizen->pekerjaan"
+                            <x-forms.family-member-form
+                                    :citizen="$citizen"
+                                    status="{{ ($citizen->id_hubungan) ? 'headFamily' : 'familyMember' }}"
                             />
                         </div>
                     </div>

@@ -8,18 +8,18 @@ use Illuminate\View\Component;
 
 class FamilyMemberForm extends Component
 {
-	public string $status;
-	public string $id;
-	public string $iteration;
+//	public string $status;
+//	public string $id;
+//	public string $iteration;
 
 	/**
 	 * Create a new component instance.
 	 */
-	public function __construct($status, $id, $iteration)
+	public function __construct()
 	{
-		$this->status = $status;
-		$this->id = $id;
-		$this->iteration = $iteration;
+//		$this->status = $status;
+//		$this->id = $id;
+//		$this->iteration = $iteration;
 	}
 
 	/**

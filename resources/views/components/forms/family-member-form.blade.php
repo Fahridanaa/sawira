@@ -46,8 +46,14 @@
                                     @endif
                                     hidden>Kepala Keluarga
                             </option>
-                            <option value="2">Istri</option>
-                            <option value="3">Anak</option>
+                            <option value="2"@if($citizen)
+                                {{ $citizen->id_hubungan === 2 ? 'selected' : '' }}
+                                    @endif>Istri
+                            </option>
+                            <option value="3" @if($citizen)
+                                {{ $citizen->id_hubungan === 3 ? 'selected' : '' }}
+                                    @endif>Anak
+                            </option>
                         </select>
                         @if($isHeadFamily)
                             <input type="hidden"
