@@ -50,19 +50,19 @@
                 <a href="#"
                    class="nav-link has-dropdown"><i class="fas fa-th-large"></i> <span>Pembagian Zakat</span></a>
                 <ul class="dropdown-menu">
-                    <li class="{{ Request::is('zakat*') ? 'active' : '' }}">
+                    <li class="{{ Request::is('zakat') ? 'active' : '' }}">
                         <a class="nav-link"
                            href="{{ route('zakat.index') }}">
                             <span>Hasil Perhitungan</span>
                         </a>
                     </li>
-                    <li class="{{ Request::is('saw') ? 'active' : '' }}">
+                    <li class="{{ Request::is('zakat/saw*') ? 'active' : '' }}">
                         <a class="nav-link"
                            href="{{ route('saw') }}">
                             <span>Perhitungan SAW</span>
                         </a>
                     </li>
-                    <li class="{{ Request::is('smart') ? 'active' : '' }}">
+                    <li class="{{ Request::is('zakat/smart*') ? 'active' : '' }}">
                         <a class="nav-link"
                            href="{{ route('smart') }}">
                             <span>Perhitungan Smart</span>
