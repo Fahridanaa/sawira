@@ -22,9 +22,10 @@
                             <h4>Pilih Data No. KK</h4>
                         </div>
                         <div class="card-body">
-                            <form id="no-kk-form">
+                            <form id="no-kk-form"
+                                  method="POST">
                                 @csrf
-                                {!! method_field('PUT') !!}
+                                {{ method_field('PUT') }}
                                 <div class="row">
                                     <div class="col-6">
                                         <div class="form-group">
@@ -65,6 +66,7 @@
                             <x-forms.family-member-form
                                     :citizen="$citizen"
                                     status="{{ ($citizen->id_hubungan) ? 'headFamily' : 'familyMember' }}"
+                                    state="edit"
                             />
                         </div>
                     </div>
@@ -89,14 +91,8 @@
 
             $('#submit-button').click(function (e) {
                 e.preventDefault();
-
-                // Get data from the first form
                 const formData1 = $('#no-kk-form').serializeArray();
-
-                // Get data from the second form
-                const formData2 = $('#edit-citizen-form').serializeArray();
-
-                // Merge both data
+                const formData2 = $('.citizen-form-class').serializeArray();
                 const mergedData = $.extend(formData1, formData2);
                 var requestData = mergedData.reduce(function (obj, item) {
                     obj[item.name] = item.value;
@@ -111,7 +107,7 @@
                     type: 'POST',
                     url: '{{ route('citizens.update', $citizen->id_warga) }}',
                     data: requestData,
-                    success: function (data) {
+                    success: function () {
                         window.location.href = '{{ route('penduduk') }}';
                     },
                     error: function (xhr, status, error) {

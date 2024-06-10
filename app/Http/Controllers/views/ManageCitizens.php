@@ -21,7 +21,7 @@ class ManageCitizens extends Controller
 			$dataTable = new CitizensDataTable;
 			$familyHeads = new FamilyHeadsDataTable;
 			$data = [
-				'citizensTable' => $dataTable->render('components.tables.Citizen'),
+				'citizensTable' => $dataTable->render('components.tables.citizens'),
 				'familyHeadsTable' => $familyHeads->render('components.tables.family-heads'),
 			];
 			return response()->json($data);

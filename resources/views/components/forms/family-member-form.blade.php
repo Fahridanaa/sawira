@@ -1,4 +1,4 @@
-@props(['status' => 'familyMember', 'id' => '', 'iteration' => 0, 'citizen' => null])
+@props(['status' => 'familyMember', 'id' => '', 'iteration' => 0, 'citizen' => null, 'state' => 'create'])
 
 @php
     $isHeadFamily = $status === 'headFamily';
@@ -24,6 +24,10 @@
     </div>
     <div class="card-body">
         <form class="citizen-form-class">
+            @csrf
+            @if($state === 'edit')
+                {{ method_field('PUT') }}
+            @endif
             <div class="row">
                 <div class="col-12 col-lg-6">
                     <div class="form-group">
