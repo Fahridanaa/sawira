@@ -107,7 +107,6 @@
                 </div>
             </div>
         </div>
-        </div>
     </section>
     @if(\App\Helpers\SidebarHelper::hasAnyRole(['warga']))
         <x-modal.update-username-modal/>
