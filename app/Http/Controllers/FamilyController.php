@@ -63,18 +63,35 @@ class FamilyController extends Controller
 	public function store(Request $request)
 	{
 		$index = 0;
-		try {
-			$familyValidator = Validator::make($request->family, (new StoreFamilyCardRequest)->rules());
+		$errors = [];
 
+		try {
+			// Validate family data
+			$familyValidator = Validator::make($request->family, (new StoreFamilyCardRequest)->rules());
 			if ($familyValidator->fails()) {
-				return response()->json(['status' => 'error', 'message' => $familyValidator->errors()->toArray()], 400);
+				$errors['family'] = $familyValidator->errors()->toArray();
 			}
 
-			$familyData = $familyValidator->validated();
-
+			// Validate citizens data without id_kk
 			$citizens = $request->citizens;
+			$citizenRules = (new StoreCitizenRequest)->rules();
+			unset($citizenRules['id_kk']); // Remove id_kk rule temporarily
+			foreach ($citizens as $i => $citizen) {
+				$citizenValidator = Validator::make($citizen, $citizenRules);
+				if ($citizenValidator->fails()) {
+					$errors['citizens'][$i] = $citizenValidator->errors()->toArray();
+				}
+			}
 
-			DB::transaction(function () use ($familyData, $citizens, &$index) {
+			// If any errors found, return immediately
+			if (!empty($errors)) {
+				return response()->json(['status' => 'error', 'message' => $errors], 400);
+			}
+
+			DB::transaction(function () use ($familyValidator, $citizens, &$index) {
+				$familyData = $familyValidator->validated();
+
+				// Create user
 				$roleUser = auth()->user()->role;
 				$rt = preg_replace("/[^0-9]/", "", $roleUser);
 				$tanggalHariIni = Carbon::now();
@@ -86,16 +103,18 @@ class FamilyController extends Controller
 					'role' => 'warga',
 				]);
 
+				// Create family
 				$newFamily = KKModel::create(array_merge($familyData, [
 					'id_user' => $user->id_user,
 					'id_rt' => $rt,
-					'tanggal_masuk' => $tanggalHariIni
+					'tanggal_masuk' => $tanggalHariIni,
 				]));
 
 				KondisiKeluargaModel::create([
 					'id_kk' => $newFamily->id_kk,
 				]);
 
+				// Validate and create each citizen with id_kk
 				foreach ($citizens as $citizen) {
 					$citizenValidator = Validator::make(array_merge($citizen, [
 						'id_kk' => $newFamily->id_kk,
@@ -105,7 +124,9 @@ class FamilyController extends Controller
 						throw new \Exception(json_encode($citizenValidator->errors()->toArray()));
 					}
 
-					if (isset($citizen['id_warga'])) CitizensModel::findOrFail($citizen['id_warga'])->delete();
+					if (isset($citizen['id_warga'])) {
+						CitizensModel::findOrFail($citizen['id_warga'])->delete();
+					}
 
 					CitizensModel::create($citizenValidator->validated());
 					$index++;
@@ -116,7 +137,8 @@ class FamilyController extends Controller
 
 			return response()->json(['message' => 'Successfully created family-card'], 201);
 		} catch (\Exception $e) {
-			return response()->json(['status' => 'error', 'message' => json_decode($e->getMessage()), 'iteration' => $index], 400);
+			$errors['citizens'][$index] = json_decode($e->getMessage(), true);
+			return response()->json(['status' => 'error', 'message' => $errors], 400);
 		}
 	}
 

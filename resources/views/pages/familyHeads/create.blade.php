@@ -135,7 +135,7 @@
                     </div>
                     <x-forms.family-member-form
                             :citizen="$citizen"
-                            id="headFamily-0"
+                            id="familyMember-0"
                             status="headFamily"
                             iteration=0
                     />
@@ -154,13 +154,6 @@
 @push('js')
     <script type="module">
         $(document).ready(() => {
-            const form = ['#headFamily', '#familyMember'];
-            const url = window.location.pathname;
-            const urlParts = url.split('/');
-            const lastPart = urlParts[urlParts.length - 1];
-
-            // console.log('lastPart: ',);
-
             function onChangeSelect(url, id, name) {
                 $.ajax({
                     url: url,
@@ -224,8 +217,6 @@
                     citizens.push(citizenData);
                 });
 
-                if (/^\d+$/.test(lastPart)) citizens[0]['id_warga'] = lastPart;
-
                 const postData = {
                     family: familyData,
                     citizens: citizens,
@@ -235,27 +226,37 @@
                 $.ajax({
                     type: 'POST',
                     url: '{{ route('family-heads.store') }}',
-                    data: {
-                        _token: "{{ csrf_token() }}",
-                        ...postData,
-                    },
+                    data: postData,
                     success: function () {
                         window.location.href = '{{ route('penduduk') }}';
                     },
                     error: function (response) {
                         $('input, select').removeClass('is-invalid');
+                        $('.invalid-feedback').text('');
+
                         if (response.status === 400) {
-                            let $formError = $('#family-form');
                             const errors = response.responseJSON.message;
-                            if (response.responseJSON.iteration !== undefined) {
-                                $formError = (response.responseJSON.iteration === 0) ? $('#headFamily-0') : $(`#familyMember-${response.responseJSON.iteration}`);
+
+                            // Family form errors
+                            if (errors.family) {
+                                for (const [inputName, errorMessage] of Object.entries(errors.family)) {
+                                    let $input = $(`#family-form`).find(`input[name=${inputName}], select[name=${inputName}]`);
+                                    $input.addClass('is-invalid');
+                                    $input.siblings('.invalid-feedback').text(errorMessage[0]);
+                                }
                             }
-                            console.log($formError, response.responseJSON.iteration);
-                            console.log(errors);
-                            $('.invalid-feedback').text('');
-                            for (const error in errors) {
-                                $formError.find(`input[name=${error}], select[name=${error}]`).addClass('is-invalid');
-                                $formError.find(`input[name=${error}], select[name=${error}]`).siblings('.invalid-feedback').text(errors[error][0]);
+
+                            // Citizens form errors
+                            if (errors.citizens) {
+                                errors.citizens.forEach((citizenErrors, index) => {
+                                    let $formError = $(`#familyMember-${index}`);
+
+                                    for (const [inputName, errorMessage] of Object.entries(citizenErrors)) {
+                                        let $input = $formError.find(`input[name=${inputName}], select[name=${inputName}]`);
+                                        $input.addClass('is-invalid');
+                                        $input.siblings('.invalid-feedback').text(errorMessage[0]);
+                                    }
+                                });
                             }
                         }
                     }
@@ -269,7 +270,7 @@
             }
 
             $("#add-member").click(function () {
-                const iteration = $("[id^=familyMember-]").length + 1;
+                const iteration = $("[id^=familyMember-]").length - 1;
                 const newCard = `<x-forms.family-member-form id="familyMember-${iteration}" status="familyMember" iteration="${iteration}" />`;
 
                 $(this).closest('.row').before(newCard);
