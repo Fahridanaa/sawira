@@ -16,6 +16,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
 
 class CitizenController extends Controller
 {
@@ -62,15 +63,22 @@ class CitizenController extends Controller
 	/**
 	 * Store a newly created resource in storage.
 	 */
-	public function store(StoreCitizenRequest $storeCitizenRequest)
+	public function store(Request $request)
 	{
 		try {
-			DB::transaction(function () use ($storeCitizenRequest) {
-				CitizensModel::create($storeCitizenRequest->validated());
+			$citizenValidator = Validator::make($request->all(), (new StoreCitizenRequest)->rules());
+
+			if ($citizenValidator->fails()) {
+				return response()->json(['status' => 'error', 'message' => $citizenValidator->errors()->toArray()], 400);
+			}
+
+			DB::transaction(function () use ($citizenValidator) {
+				CitizensModel::create($citizenValidator->validated());
 			}, 3);
+
 			return redirect('penduduk')->with('toast_success', 'Data Warga Berhasil Ditambah!');
 		} catch (\Exception $e) {
-			return back()->with('errors', $e->getMessage());
+			return response()->json(['status' => 'error', 'message' => $e->getMessage()], 400);
 		}
 	}
 
@@ -140,7 +148,7 @@ class CitizenController extends Controller
 		DB::transaction(function () use ($storeHistoryRequest, $id_warga) {
 			$citizen = CitizensModel::findOrFail($id_warga);
 			$citizen->delete();
-			 if ($citizen->id_hubungan === 1) {
+			if ($citizen->id_hubungan === 1) {
 				$kk = KKModel::findOrFail($citizen->id_kk);
 				$citizens = CitizensModel::where('id_kk', $citizen->id_kk)->get();
 

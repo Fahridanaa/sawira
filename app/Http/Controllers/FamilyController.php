@@ -113,23 +113,8 @@ class FamilyController extends Controller
 			}, 3);
 
 			return response()->json(['message' => 'Successfully created family-card'], 201);
-		} catch (\Illuminate\Database\UniqueConstraintViolationException $e) {
-			return response()->json([
-				'status' => 'error',
-				'message' => 'The provided No. KK already exists. Please use a different value.'
-			], 401);
-		} catch (\Illuminate\Database\QueryException $e) {
-			return response()->json([
-				'status' => 'error',
-				'message' => 'NIK sudah ada. Silahkan gunakan NIK yang berbeda.'
-			], 402);
 		} catch (\Exception $e) {
-			// Handle other exceptions
-			Log::error($e);
-			return response()->json([
-				'status' => 'error',
-				'message' => $e->getMessage(),
-			], 400);
+			return response()->json(['status' => 'error', 'message' => $e->getMessage()], 400);
 		}
 	}
 

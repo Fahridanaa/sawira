@@ -55,7 +55,8 @@
                                    id="id_hubungan"
                                    value="1">
                         @endif
-                        <div class="invalid-feedback">
+                        <div class="invalid-feedback"
+                             id="id_hubungan-error-message-feedback">
                         </div>
                     </div>
                 </div>
