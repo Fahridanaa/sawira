@@ -21,8 +21,8 @@
                                                    class="form-control"
                                                    value="{{ Auth()->user()->username }}"
                                                    id="username"
-                                                   name="username"
-                                                   disabled>
+                                                   name="new_username"
+                                                    {{ (!\App\Helpers\SidebarHelper::hasAnyRole(['warga'])) ? 'disabled' : ''}}>
                                         </div>
                                     </div>
                                     @if(!\App\Helpers\SidebarHelper::hasAnyRole(['warga', 'rw', 'amil']))
