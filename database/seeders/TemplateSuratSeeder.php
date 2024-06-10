@@ -13,15 +13,17 @@ class TemplateSuratSeeder extends Seeder
 	 */
 	public function run(): void
 	{
-		TemplateSuratModel::create(
+		TemplateSuratModel::insert(
 			[
-				'nama_surat' => 'Surat Keterangan Tidak Mampu',
-			],
-			[
-				'nama_surat' => 'Surat Pengantar',
-			],
-			[
-				'nama_surat' => 'Surat Pernyataan'
+				[
+					'nama_surat' => 'Surat Keterangan Tidak Mampu',
+				],
+				[
+					'nama_surat' => 'Surat Pengantar',
+				],
+				[
+					'nama_surat' => 'Surat Pernyataan'
+				]
 			]
 		);
 	}
