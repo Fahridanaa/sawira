@@ -60,7 +60,8 @@
                                                     @endforeach
                                                 @endif
                                             </select>
-                                            <div class="invalid-feedback">
+                                            <div class="invalid-feedback"
+                                                 id="id_provinsi-error-message-feedback">
                                             </div>
                                         </div>
                                     </div>
@@ -72,7 +73,8 @@
                                                     id="id_kabupaten"
                                                     required>
                                             </select>
-                                            <div class="invalid-feedback">
+                                            <div class="invalid-feedback"
+                                                 id="id_kabupaten-error-message-feedback">
                                             </div>
                                         </div>
                                     </div>
@@ -86,7 +88,8 @@
                                                     id="id_kecamatan"
                                                     required>
                                             </select>
-                                            <div class="invalid-feedback">
+                                            <div class="invalid-feedback"
+                                                 id="id_kecamatan-error-message-feedback">
                                             </div>
                                         </div>
                                     </div>
@@ -98,7 +101,8 @@
                                                     id="id_kelurahan"
                                                     required>
                                             </select>
-                                            <div class="invalid-feedback">
+                                            <div class="invalid-feedback"
+                                                 id="id_kelurahan-error-message-feedback">
                                             </div>
                                         </div>
                                     </div>
@@ -112,7 +116,8 @@
                                                    name="kode_pos"
                                                    id="kode_pos"
                                                    required>
-                                            <div class="invalid-feedback">
+                                            <div class="invalid-feedback"
+                                                 id="kode_pos-error-message-feedback">
                                             </div>
                                         </div>
                                     </div>
@@ -126,7 +131,8 @@
                                                    name="alamat"
                                                    id="alamat"
                                                    required>
-                                            <div class="invalid-feedback">
+                                            <div class="invalid-feedback"
+                                                 id="alamat-error-message-feedback">
                                             </div>
                                         </div>
                                     </div>
@@ -243,25 +249,19 @@
                         window.location.href = '{{ route('penduduk') }}';
                     },
                     error: function (response) {
-                        $('input').removeClass('is-invalid');
-                        $('select').removeClass('is-invalid');
+                        $('input, select').removeClass('is-invalid');
                         if (response.status === 400) {
                             const errors = response.responseJSON.message;
                             $('.invalid-feedback').text('');
                             for (const error in errors) {
-                                const element = $('#' + error);
+                                // Replace periods with underscores for valid ID selectors
+                                const errorKey = error.replace(/\./g, '_');
+                                const element = $('#' + errorKey);
                                 const invalidDiv = element.closest('.form-group').find('.invalid-feedback');
                                 element.addClass('is-invalid');
                                 invalidDiv.text(errors[error]);
                             }
-                        } else if (response.status === 401) {
-                            $('#no_kk').addClass('is-invalid');
-                            $('#no_kk-error-message-feedback').text(response.responseJSON.message)
-                        } else if (response.status === 402) {
-                            $('#nik').addClass('is-invalid');
-                            $('#nik-error-message-feedback').text(response.responseJSON.message)
                         }
-
                     }
                 });
             });

@@ -66,7 +66,7 @@ class FamilyController extends Controller
 			$familyValidator = Validator::make($request->family, (new StoreFamilyCardRequest)->rules());
 
 			if ($familyValidator->fails()) {
-				return back()->with('toast_error', $familyValidator->messages()->all()[0])->withInput();
+				return response()->json(['status' => 'error', 'message' => $familyValidator->errors()->toArray()], 400);
 			}
 
 			$familyData = $familyValidator->validated();
@@ -101,7 +101,7 @@ class FamilyController extends Controller
 					]), (new StoreCitizenRequest)->rules());
 
 					if ($citizenValidator->fails()) {
-						return back()->with('toast_error', $citizenValidator->messages()->all()[0])->withInput();
+						throw new \Exception(json_encode($citizenValidator->errors()->toArray()));
 					}
 
 					if (isset($citizen['id_warga'])) CitizensModel::findOrFail($citizen['id_warga'])->delete();
@@ -207,7 +207,7 @@ class FamilyController extends Controller
 
 			foreach ($citizens as $citizen) {
 				$citizen->delete();
-	
+
 				RiwayatWargaModel::create([
 					'id_warga' => $citizen->id_warga,
 					'tanggal' => Carbon::now(),
