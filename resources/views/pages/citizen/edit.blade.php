@@ -65,6 +65,7 @@
                         <div class="card-body">
                             <x-forms.family-member-form
                                     :citizen="$citizen"
+                                    id="familyMember-0"
                                     status="{{ ($citizen->id_hubungan) ? 'headFamily' : 'familyMember' }}"
                                     state="edit"
                             />
@@ -91,16 +92,14 @@
 
             $('#submit-button').click(function (e) {
                 e.preventDefault();
-                const formData1 = $('#no-kk-form').serializeArray();
-                const formData2 = $('.citizen-form-class').serializeArray();
-                const mergedData = $.extend(formData1, formData2);
-                var requestData = mergedData.reduce(function (obj, item) {
+                const kkForm = $('#no-kk-form');
+                const familyMemberForm = $('form#familyMember-0');
+                const mergedData = $.extend(kkForm.serializeArray(), familyMemberForm.serializeArray());
+                const requestData = mergedData.reduce(function (obj, item) {
                     obj[item.name] = item.value;
                     return obj;
                 }, {});
                 requestData.id_kk = $('#id_kk').val();
-
-                console.log('requestData: ', requestData);
 
                 // Send the merged data
                 $.ajax({
@@ -110,8 +109,13 @@
                     success: function () {
                         window.location.href = '{{ route('penduduk') }}';
                     },
-                    error: function (xhr, status, error) {
-                        console.log('error: ', xhr.responseText);
+                    error: function (response) {
+                        const errors = response.responseJSON.message;
+                        for (const [inputName, errorMessage] of Object.entries(errors)) {
+                            let $input = familyMemberForm.find(`input[name=${inputName}], select[name=${inputName}]`);
+                            $input.addClass('is-invalid');
+                            $input.siblings('.invalid-feedback').text(errorMessage[0]);
+                        }
                     }
                 });
             });

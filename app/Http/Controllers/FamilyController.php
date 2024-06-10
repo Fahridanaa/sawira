@@ -174,10 +174,21 @@ class FamilyController extends Controller
 	/**
 	 * Update the specified resource in storage.
 	 */
-	public function update(StoreFamilyCardRequest $request, string $id)
+	public function update(Request $request, string $id)
 	{
-		KKModel::findOrFail($id)->update($request->validated());
-		return redirect('penduduk')->with('toast_success', 'Data Kartu Keluarga Berhasil Diupdate!');
+		try {
+			$storeFamilyCardRequest = new StoreFamilyCardRequest($id);
+			$familyValidator = Validator::make($request->all(), $storeFamilyCardRequest->rules());
+
+			if ($familyValidator->fails()) {
+				return response()->json(['status' => 'error', 'message' => $familyValidator->errors()->toArray()], 400);
+			}
+
+			KKModel::findOrFail($id)->update($familyValidator->validated());
+			return redirect('penduduk')->with('toast_success', 'Data Kartu Keluarga Berhasil Diupdate!');
+		} catch (\Exception $e) {
+			return response()->json(['status' => 'error', 'message' => $e->getMessage()], 400);
+		}
 	}
 
 	public function upload(Request $request, string $id)

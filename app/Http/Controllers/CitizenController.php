@@ -2,8 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreCitizenHistoryRequest;
-use App\Http\Requests\StoreCitizenRequest;
 use App\Http\Requests\StoreHistoryRequest;
 use App\Models\CitizensModel;
 use App\Models\KKModel;
@@ -17,6 +15,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
+use App\Http\Requests\StoreCitizenRequest;
 
 class CitizenController extends Controller
 {
@@ -110,10 +109,22 @@ class CitizenController extends Controller
 	/**
 	 * Update the specified resource in storage.
 	 */
-	public function update(StoreCitizenRequest $request, string $id)
+	public function update(Request $request, string $citizen)
 	{
-		CitizensModel::find($id)->update($request->validated());
-		return redirect('penduduk')->with('toast_success', 'Data Warga Berhasil Diupdate!');
+		try {
+			// Pass the citizen ID to the StoreCitizenRequest
+			$storeCitizenRequest = new StoreCitizenRequest($citizen);
+			$citizenValidator = Validator::make($request->all(), $storeCitizenRequest->rules());
+
+			if ($citizenValidator->fails()) {
+				return response()->json(['status' => 'error', 'message' => $citizenValidator->errors()->toArray()], 400);
+			}
+
+			CitizensModel::findOrFail($citizen)->update($citizenValidator->validated());
+			return redirect('penduduk')->with('toast_success', 'Data Warga Berhasil Diupdate!');
+		} catch (\Exception $e) {
+			return response()->json(['status' => 'error', 'message' => $e->getMessage()], 400);
+		}
 	}
 
 	public function upload(Request $request, string $id)

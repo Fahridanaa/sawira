@@ -14,7 +14,7 @@
             @else
             Anggota Keluarga
             @endif</h4>
-        @if($isFamilyMember && $iteration !== '0')
+        @if($isFamilyMember && $iteration !== 0)
             <div class="btn-group p-1">
                 <button class="btn btn-danger mr-2"
                         id="delete-family-member-card"

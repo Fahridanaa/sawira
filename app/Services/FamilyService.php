@@ -14,7 +14,7 @@ class FamilyService
 
 		$headFamilyRecords = $kkRecords->mapWithKeys(function ($kkRecord) {
 			if (isset($kkRecord->citizens->first()->nama_lengkap)) return [$kkRecord['id_kk'] => $kkRecord->citizens->first()->nama_lengkap];
-			return [];
+			return [$kkRecord['id_kk'] => 'N/A'];
 		});
 
 		return ['kkRecords' => $kkRecords, 'headFamilyRecords' => $headFamilyRecords];
