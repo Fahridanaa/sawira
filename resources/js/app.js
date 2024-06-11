@@ -9,6 +9,7 @@ import './bootstrap';
 import './scripts';
 import './stisla';
 import './custom';
+import './landingPage';
 import 'laravel-datatables-vite';
 import Chart from 'chart.js/auto';
 import ChartDataLabels from 'chartjs-plugin-datalabels';

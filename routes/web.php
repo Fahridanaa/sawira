@@ -28,9 +28,7 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
-Route::get('/', function () {
-	return Auth::check() ? redirect('/dashboard') : redirect('/login');
-});
+Route::get('/', [\App\Http\Controllers\views\LandingPageController::class, 'index'])->name('landing-page');
 
 Route::get('/login', [AuthController::class, 'index'])->name('login');
 
