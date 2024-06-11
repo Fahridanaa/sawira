@@ -16,6 +16,7 @@ return new class extends Migration {
 			$table->date('tanggal');
 			$table->enum('status', ['Pindah', 'Kematian']);
 			$table->string('file_surat', 255)->nullable();
+			$table->softDeletes(); // Tambahkan kolom deleted_at
 			$table->timestamps();
 
 			$table->foreign('id_warga')->references('id_warga')->on('warga');
@@ -28,5 +29,8 @@ return new class extends Migration {
 	public function down(): void
 	{
 		Schema::dropIfExists('riwayat_warga');
+		Schema::table('riwayat_warga', function (Blueprint $table) {
+            $table->dropSoftDeletes(); // Hapus kolom deleted_at
+        });
 	}
 };
