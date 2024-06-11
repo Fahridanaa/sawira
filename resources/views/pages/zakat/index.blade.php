@@ -16,8 +16,10 @@
                                         @csrf
                                         <div class="btn-group">
                                             <button type="submit"
-                                                    class="btn btn-primary">Hitung
+                                            class="btn btn-primary">Hitung
                                             </button>
+                                        <a href="{{ route('saw.export.pdf') }}" class="btn btn-danger">SAW PDF</a>
+                                        <a href="{{ route('smart.export.pdf') }}" class="btn btn-danger">SMART PDF</a>
                                         </div>
                                     </form>
                                 </div>

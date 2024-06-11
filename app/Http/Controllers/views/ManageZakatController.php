@@ -7,6 +7,7 @@ use App\DataTables\SMARTRankingDataTable;
 use App\Helpers\BobotConvertHelper;
 use App\Http\Controllers\Controller;
 use App\Models\KondisiKeluargaModel;
+use Barryvdh\DomPDF\Facade\Pdf as PDF;
 use App\Models\SAWRankModel;
 use App\Models\SMARTRankModel;
 use App\Services\SAWService;
@@ -31,6 +32,26 @@ class ManageZakatController extends Controller
 		return view('pages.zakat.index');
 	}
 
+	public function exportSAWPdf()
+    {
+        $sawRanks = SAWRankModel::with(['kondisiKeluarga.kk.citizens'])->get();
+        $dompdf = PDF::loadView('pdf.saw-ranking', compact('sawRanks'));
+        // $dompdf->loadHtml(view('pdf.saw-ranking', compact('sawRanks'))->render());
+        // $dompdf->setPaper('A4', 'landscape');
+        // $dompdf->render();
+        
+        return $dompdf->download('SAWRanking_' . date('YmdHis') . '.pdf');
+    }
+	public function exportSMARTPdf()
+    {
+        $smartRanks = SAWRankModel::with(['kondisiKeluarga.kk.citizens'])->get();
+        $dompdf = PDF::loadView('pdf.smart-ranking', compact('smartRanks'));
+        // $dompdf->loadHtml(view('pdf.saw-ranking', compact('sawRanks'))->render());
+        // $dompdf->setPaper('A4', 'landscape');
+        // $dompdf->render();
+        
+        return $dompdf->download('SMARTRanking_' . date('YmdHis') . '.pdf');
+    }
 	public function store()
 	{
 		DB::table('saw_rank')->truncate();

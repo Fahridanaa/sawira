@@ -74,6 +74,10 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
 		Route::get('/', [ManageZakatController::class, 'index'])->name('zakat.index');
 		Route::post('/', [ManageZakatController::class, 'store'])->name('zakat.store');
 		Route::get('saw', [SAWController::class, 'index'])->name('saw');
+		Route::get('saw/export-pdf', [ManageZakatController::class, 'exportSAWPdf'])->name('saw.export.pdf');
+		Route::get('smart/export-pdf', [ManageZakatController::class, 'exportSMARTPdf'])->name('smart.export.pdf');
+		// Route::get('saw/export-pdf', [ManageZakatController::class, 'exportPdf'])->name('saw.export.pdf');
+		// Route::get('saw/export-pdf', [ManageZakatController::class, 'exportPdf'])->name('saw.export.pdf');
 		Route::get('saw/next', [SAWController::class, 'nextStep'])->name('nextSawStep');
 		Route::get('saw/prev', [SAWController::class, 'previousStep'])->name('prevSawStep');
 		Route::get('saw/step/{step}', [SAWController::class, 'changeStep'])->name('changeSawStep');

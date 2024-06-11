@@ -78,7 +78,17 @@ class CitizensDataTable extends DataTable
 			->minifiedAjax()
 			->orderBy(1)
 			->selectStyleSingle()
-			->buttons('l');
+			->buttons([
+				// [
+				// 	'extend' => 'export',
+				// 	'text' => 'Export to PDF',
+				// 	'action' => 'function ( e, dt, node, config ) {
+				// 						window.location.href = "' . route('export.pdf',['id_rt'=>request()->input('id_rt')]) . '";
+				// 					 }',
+				// 	'className' => 'btn btn-danger',
+				// ],
+				'l'
+			]);
 
 		if (auth()->user()->role !== 'rw') {
 			$html->buttons([

@@ -42,7 +42,7 @@
             </li>
             <li class="{{ Request::is('letter*') ? 'active' : '' }}">
                 <a class="nav-link"
-                   href="{{ route('letter.index') }}"><i class="fas fa-mail-bulk"></i> <span>Surat</span></a>
+                   href="{{ route('letter.index') }}"><i class="fas fa-mail-bulk"></i> <span>Surat Resmi</span></a>
             </li>
         @endif
         @if(\App\Helpers\SidebarHelper::hasAnyRole(['amil']))
@@ -74,7 +74,7 @@
         @if(\App\Helpers\SidebarHelper::hasAnyRole(['rw']))
             <li class="{{ Request::is('letter-archives')  ? 'active' : '' }}">
                 <a class="nav-link"
-                   href="{{ route('letter-archives') }}"><i class="fas fa-mail-bulk"></i> <span>Arsip Surat</span></a>
+                   href="{{ route('letter-archives') }}"><i class="fas fa-mail-bulk"></i> <span>Arsip Surat Resmi</span></a>
             </li>
         @endif
         <div class="flex-grow-1"></div>
