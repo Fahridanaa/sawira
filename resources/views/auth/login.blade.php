@@ -2,9 +2,12 @@
 @section('main')
     <div class="card card-primary">
         <div class="card-header justify-content-center pb-0">
-            <h1 class="text-primary">
-                <span style="border-bottom: 2px solid">Sa</span>wira
-            </h1>
+            <a href="{{ route('landing-page') }}"
+               class="text-decoration-none">
+                <h1 class="text-primary">
+                    <span style="border-bottom: 2px solid">Sa</span>wira
+                </h1>
+            </a>
         </div>
 
         <div class="card-body">
