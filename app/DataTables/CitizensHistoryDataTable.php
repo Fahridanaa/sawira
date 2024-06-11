@@ -23,7 +23,7 @@ class CitizensHistoryDataTable extends DataTable
 	 */
 	public function dataTable(QueryBuilder $query): EloquentDataTable
 	{
-		return (new EloquentDataTable($query))
+		return (new EloquentDataTable($query->withTrashed()))
 			->addColumn('nama_lengkap', function ($row) {
 				return $row->warga->nama_lengkap;
 			})

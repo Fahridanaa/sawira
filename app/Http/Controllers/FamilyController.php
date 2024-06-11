@@ -222,8 +222,10 @@ class FamilyController extends Controller
 	public function softDeleteAndAddToHistory(StoreHistoryRequest $storeHistoryRequest, $id_kk)
 	{
 		DB::transaction(function () use ($storeHistoryRequest, $id_kk) {
-			$kk = KKModel::findOrFail($id_kk);
-			$citizens = CitizensModel::where('id_kk', $id_kk)->get();
+			$kk = KKModel::withTrashed()->findOrFail($id_kk);
+			$citizens = CitizensModel::withTrashed()->where('id_kk', $id_kk)->get();
+
+			$headOfFamily = $citizens->where('id_hubungan', 1)->first();
 
 			foreach ($citizens as $citizen) {
 				$citizen->delete();
@@ -239,7 +241,8 @@ class FamilyController extends Controller
 			RiwayatKKModel::create([
 				'id_kk' => $id_kk,
 				'tanggal' => Carbon::now(),
-				'status' => $storeHistoryRequest->status,
+				'status' => $storeHistoryRequest->status, 
+				'nama_lengkap' => $headOfFamily->nama_lengkap ?? 'N/A', // Simpan nama kepala keluarga,
 			]);
 		});
 		return redirect('history')->with('toast_success', 'Data Keluarga Berhasil Dihapus!');
@@ -259,6 +262,9 @@ class FamilyController extends Controller
 		}
 		$kkHistory->delete();
 		$kk->restore();
+
+		// Restore citizens yang terkait
+		CitizensModel::withTrashed()->where('id_kk', $kk->id_kk)->restore();
 		return redirect('penduduk')->with('toast_success', 'Data Keluarga Berhasil Dikembalikan!');
 	}
 

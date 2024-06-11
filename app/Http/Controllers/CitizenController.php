@@ -157,11 +157,19 @@ class CitizenController extends Controller
 	public function softDeleteAndAddToHistory(StoreHistoryRequest $storeHistoryRequest, $id_warga)
 	{
 		DB::transaction(function () use ($storeHistoryRequest, $id_warga) {
-			$citizen = CitizensModel::findOrFail($id_warga);
+			$citizen = CitizensModel::withTrashed()->findOrFail($id_warga);
 			$citizen->delete();
+<<<<<<< Updated upstream
 			if ($citizen->id_hubungan === 1) {
 				$kk = KKModel::findOrFail($citizen->id_kk);
 				$citizens = CitizensModel::where('id_kk', $citizen->id_kk)->get();
+=======
+			 if ($citizen->id_hubungan === 1) {
+				$kk = KKModel::withTrashed()->findOrFail($citizen->id_kk);
+				$citizens = CitizensModel::withTrashed()->where('id_kk', $citizen->id_kk)->get();
+
+				$headOfFamily = $citizens->where('id_hubungan', 1)->first();
+>>>>>>> Stashed changes
 
 				foreach ($citizens as $citizen) {
 					$citizen->delete();
@@ -179,6 +187,7 @@ class CitizenController extends Controller
 					'id_kk' => $citizen->id_kk,
 					'tanggal' => Carbon::now(),
 					'status' => $storeHistoryRequest->status,
+					'nama_lengkap' => $headOfFamily->nama_lengkap ?? 'N/A', // Simpan nama kepala keluarga,
 				]);
 			} else {
 				$citizen->delete();
@@ -212,7 +221,9 @@ class CitizenController extends Controller
 		}
 		$citizen->restore();
 		$citizenHistory->delete();
-		return redirect('penduduk')->with('toast_success', 'Data Warga Berhasil Dikembalikan!');
 
+		// Restore citizens yang terkait
+		// CitizensModel::withTrashed()->where('id_kk', $kk->id_kk)->restore();
+		return redirect('penduduk')->with('toast_success', 'Data Warga Berhasil Dikembalikan!');
 	}
 }

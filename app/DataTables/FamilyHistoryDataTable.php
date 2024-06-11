@@ -19,7 +19,7 @@ class FamilyHistoryDataTable extends DataTable
 	 */
 	public function dataTable(QueryBuilder $query): EloquentDataTable
 	{
-		return (new EloquentDataTable($query))
+		return (new EloquentDataTable($query->withTrashed()))
 			->addColumn('action', function ($row) {
 				if ($row->status === 'Kematian') return null;
 				$buttonHTML = '<div class="btn-group" data-id="' . $row->id_riwayatKK . '">';
@@ -41,7 +41,9 @@ class FamilyHistoryDataTable extends DataTable
 				return $row->KK->no_kk ?? 'N/A';
 			})
 			->addColumn('nama_lengkap', function ($nama) {
-				return $nama->KK->citizens->where('id_hubungan', 1)->first()->nama_lengkap ?? 'N/A';
+				// return $nama->KK->citizens->withTrashed()->where('id_hubungan', 1)->first()->nama_lengkap ?? 'N/A';
+				$headOfFamily = $nama->KK->citizens()->withTrashed()->where('id_hubungan', 1)->first();
+            	return $headOfFamily->nama_lengkap ?? 'N/A';
 			})
 			->addColumn('id_rt', function ($row) {
 				return $row->KK->id_rt;
