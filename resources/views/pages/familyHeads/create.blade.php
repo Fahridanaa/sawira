@@ -270,7 +270,8 @@
             }
 
             $("#add-member").click(function () {
-                const iteration = $("[id^=familyMember-]").length - 1;
+                const iteration = $("form[id^=familyMember-]").length;
+                console.log(iteration);
                 const newCard = `<x-forms.family-member-form id="familyMember-${iteration}" status="familyMember" iteration="${iteration}" />`;
 
                 $(this).closest('.row').before(newCard);
