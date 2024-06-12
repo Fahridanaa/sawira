@@ -7,7 +7,6 @@ use App\Models\KKModel;
 use App\Models\RTModel;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\DB;
 
 class ChartService
 {

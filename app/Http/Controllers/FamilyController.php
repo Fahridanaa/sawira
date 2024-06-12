@@ -17,7 +17,6 @@ use App\Services\HistoryService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
@@ -241,7 +240,7 @@ class FamilyController extends Controller
 			RiwayatKKModel::create([
 				'id_kk' => $id_kk,
 				'tanggal' => Carbon::now(),
-				'status' => $storeHistoryRequest->status, 
+				'status' => $storeHistoryRequest->status,
 				'nama_lengkap' => $headOfFamily->nama_lengkap ?? 'N/A', // Simpan nama kepala keluarga,
 			]);
 		});
