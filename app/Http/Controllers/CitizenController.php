@@ -160,7 +160,7 @@ class CitizenController extends Controller
 		DB::transaction(function () use ($storeHistoryRequest, $id_warga) {
 			$citizen = CitizensModel::withTrashed()->findOrFail($id_warga);
 			$citizen->delete();
-			 if ($citizen->id_hubungan === 1) {
+			if ($citizen->id_hubungan === 1) {
 				$kk = KKModel::withTrashed()->findOrFail($citizen->id_kk);
 				$citizens = CitizensModel::withTrashed()->where('id_kk', $citizen->id_kk)->get();
 

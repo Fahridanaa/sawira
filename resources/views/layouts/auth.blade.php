@@ -6,6 +6,8 @@
           name="viewport">
     <title>{{ config('app.name', 'Sawira') }}</title>
 
+    <link href="{{ asset('assets/img/logo-01.svg') }}"
+          rel="icon">
     <!-- General CSS Files -->
     <link rel="stylesheet"
           href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
@@ -19,7 +21,7 @@
     <!-- CSS Libraries -->
 
     <!-- Template CSS -->
-    @vite(['resources/css/app.css', 'resources/sass/app.scss', 'resources/js/app.js'])
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
 
     @stack('css')
 </head>
@@ -32,9 +34,11 @@
                 <div class="{{ Request::is('auth-register') ? 'col-12 col-sm-10 offset-sm-1 col-md-8 offset-md-2 col-lg-8 offset-lg-2 col-xl-8 offset-xl-2' : 'col-12 col-sm-8 offset-sm-2 col-md-6 offset-md-3 col-lg-6 offset-lg-3 col-xl-4 offset-xl-4' }}">
                     <!-- Header -->
                     <div class="login-brand">
-                        <img src="{{ asset('assets/img/logo-01.svg') }}"
-                             alt="logo"
-                             width="100">
+                        <a href="{{ route('landing-page') }}">
+                            <img src="{{ asset('assets/img/logo-01.svg') }}"
+                                 alt="logo"
+                                 width="100">
+                        </a>
                     </div>
 
                     <!-- Content -->

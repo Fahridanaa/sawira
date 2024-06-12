@@ -96,8 +96,174 @@
         </li>
     </ul>
 </aside>
-<style>
-    .main-sidebar .sidebar-menu li a:hover {
-        background-color: #f5f5f5;
-    }
-</style>
+@push('css')
+    <style>
+        .main-sidebar .sidebar-menu li a:hover {
+            background-color: #f5f5f5;
+        }
+    </style>
+@endpush
+@push('js')
+    <script type="module">
+        const mainSidebar = $(".main-sidebar");
+        const body = $("body");
+        const w = $(window);
+        // Global
+        $(function () {
+            let sidebar_nicescroll_opts = {
+                cursoropacitymin: 0,
+                cursoropacitymax: .8,
+                zindex: 892
+            }, now_layout_class = null;
+
+            let sidebar_nicescroll;
+            const update_sidebar_nicescroll = function () {
+                let a = setInterval(function () {
+                    if (sidebar_nicescroll != null)
+                        sidebar_nicescroll.resize();
+                }, 10);
+
+                setTimeout(function () {
+                    clearInterval(a);
+                }, 600);
+            }
+
+            const sidebar_dropdown = function () {
+                if (mainSidebar.length) {
+                    mainSidebar.niceScroll(sidebar_nicescroll_opts);
+                    sidebar_nicescroll = mainSidebar.getNiceScroll();
+
+                    $(".main-sidebar .sidebar-menu li a.has-dropdown").off('click').on('click', function () {
+                        const me = $(this);
+                        let active = false;
+                        if (me.parent().hasClass("active")) {
+                            active = true;
+                        }
+
+                        $('.main-sidebar .sidebar-menu li.active > .dropdown-menu').slideUp(500, function () {
+                            update_sidebar_nicescroll();
+                            return false;
+                        });
+
+                        $('.main-sidebar .sidebar-menu li.active.dropdown').removeClass('active');
+
+                        if (active === true) {
+                            me.parent().removeClass('active');
+                            me.parent().find('> .dropdown-menu').slideUp(500, function () {
+                                update_sidebar_nicescroll();
+                                return false;
+                            });
+                        } else {
+                            me.parent().addClass('active');
+                            me.parent().find('> .dropdown-menu').slideDown(500, function () {
+                                update_sidebar_nicescroll();
+                                return false;
+                            });
+                        }
+
+                        return false;
+                    });
+
+                    $('.main-sidebar .sidebar-menu li.active > .dropdown-menu').slideDown(500, function () {
+                        update_sidebar_nicescroll();
+                        return false;
+                    });
+                }
+            }
+            sidebar_dropdown();
+
+            $(".main-content").css({
+                minHeight: $(window).outerHeight() - 108
+            })
+
+            $(".nav-collapse-toggle").click(function () {
+                $(this).parent().find('.navbar-nav').toggleClass('show');
+                return false;
+            });
+
+            $(document).on('click', function () {
+                $(".nav-collapse .navbar-nav").removeClass('show');
+            });
+
+            const toggle_sidebar_mini = function (mini) {
+                let body = $('body');
+
+                if (!mini) {
+                    body.removeClass('sidebar-mini');
+                    mainSidebar.css({
+                        overflow: 'hidden'
+                    });
+                } else {
+                    body.addClass('sidebar-mini');
+                    body.removeClass('sidebar-show');
+                }
+            }
+
+            $("[data-toggle='sidebar']").click(function () {
+                if (w.outerWidth() <= 1024) {
+                    if (body.hasClass('sidebar-gone')) {
+                        body.removeClass('sidebar-gone');
+                        body.addClass('sidebar-show');
+                    } else {
+                        body.addClass('sidebar-gone');
+                        body.removeClass('sidebar-show');
+                    }
+
+                    update_sidebar_nicescroll();
+                } else {
+                    if (body.hasClass('sidebar-mini')) {
+                        toggle_sidebar_mini(false);
+                    } else {
+                        toggle_sidebar_mini(true);
+                    }
+                }
+
+                return false;
+            });
+
+            const toggleLayout = function () {
+                const layout_class = $('body').attr('class') || '',
+                    layout_classes = (layout_class.trim().length > 0 ? layout_class.split(' ') : '');
+
+                if (layout_classes.length > 0) {
+                    layout_classes.forEach(function (item) {
+                        if (item.indexOf('layout-') !== -1) {
+                            now_layout_class = item;
+                        }
+                    });
+                }
+
+                if (w.outerWidth() <= 1024) {
+                    if ($('body').hasClass('sidebar-mini')) {
+                        toggle_sidebar_mini(false);
+                        $('.main-sidebar').niceScroll(sidebar_nicescroll_opts);
+                        sidebar_nicescroll = mainSidebar.getNiceScroll();
+                    }
+
+                    body.addClass("sidebar-gone");
+                    body.removeClass("sidebar-mini sidebar-show");
+                    body.off('click touchend').on('click touchend', function (e) {
+                        if ($(e.target).hasClass('sidebar-show') || $(e.target).hasClass('search-show')) {
+                            body.removeClass("sidebar-show");
+                            body.addClass("sidebar-gone");
+                            body.removeClass("search-show");
+
+                            update_sidebar_nicescroll();
+                        }
+                    });
+
+                    update_sidebar_nicescroll();
+                } else {
+                    body.removeClass("sidebar-gone sidebar-show");
+                    if (now_layout_class) $("body").addClass(now_layout_class);
+
+                    update_sidebar_nicescroll();
+                }
+            }
+            toggleLayout();
+            $(window).resize(toggleLayout);
+        });
+
+    </script>
+@endpush
+

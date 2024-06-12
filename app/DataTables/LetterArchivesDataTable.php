@@ -3,15 +3,11 @@
 namespace App\DataTables;
 
 use App\Models\ArsipSuratModel;
-use App\Models\LetterArchive;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder as QueryBuilder;
 use Yajra\DataTables\EloquentDataTable;
 use Yajra\DataTables\Html\Builder as HtmlBuilder;
-use Yajra\DataTables\Html\Button;
 use Yajra\DataTables\Html\Column;
-use Yajra\DataTables\Html\Editor\Editor;
-use Yajra\DataTables\Html\Editor\Fields;
 use Yajra\DataTables\Services\DataTable;
 
 class LetterArchivesDataTable extends DataTable
@@ -25,7 +21,7 @@ class LetterArchivesDataTable extends DataTable
 	{
 		return (new EloquentDataTable($query))
 			->editColumn('tanggal_pengajuan', function ($row) {
-				return $row->tanggal_pengajuan ? with(new Carbon($row->tanggal_pengajuan))->format('d/m/Y') : '';
+				return $row->tanggal_pengajuan ? Carbon::parse($row->tanggal_pengajuan)->format('d/m/Y') : '';
 			})
 			->editColumn('Jenis Surat', function ($row) {
 				return $row->templateSurat->nama_surat;
@@ -77,7 +73,9 @@ class LetterArchivesDataTable extends DataTable
 			->orderBy(1)
 			->selectStyleSingle()
 			->parameters([
-				'dom' => 'ft', // This line will only show table
+				'dom' => 'ft',
+				'processing' => true,
+				'serverSide' => true,
 			]);
 	}
 
