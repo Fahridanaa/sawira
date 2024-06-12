@@ -8,6 +8,8 @@
           content="{{ csrf_token() }}">
     <title>{{ config('app.name', 'Sawira') }}</title>
 
+    <link href="{{ asset('assets/img/logo-01.svg') }}"
+          rel="icon">
     <!-- General CSS Files -->
     <link rel="stylesheet"
           href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
@@ -20,7 +22,7 @@
 
     <!-- CSS Libraries -->
 
-    @vite(['resources/css/app.css', 'resources/sass/app.scss', 'resources/js/app.js'])
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body>
 <div id="app">

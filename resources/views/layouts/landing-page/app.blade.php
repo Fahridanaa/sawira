@@ -11,11 +11,6 @@
           rel="icon">
 
     <!-- Fonts -->
-    <link href="https://fonts.googleapis.com"
-          rel="preconnect">
-    <link href="https://fonts.gstatic.com"
-          rel="preconnect"
-          crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Nunito:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
           rel="stylesheet">
 
@@ -27,45 +22,10 @@
           href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
           crossorigin="anonymous">
-    <link rel="stylesheet"
-          href="https://use.fontawesome.com/releases/v5.7.2/css/all.css"
-          integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr"
-          crossorigin="anonymous">
 
     <!-- Main CSS File -->
-    @vite(['resources/css/app.css', 'resources/sass/app.scss', 'resources/js/app.js'])
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
     <style>
-        :root {
-            --default-font: "Roboto", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
-            --heading-font: "Nunito", sans-serif;
-            --nav-font: "Poppins", sans-serif;
-        }
-
-        :root {
-            --background-color: #ffffff; /* Background color for the entire website, including individual sections */
-            --default-color: #444444; /* Default color used for the majority of the text content across the entire website */
-            --heading-color: #012970; /* Color for headings, subheadings and title throughout the website */
-            --accent-color: #4154f1; /* Accent color that represents your brand on the website. It's used for buttons, links, and other elements that need to stand out */
-            --contrast-color: #ffffff; /* The contrast color is used for elements when the background color is one of the heading, accent, or default colors. Its purpose is to ensure proper contrast and readability when placed over these more dominant colors */
-        }
-
-        /* Nav Menu Colors - The following color variables are used specifically for the navigation menu. They are separate from the global colors to allow for more customization options */
-        :root {
-            --nav-color: #012970; /* The default color of the main navmenu links */
-            --nav-hover-color: #4154f1; /* Applied to main navmenu links when they are hovered over or active */
-            --nav-dropdown-background-color: #ffffff; /* Used as the background color for dropdown items that appear when hovering over primary navigation items */
-            --nav-dropdown-color: #212529; /* Used for navigation links of the dropdown items in the navigation menu. */
-            --nav-dropdown-hover-color: #4154f1; /* Similar to --nav-hover-color, this color is applied to dropdown navigation links when they are hovered over. */
-        }
-
-        /* Smooth scroll */
-        :root {
-            scroll-behavior: smooth;
-        }
-
-        /*--------------------------------------------------------------
-        # General
-        --------------------------------------------------------------*/
         body {
             color: var(--default-color);
             background-color: var(--background-color);
@@ -83,14 +43,9 @@
             text-decoration: none;
         }
 
-        h1,
-        h2,
-        h3,
-        h4,
-        h5,
-        h6 {
+        h1 {
             color: var(--heading-color);
-            font-family: var(--heading-font);
+            font-family: var(--heading-font), sans-serif;
         }
 
         .header {
@@ -101,32 +56,12 @@
             z-index: 997;
         }
 
-        .header .logo {
-            line-height: 1;
-        }
-
-        .header .logo img {
-            max-height: 36px;
-            margin-right: 8px;
-        }
-
-        .header .logo h1 {
-            font-size: 30px;
-            margin: 0;
-            font-weight: 700;
-            color: var(--heading-color);
-        }
-
         .scrolled .header {
-            box-shadow: 0px 0 18px color-mix(in srgb, var(--default-color), transparent 85%);
+            box-shadow: 0 0 18px color-mix(in srgb, var(--default-color), transparent 85%);
         }
 
         .index-page .header {
             --background-color: rgba(255, 255, 255, 0);
-        }
-
-        .index-page.scrolled .header {
-            --background-color: #ffffff;
         }
 
         @media screen and (max-width: 768px) {
@@ -160,6 +95,23 @@
         integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
         crossorigin="anonymous"></script>
 <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script>
+    (function () {
+        "use strict";
+
+        function aosInit() {
+            AOS.init({
+                duration: 600,
+                easing: 'ease-in-out',
+                once: true,
+                mirror: false
+            });
+        }
+
+        window.addEventListener('load', aosInit);
+
+    })();
+</script>
 @stack('js')
 </body>
 
