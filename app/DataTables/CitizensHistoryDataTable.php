@@ -87,7 +87,12 @@ class CitizensHistoryDataTable extends DataTable
 			->minifiedAjax()
 			->orderBy(1)
 			->selectStyleSingle()
-			->buttons('l');
+			->buttons('l')
+			->parameters([
+				'dom' => 'ft',
+				'processing' => true,
+				'serverSide' => true,
+			]);
 	}
 
 	/**

@@ -159,17 +159,11 @@ class CitizenController extends Controller
 		DB::transaction(function () use ($storeHistoryRequest, $id_warga) {
 			$citizen = CitizensModel::withTrashed()->findOrFail($id_warga);
 			$citizen->delete();
-<<<<<<< Updated upstream
 			if ($citizen->id_hubungan === 1) {
-				$kk = KKModel::findOrFail($citizen->id_kk);
-				$citizens = CitizensModel::where('id_kk', $citizen->id_kk)->get();
-=======
-			 if ($citizen->id_hubungan === 1) {
 				$kk = KKModel::withTrashed()->findOrFail($citizen->id_kk);
 				$citizens = CitizensModel::withTrashed()->where('id_kk', $citizen->id_kk)->get();
 
 				$headOfFamily = $citizens->where('id_hubungan', 1)->first();
->>>>>>> Stashed changes
 
 				foreach ($citizens as $citizen) {
 					$citizen->delete();

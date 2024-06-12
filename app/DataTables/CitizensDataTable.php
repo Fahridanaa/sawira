@@ -87,7 +87,7 @@ class CitizensDataTable extends DataTable
 					'action' => 'function ( e, dt, node, config ) {
 										window.location.href = "' . route('citizens.create') . '";
 									 }',
-					'className' => 'btn btn-primary col-3 col-md-12 mt-2',
+					'className' => 'btn btn-primary col-6 col-sm-12 col-md-12 mt-2',
 				]
 			]);
 		};

@@ -24,7 +24,7 @@ class FamilyHistoryDataTable extends DataTable
 				if ($row->status === 'Kematian') return null;
 				$buttonHTML = '<div class="btn-group" data-id="' . $row->id_riwayatKK . '">';
 				if ($row->file_surat === null) {
-					$buttonHTML = '<button class="upload-file-btn btn btn-success btn-sm" data-toggle="modal" data-target="#upload-file-modal" data-id="' . $row->id_riwayatKK . '">Upload</button>';
+					$buttonHTML .= '<button class="upload-file-btn btn btn-success btn-sm" data-toggle="modal" data-target="#upload-file-modal" data-id="' . $row->id_riwayatKK . '">Upload</button>';
 				} else {
 					$buttonHTML .= '<a href="' . route('family-history.download', $row->id_riwayatKK) . '" class="btn btn-primary btn-sm">Download</a>';
 					$buttonHTML .= '<button class="upload-file-btn btn btn-warning btn-sm ml-2" data-toggle="modal" data-target="#upload-file-modal" data-id="' . $row->id_riwayatKK . '">Reupload</button>';
@@ -43,7 +43,7 @@ class FamilyHistoryDataTable extends DataTable
 			->addColumn('nama_lengkap', function ($nama) {
 				// return $nama->KK->citizens->withTrashed()->where('id_hubungan', 1)->first()->nama_lengkap ?? 'N/A';
 				$headOfFamily = $nama->KK->citizens()->withTrashed()->where('id_hubungan', 1)->first();
-            	return $headOfFamily->nama_lengkap ?? 'N/A';
+				return $headOfFamily->nama_lengkap ?? 'N/A';
 			})
 			->addColumn('id_rt', function ($row) {
 				return $row->KK->id_rt;
@@ -86,7 +86,12 @@ class FamilyHistoryDataTable extends DataTable
 			->minifiedAjax()
 			->orderBy(1)
 			->selectStyleSingle()
-			->buttons('l');
+			->buttons('l')
+			->parameters([
+				'dom' => 'ft',
+				'processing' => true,
+				'serverSide' => true,
+			]);
 
 		return $html;
 	}

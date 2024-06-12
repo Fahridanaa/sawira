@@ -88,7 +88,7 @@ class FamilyHeadsDataTable extends DataTable
 					'action' => 'function ( e, dt, node, config ) {
 										window.location.href = "' . route('family-heads.create') . '";
 									 }',
-					'className' => 'btn btn-primary col-3 col-md-12 mt-2',
+					'className' => 'btn btn-primary col-6 col-md-12 mt-2',
 				]
 			]);
 		};
