@@ -33,25 +33,21 @@ class ManageZakatController extends Controller
 	}
 
 	public function exportSAWPdf()
-    {
-        $sawRanks = SAWRankModel::with(['kondisiKeluarga.kk.citizens'])->get();
-        $dompdf = PDF::loadView('pdf.saw-ranking', compact('sawRanks'));
-        // $dompdf->loadHtml(view('pdf.saw-ranking', compact('sawRanks'))->render());
-        // $dompdf->setPaper('A4', 'landscape');
-        // $dompdf->render();
-        
-        return $dompdf->download('SAWRanking_' . date('YmdHis') . '.pdf');
-    }
+	{
+		$sawRanks = SAWRankModel::with(['kondisiKeluarga.kk.citizens'])->get();
+		$dompdf = PDF::loadView('pdf.saw-ranking', compact('sawRanks'));
+
+		return $dompdf->download('SAWRanking_' . date('YmdHis') . '.pdf');
+	}
+
 	public function exportSMARTPdf()
-    {
-        $smartRanks = SAWRankModel::with(['kondisiKeluarga.kk.citizens'])->get();
-        $dompdf = PDF::loadView('pdf.smart-ranking', compact('smartRanks'));
-        // $dompdf->loadHtml(view('pdf.saw-ranking', compact('sawRanks'))->render());
-        // $dompdf->setPaper('A4', 'landscape');
-        // $dompdf->render();
-        
-        return $dompdf->download('SMARTRanking_' . date('YmdHis') . '.pdf');
-    }
+	{
+		$smartRanks = SAWRankModel::with(['kondisiKeluarga.kk.citizens'])->get();
+		$dompdf = PDF::loadView('pdf.smart-ranking', compact('smartRanks'));
+
+		return $dompdf->download('SMARTRanking_' . date('YmdHis') . '.pdf');
+	}
+
 	public function store()
 	{
 		DB::table('saw_rank')->truncate();
@@ -95,7 +91,7 @@ class ManageZakatController extends Controller
 			}
 		}, 3);
 
-		return redirect('zakat.index')->with('toast_success', 'Zakat berhasil dihitung!');
+		return redirect('zakat')->with('toast_success', 'Zakat berhasil dihitung!');
 	}
 
 	public function saw(SAWRankingDataTable $SAWRankingDataTable)

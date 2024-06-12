@@ -3,10 +3,7 @@
 namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Support\Str;
 use App\Models\UsersModel;
-use App\Models\KKModel;
-use App\Models\LevelModel;
 
 class UsersModelFactory extends Factory
 {

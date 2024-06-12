@@ -5,6 +5,7 @@ namespace Database\Seeders;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use App\Models\KKModel;
 use App\Models\CitizensModel;
+use App\Models\KondisiKeluargaModel;
 use Illuminate\Database\Seeder;
 use Laravolt\Indonesia\Seeds\CitiesSeeder;
 use Laravolt\Indonesia\Seeds\DistrictsSeeder;
@@ -27,8 +28,14 @@ class DatabaseSeeder extends Seeder
 		$this->call(UserSeeder::class);
 		$this->call(RTSeeder::class);
 		$this->call(StatusHubunganWargaSeeder::class);
-		KKModel::factory(25)->create();
 		$this->call(TemplateSuratSeeder::class);
-		CitizensModel::factory(250)->create();
+		$families = KKModel::factory()
+			->count(15)
+			->create();
+		$families->each(function ($family) {
+			CitizensModel::factory()
+				->count(4)
+				->create(['id_kk' => $family->id_kk]);
+		});
 	}
 }
