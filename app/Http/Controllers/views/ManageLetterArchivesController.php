@@ -15,7 +15,7 @@ class ManageLetterArchivesController extends Controller
 		if ($request->ajax()) {
 			return $letterArchivesDataTable->render('components.tables.letter-archives');
 		}
-		$breadcrumb = 'Arsip Surat';
+		$breadcrumb = 'Arsip Surat Resmi';
 		return view('pages.letterArchives.index', [
 			'breadcrumb' => $breadcrumb,
 			'rts' => $rts

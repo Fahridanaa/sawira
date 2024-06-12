@@ -7,17 +7,17 @@ use App\Models\ArsipSuratModel;
 use App\Models\CitizensModel;
 use App\Models\RTModel;
 use App\Models\TemplateSuratModel;
-use Dompdf\Dompdf;
 use IntlDateFormatter;
 use PhpOffice\PhpWord\Exception\CopyFileException;
 use PhpOffice\PhpWord\Exception\CreateTemporaryFileException;
 use PhpOffice\PhpWord\Exception\Exception;
-use PhpOffice\PhpWord\IOFactory;
-use PhpOffice\PhpWord\Settings;
 use PhpOffice\PhpWord\TemplateProcessor;
 
 class LetterService
 {
+	protected ArsipSuratModel $letter;
+	protected TemplateSuratModel $letterTemplate;
+	protected CitizensModel $citizens;
 	function __construct()
 	{
 		$this->letter = new ArsipSuratModel();

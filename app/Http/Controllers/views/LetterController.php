@@ -9,7 +9,6 @@ use App\Services\LetterService;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
 
 class LetterController extends Controller
 {
@@ -64,9 +63,8 @@ class LetterController extends Controller
 					'tanggal_pengajuan' => $dateToday,
 					'data_surat' => $dataSurat
 				]);
-
 				return $this->letterService->downloadLetter($newSurat); // Return the response from the transaction
-			});
+				});
 
 			return $response; // Return the response from the storeLetter method
 		} catch (\Exception $e) {

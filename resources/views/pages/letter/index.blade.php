@@ -2,7 +2,7 @@
 @section('content')
     <section class="section">
         <div class="section-header justify-content-between">
-            <h1>Surat</h1>
+            <h1>Surat Resmi</h1>
             <div class="btn-group">
                 <button
                         class="btn btn-primary"

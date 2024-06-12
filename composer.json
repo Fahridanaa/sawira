@@ -10,7 +10,8 @@
   "require": {
     "php": "^8.1",
     "ext-intl": "*",
-    "dompdf/dompdf": "^3.0",
+    "barryvdh/laravel-dompdf": "^2.2",
+    "barryvdh/laravel-snappy": "^1.0",
     "guzzlehttp/guzzle": "^7.2",
     "laravel/fortify": "^1.21",
     "laravel/framework": "^10.0",
