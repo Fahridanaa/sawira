@@ -2,16 +2,11 @@
 
 namespace App\DataTables;
 
-use App\Models\CitizensModel;
 use App\Models\KKModel;
 use Illuminate\Database\Eloquent\Builder as QueryBuilder;
-use Illuminate\Support\Facades\Log;
 use Yajra\DataTables\EloquentDataTable;
 use Yajra\DataTables\Html\Builder as HtmlBuilder;
-use Yajra\DataTables\Html\Button;
 use Yajra\DataTables\Html\Column;
-use Yajra\DataTables\Html\Editor\Editor;
-use Yajra\DataTables\Html\Editor\Fields;
 use Yajra\DataTables\Services\DataTable;
 use Illuminate\Http\Request;
 
@@ -38,6 +33,11 @@ class FamilyHeadsDataTable extends DataTable
 			})
 			->addColumn('nama_lengkap', function ($row) {
 				return $row->citizens->where('id_hubungan', 1)->first()->nama_lengkap ?? 'N/A';
+			})
+			->filterColumn('nama_lengkap', function ($query, $keyword) {
+				$query->whereHas('citizens', function ($query) use ($keyword) {
+					$query->where('nama_lengkap', 'like', '%' . $keyword . '%');
+				});
 			})
 			->addColumn('id_rt', function ($row) {
 				return $row->id_rt;
@@ -79,7 +79,11 @@ class FamilyHeadsDataTable extends DataTable
 			->minifiedAjax()
 			->orderBy(1)
 			->selectStyleSingle()
-			->buttons('l');
+			->parameters([
+				'dom' => 'ft',
+				'processing' => true,
+				'serverSide' => true,
+			]);
 
 		if (auth()->user()->role !== 'rw') {
 			$html->buttons([

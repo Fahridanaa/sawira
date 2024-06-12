@@ -1,4 +1,3 @@
-@php use Illuminate\Support\Facades\Log; @endphp
 <div class="col-lg-4">
     <div class="card">
         <div class="card-header">
@@ -55,23 +54,10 @@
                                 dataArr.map(data => {
                                     sum += data;
                                 });
-                                let percentage = (value * 100 / sum).toFixed(2) + "%";
-                                return percentage;
+                                return (value * 100 / sum).toFixed(2) + "%";
                             },
                             color: '#fff',
                         }
-                        //     tooltip: {
-                        //         callbacks: {
-                        //             title: function (context) {
-                        //                 return 'Custom Title';
-                        //             },
-                        //             label: function (context) {
-                        //                 var label = context.label;
-                        //                 var value = context.parsed;
-                        //                 return label + ': ' + value;
-                        //             }
-                        //         }
-                        //     }
                     }
                 }
             });

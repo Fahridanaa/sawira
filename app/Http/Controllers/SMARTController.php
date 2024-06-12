@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Helpers\BobotConvertHelper;
-use App\Models\KondisiKeluargaModel;
 use App\Services\SMARTService;
 use App\Services\ZakatService;
 use Illuminate\Http\Request;

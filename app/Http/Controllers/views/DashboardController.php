@@ -4,9 +4,6 @@ namespace App\Http\Controllers\views;
 
 use App\Http\Controllers\Controller;
 use App\Models\CitizensModel;
-use App\Models\KKModel;
-use App\Models\RiwayatKKModel;
-use App\Models\RiwayatWargaModel;
 use App\Services\ChartService;
 
 class DashboardController extends Controller

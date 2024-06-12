@@ -15,7 +15,7 @@ class ZakatService
 			->whereNotNull('jumlah_tanggungan')
 			->whereNotNull('jumlah_hutang')
 			->whereNotNull('kondisi_tempat_tinggal')
-			->take(10)->get();
+			->take(15)->get();
 
 		$citizensData = KondisiKeluargaModel::with(['kk.citizens' => function ($query) {
 			$query->select('id_kk', 'nama_lengkap')->whereNotNull('id_kk')->whereNotNull('nama_lengkap')
@@ -25,7 +25,7 @@ class ZakatService
 			->whereNotNull('jumlah_tanggungan')
 			->whereNotNull('jumlah_hutang')
 			->whereNotNull('kondisi_tempat_tinggal')
-			->take(10)->get();
+			->take(15)->get();
 
 		return $kkData->merge($citizensData)->toArray();
 	}

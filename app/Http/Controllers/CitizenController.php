@@ -16,7 +16,6 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Requests\StoreCitizenRequest;
-use Dompdf\Dompdf;
 
 class CitizenController extends Controller
 {

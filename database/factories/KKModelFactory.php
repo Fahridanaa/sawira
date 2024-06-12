@@ -2,15 +2,11 @@
 
 namespace Database\Factories;
 
+use App\Models\KondisiKeluargaModel;
 use App\Models\UsersModel;
 use App\Models\RTModel;
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Support\Str;
 use App\Models\KKModel;
-use Laravolt\Indonesia\Models\Kabupaten;
-use Laravolt\Indonesia\Models\Kecamatan;
-use Laravolt\Indonesia\Models\Kelurahan;
-use Laravolt\Indonesia\Models\Province;
 
 class KKModelFactory extends Factory
 {
@@ -27,7 +23,7 @@ class KKModelFactory extends Factory
 	public function definition(): array
 	{
 		return [
-			'no_kk' => $this->faker->numerify('###############'),
+			'no_kk' => $this->faker->numerify('################'),
 			'id_user' => UsersModel::factory(),
 			'id_provinsi' => $this->faker->numberBetween(1, 2),
 			'id_kabupaten' => $this->faker->numberBetween(1, 2),
@@ -38,5 +34,12 @@ class KKModelFactory extends Factory
 			'kode_pos' => $this->faker->numerify('#####'),
 			'tanggal_masuk' => $this->faker->date(),
 		];
+	}
+
+	public function configure()
+	{
+		return $this->afterCreating(function (KKModel $kk) {
+			KondisiKeluargaModel::factory()->create(['id_kk' => $kk->id_kk]);
+		});
 	}
 }

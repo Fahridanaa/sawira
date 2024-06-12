@@ -41,10 +41,3 @@
         </div>
     </section>
 @endsection
-@push('js')
-    <script type="module">
-        $.(document).ready(function () {
-            console.log('ready');
-        });
-    </script>
-@endpush

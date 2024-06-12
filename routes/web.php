@@ -74,12 +74,9 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
 		Route::get('saw', [SAWController::class, 'index'])->name('saw');
 		Route::get('saw/export-pdf', [ManageZakatController::class, 'exportSAWPdf'])->name('saw.export.pdf');
 		Route::get('smart/export-pdf', [ManageZakatController::class, 'exportSMARTPdf'])->name('smart.export.pdf');
-		// Route::get('saw/export-pdf', [ManageZakatController::class, 'exportPdf'])->name('saw.export.pdf');
-		// Route::get('saw/export-pdf', [ManageZakatController::class, 'exportPdf'])->name('saw.export.pdf');
 		Route::get('saw/next', [SAWController::class, 'nextStep'])->name('nextSawStep');
 		Route::get('saw/prev', [SAWController::class, 'previousStep'])->name('prevSawStep');
 		Route::get('saw/step/{step}', [SAWController::class, 'changeStep'])->name('changeSawStep');
-
 		Route::get('smart', [SMARTController::class, 'index'])->name('smart');
 		Route::get('smart/next', [SMARTController::class, 'nextStep'])->name('nextSmartStep');
 		Route::get('smart/prev', [SMARTController::class, 'previousStep'])->name('prevSmartStep');
