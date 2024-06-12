@@ -196,7 +196,6 @@ select.form-control:not([size]):not([multiple]) {
     top: 0;
     left: 0;
     z-index: 5;
-    left: initial;
     right: 0;
 }
 
@@ -623,7 +622,6 @@ select.form-control:not([size]):not([multiple]) {
     width: 100%;
     height: 100%;
     background-color: rgba(255, 255, 255, 0.5);
-    z-index: 99;
     z-index: 99;
 }
 
@@ -1361,16 +1359,6 @@ table tr:hover .table-links {
     color: #fff;
 }
 
-.btn-progress {
-    position: relative;
-    background-image: url("data:image/svg+xml;base64,PHN2ZyB2ZXJzaW9uPSIxLjEiIGlkPSJsb2FkZXItMSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIgeD0iMHB4IiB5PSIwcHgiDQogd2lkdGg9IjQwcHgiIGhlaWdodD0iNDBweCIgdmlld0JveD0iMCAwIDUwIDUwIiBzdHlsZT0iZW5hYmxlLWJhY2tncm91bmQ6bmV3IDAgMCA1MCA1MDsiIHhtbDpzcGFjZT0icHJlc2VydmUiPg0KPHBhdGggZmlsbD0iI2ZmZiIgZD0iTTQzLjkzNSwyNS4xNDVjMC0xMC4zMTgtOC4zNjQtMTguNjgzLTE4LjY4My0xOC42ODNjLTEwLjMxOCwwLTE4LjY4Myw4LjM2NS0xOC42ODMsMTguNjgzaDQuMDY4YzAtOC4wNzEsNi41NDMtMTQuNjE1LDE0LjYxNS0xNC42MTVjOC4wNzIsMCwxNC42MTUsNi41NDMsMTQuNjE1LDE0LjYxNUg0My45MzV6Ij4NCjxhbmltYXRlVHJhbnNmb3JtIGF0dHJpYnV0ZVR5cGU9InhtbCINCiAgYXR0cmlidXRlTmFtZT0idHJhbnNmb3JtIg0KICB0eXBlPSJyb3RhdGUiDQogIGZyb209IjAgMjUgMjUiDQogIHRvPSIzNjAgMjUgMjUiDQogIGR1cj0iMC42cyINCiAgcmVwZWF0Q291bnQ9ImluZGVmaW5pdGUiLz4NCjwvcGF0aD4NCjwvc3ZnPg0K");
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: 30px;
-    color: transparent !important;
-    pointer-events: none;
-}
-
 /* 3.18 Navbar */
 .navbar {
     height: 70px;
@@ -1383,7 +1371,7 @@ table tr:hover .table-links {
 
 .navbar.active {
     background-color: #6777ef;
-    box-shadow: rgba(103, 119, 239, 0.2) rgba(0, 0, 0, 0.03);
+    box-shadow: 0 4px 6px rgba(103, 119, 239, 0.2), 0 1px 3px rgba(0, 0, 0, 0.03);
 }
 
 .navbar-bg {
@@ -1474,7 +1462,7 @@ table tr:hover .table-links {
     left: 34px;
     content: "\f0d8";
     font-weight: 600;
-    font-family: "Font Awesome 5 Free";
+    font-family: "Font Awesome 5 Free", sans-serif;
     color: #fff;
     font-size: 30px;
 }
@@ -1498,7 +1486,6 @@ table tr:hover .table-links {
     text-decoration: none;
     color: #34395e;
     font-weight: 600;
-    display: flex;
     align-items: center;
 }
 
@@ -1736,7 +1723,6 @@ table tr:hover .table-links {
     color: #191d21 !important;
     padding: 10px 20px;
     line-height: 20px;
-    color: #98a6ad;
 }
 
 .dropdown-menu.dropdown-menu-sm a {
@@ -1983,7 +1969,7 @@ body {
     background-color: #f4f6f9;
     font-size: 14px;
     font-weight: 400;
-    font-family: "Nunito", "Segoe UI", arial;
+    font-family: "Nunito", "Segoe UI", arial, sans-serif;
     color: #6c757d;
 }
 
@@ -2065,7 +2051,6 @@ body {
 }
 
 .section .section-header {
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.03);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.03);
     background-color: #fff;
     border-radius: 3px;
@@ -2360,7 +2345,7 @@ body.sidebar-mini .main-sidebar .sidebar-menu > li ul.dropdown-menu li a {
 
 body.sidebar-mini .main-sidebar .sidebar-menu > li ul.dropdown-menu li a.has-dropdown:after {
     content: "\f054";
-    font-family: "Font Awesome 5 Free";
+    font-family: "Font Awesome 5 Free", sans-serif;
     font-weight: 900;
     position: absolute;
     top: 50%;
@@ -2499,7 +2484,7 @@ body.sidebar-mini .main-content, body.sidebar-mini .main-footer {
 
 .main-sidebar .sidebar-menu li a.has-dropdown:after {
     content: "\f054";
-    font-family: "Font Awesome 5 Free";
+    font-family: "Font Awesome 5 Free", sans-serif;
     font-weight: 900;
     position: absolute;
     top: 50%;

@@ -19,9 +19,9 @@
 </div>
 @push('js')
     <script type="module">
-        var ctx = document.getElementById("myChart2").getContext('2d');
-        
-        var chart = new Chart(ctx, {
+        const ctx = document.getElementById("myChart2").getContext('2d');
+
+        const chart = new Chart(ctx, {
             type: 'bar',
             data: {
                 datasets: [

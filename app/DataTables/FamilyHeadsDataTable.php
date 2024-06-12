@@ -34,6 +34,11 @@ class FamilyHeadsDataTable extends DataTable
 			->addColumn('nama_lengkap', function ($row) {
 				return $row->citizens->where('id_hubungan', 1)->first()->nama_lengkap ?? 'N/A';
 			})
+			->filterColumn('nama_lengkap', function ($query, $keyword) {
+				$query->whereHas('citizens', function ($query) use ($keyword) {
+					$query->where('nama_lengkap', 'like', '%' . $keyword . '%');
+				});
+			})
 			->addColumn('id_rt', function ($row) {
 				return $row->id_rt;
 			})
@@ -74,7 +79,11 @@ class FamilyHeadsDataTable extends DataTable
 			->minifiedAjax()
 			->orderBy(1)
 			->selectStyleSingle()
-			->buttons('l');
+			->parameters([
+				'dom' => 'ft',
+				'processing' => true,
+				'serverSide' => true,
+			]);
 
 		if (auth()->user()->role !== 'rw') {
 			$html->buttons([

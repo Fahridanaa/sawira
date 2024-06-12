@@ -78,9 +78,9 @@ class FamilyInformationDataTable extends DataTable
 			->orderBy(1)
 			->selectStyleSingle()
 			->parameters([
-				'dom' => 't', // This line will only show table
-				'paging' => false, // This will disable the pagination
-				'searching' => false, // this will disable the search bar
+				'dom' => 't',
+				'paging' => false,
+				'searching' => false,
 			]);
 	}
 

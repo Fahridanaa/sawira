@@ -75,16 +75,10 @@ class CitizensDataTable extends DataTable
 			->minifiedAjax()
 			->orderBy(1)
 			->selectStyleSingle()
-			->buttons([
-				// [
-				// 	'extend' => 'export',
-				// 	'text' => 'Export to PDF',
-				// 	'action' => 'function ( e, dt, node, config ) {
-				// 						window.location.href = "' . route('export.pdf',['id_rt'=>request()->input('id_rt')]) . '";
-				// 					 }',
-				// 	'className' => 'btn btn-danger',
-				// ],
-				'l'
+			->parameters([
+				'dom' => 'ft',
+				'processing' => true,
+				'serverSide' => true,
 			]);
 
 		if (auth()->user()->role !== 'rw') {
@@ -108,7 +102,7 @@ class CitizensDataTable extends DataTable
 	public function getColumns(): array
 	{
 		$columns = [
-			Column::make('nama_lengkap'),
+			Column::make('nama_lengkap')->searchable(),
 			Column::make('asal_tempat'),
 			Column::make('tanggal_lahir'),
 			Column::make('no_telp'),

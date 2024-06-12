@@ -41,7 +41,6 @@ class FamilyHistoryDataTable extends DataTable
 				return $row->KK->no_kk ?? 'N/A';
 			})
 			->addColumn('nama_lengkap', function ($nama) {
-				// return $nama->KK->citizens->withTrashed()->where('id_hubungan', 1)->first()->nama_lengkap ?? 'N/A';
 				$headOfFamily = $nama->KK->citizens()->withTrashed()->where('id_hubungan', 1)->first();
 				return $headOfFamily->nama_lengkap ?? 'N/A';
 			})
