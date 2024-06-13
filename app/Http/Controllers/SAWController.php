@@ -55,7 +55,7 @@ class SAWController extends Controller
 			$sawRank = $request->session()->get('sawRank');
 		}
 
-		return view('pages.zakat.saw.index', [
+		return view('pages.zakat.SAW.index', [
 			'step' => $sawStep,
 			'alternativeSPK' => $alternativeSPK,
 			'alternativeSPKConvert' => $alternativeSPKConvert,

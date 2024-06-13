@@ -58,7 +58,7 @@ class SMARTController extends Controller
 			$smartRank = $request->session()->get('smartRank');
 		}
 
-		return view('pages.zakat.smart.index', [
+		return view('pages.zakat.SMART.index', [
 			'step' => $smartStep,
 			'alternativeSPK' => $alternativeSPK,
 			'alternativeSPKConvert' => $alternativeSPKConvert,
