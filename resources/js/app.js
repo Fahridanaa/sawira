@@ -1,6 +1,6 @@
-import jQuery from 'jquery'
+import $ from 'jquery';
 
-window.$ = window.jQuery = jQuery
+window.$ = window.jQuery = $;
 import 'jquery-ui-dist/jquery-ui.min';
 import 'jquery.nicescroll';
 import swal from 'sweetalert2'
