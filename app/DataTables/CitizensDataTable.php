@@ -69,7 +69,7 @@ class CitizensDataTable extends DataTable
 	 */
 	public function html(): HtmlBuilder
 	{
-		$html = $this->builder()
+		return $this->builder()
 			->setTableId('citizens-table')
 			->columns($this->getColumns())
 			->minifiedAjax()
@@ -80,20 +80,6 @@ class CitizensDataTable extends DataTable
 				'processing' => true,
 				'serverSide' => true,
 			]);
-
-		if (auth()->user()->role !== 'rw') {
-			$html->buttons([
-				[
-					'text' => 'Tambah Warga',
-					'action' => 'function ( e, dt, node, config ) {
-										window.location.href = "' . route('citizens.create') . '";
-									 }',
-					'className' => 'btn btn-primary col-6 col-sm-12 col-md-12 mt-2',
-				]
-			]);
-		};
-
-		return $html;
 	}
 
 	/**

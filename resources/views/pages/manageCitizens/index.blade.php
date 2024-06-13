@@ -62,6 +62,16 @@
                                                 </div>
                                             </div>
                                         @endif
+                                        @if(!\App\Helpers\SidebarHelper::hasAnyRole(['rw']))
+                                            <form action="{{ route('family-heads.create') }}">
+                                                <div class="btn-group">
+                                                    <button class="btn btn-primary"
+                                                            id="add-btn">
+                                                        Tambah Keluarga
+                                                    </button>
+                                                </div>
+                                            </form>
+                                        @endif
                                         <div class="tab-pane fade"
                                              id="family-heads"
                                              role="tabpanel"
@@ -141,7 +151,20 @@
 
                 // Load content dynamically
                 loadTabContent(tabId);
+                window.onpopstate();
+
+                if (tabId === 'family-heads') {
+                    $('form').attr('action', "{{ route('family-heads.create') }}");
+                } else if (tabId === 'citizens') {
+                    $('form').attr('action', "{{ route('citizens.create') }}");
+                }
             });
+
+            window.onpopstate = function () {
+                const urlParams = new URLSearchParams(window.location.search);
+                const activeTab = urlParams.get('activeTab');
+                $('#add-btn').text((activeTab === 'family-heads') ? 'Tambah Keluarga' : 'Tambah Warga');
+            };
 
             // Load content based on URL parameter on page load
             function setActiveTabAndUpdateContent(tabName) {

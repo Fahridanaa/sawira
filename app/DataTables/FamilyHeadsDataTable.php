@@ -80,7 +80,7 @@ class FamilyHeadsDataTable extends DataTable
 			->orderBy(1)
 			->selectStyleSingle()
 			->parameters([
-				'dom' => 'ft',
+				'dom' => 'Bft',
 				'processing' => true,
 				'serverSide' => true,
 			]);
