@@ -25,7 +25,7 @@
                             <form id="family-form">
                                 @csrf
                                 <div class="row">
-                                    <div class="col-6">
+                                    <div class="col-sm-12 col-md-6">
                                         <div class="form-group">
                                             <label for="no_kk">No. KK</label>
                                             <input type="text"
@@ -42,7 +42,7 @@
                                     <div class="col-12">
                                         <h4 style="font-size: 1rem">Alamat</h4>
                                     </div>
-                                    <div class="col-6">
+                                    <div class="col-sm-12 col-md-6">
                                         <div class="form-group">
                                             <label for="id_provinsi">Provinsi</label>
                                             <select class="form-control"
@@ -63,7 +63,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-6">
+                                    <div class="col-sm-12 col-md-6">
                                         <div class="form-group">
                                             <label for="id_kabupaten">Kabupaten/Kota</label>
                                             <select class="form-control"
@@ -77,7 +77,7 @@
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <div class="col-6">
+                                    <div class="col-sm-12 col-md-6">
                                         <div class="form-group">
                                             <label for="id_kecamatan">Kecamatan</label>
                                             <select class="form-control"
@@ -89,7 +89,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-6">
+                                    <div class="col-sm-12 col-md-6">
                                         <div class="form-group">
                                             <label for="id_kelurahan">Desa/Kelurahan</label>
                                             <select class="form-control"
@@ -103,7 +103,7 @@
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <div class="col-6">
+                                    <div class="col-sm-12 col-md-6">
                                         <div class="form-group">
                                             <label for="kode_pos">Kode Pos</label>
                                             <input type="text"
@@ -117,7 +117,7 @@
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <div class="col-12">
+                                    <div class="col-sm-12 col-md-6">
                                         <div class="form-group">
                                             <label for="alamat">Alamat</label>
                                             <input type="text"

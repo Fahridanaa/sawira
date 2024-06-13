@@ -64,7 +64,7 @@
                                         @endif
                                         @if(!\App\Helpers\SidebarHelper::hasAnyRole(['rw']))
                                             <form action="{{ route('family-heads.create') }}">
-                                                <div class="btn-group mt-5">
+                                                <div class="btn-group my-2">
                                                     <button class="btn btn-primary"
                                                             id="add-btn">
                                                         Tambah Keluarga

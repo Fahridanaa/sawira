@@ -27,7 +27,7 @@
                                   id="family-member-form">
                                 @csrf
                                 <div class="row">
-                                    <div class="col-6">
+                                    <div class="col-sm-12 col-md-6">
                                         <div class="form-group">
                                             <label for="id_kk">No. KK</label>
                                             <select class="form-control"
@@ -46,7 +46,7 @@
                                             </select>
                                         </div>
                                     </div>
-                                    <div class="col-6">
+                                    <div class="col-sm-12 col-md-6">
                                         <div class="form-group">
                                             <label for="kepala_keluarga">Nama Kepala Keluarga</label>
                                             <input type="text"
