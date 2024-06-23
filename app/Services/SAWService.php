@@ -92,9 +92,7 @@ class SAWService
 			return $a['sum'] <=> $b['sum'];
 		});
 
-		$saw = array_values($saw);
-
-		return $saw;
+		return array_values($saw);
 	}
 
 	public function fullCalculatedSaw($data)
