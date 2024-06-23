@@ -15,19 +15,23 @@ class ManageCitizens extends Controller
 	 */
 	public function index(Request $request)
 	{
-		$rts = RTModel::all();
+		try {
+			$rts = RTModel::all();
 
-		if ($request->ajax()) {
-			$dataTable = new CitizensDataTable;
-			$familyHeads = new FamilyHeadsDataTable;
-			$data = [
-				'citizensTable' => $dataTable->render('components.tables.citizens'),
-				'familyHeadsTable' => $familyHeads->render('components.tables.family-heads'),
-			];
-			return response()->json($data);
+			if ($request->ajax()) {
+				$dataTable = new CitizensDataTable;
+				$familyHeads = new FamilyHeadsDataTable;
+				$data = [
+					'citizensTable' => $dataTable->render('components.tables.citizens'),
+					'familyHeadsTable' => $familyHeads->render('components.tables.family-heads'),
+				];
+				return response()->json($data);
+			}
+
+			$breadcrumb = 'Kelola Penduduk';
+			return view('pages.manageCitizens.index', ['breadcrumb' => $breadcrumb], compact('rts'));
+		} catch (\Exception $e) {
+			return back()->with('toast_error', 'Terjadi kesalahan saat memuat data warga!');
 		}
-
-		$breadcrumb = 'Kelola Penduduk';
-		return view('pages.manageCitizens.index', ['breadcrumb' => $breadcrumb], compact('rts'));
 	}
 }

@@ -33,14 +33,18 @@ class CitizenController extends Controller
 	 */
 	public function index(CitizensDataTable $citizensDataTable, Request $request)
 	{
-		if ($request->has('id_rt')) {
-			$id_rt = $request->input('id_rt');
-			$citizens = CitizensModel::whereHas('kk', function ($query) use ($id_rt) {
-				$query->where('id_rt', $id_rt);
-			})->get();
-			return $citizensDataTable->render('components.tables.citizens', compact('citizens'));
+		try {
+			if ($request->has('id_rt')) {
+				$id_rt = $request->input('id_rt');
+				$citizens = CitizensModel::whereHas('kk', function ($query) use ($id_rt) {
+					$query->where('id_rt', $id_rt);
+				})->get();
+				return $citizensDataTable->render('components.tables.citizens', compact('citizens'));
+			}
+			return $citizensDataTable->render('components.tables.citizens');
+		} catch (\Exception $e) {
+			return back()->with('toast_error', 'Terjadi kesalahan saat memuat data warga!');
 		}
-		return $citizensDataTable->render('components.tables.citizens');
 	}
 
 	/**
@@ -48,15 +52,22 @@ class CitizenController extends Controller
 	 */
 	public function create()
 	{
-		$roleUser = auth()->user()->role;
-		$rt = preg_replace("/[^0-9]/", "", $roleUser);
+		try {
+			if (auth()->check()) {
+				$roleUser = auth()->user()->role;
+				$rt = preg_replace("/[^0-9]/", "", $roleUser);
 
-		$records = $this->familyService->getKKRecords($rt);
+				$records = $this->familyService->getKKRecords($rt);
 
-		$kkRecords = $records['kkRecords'];
-		$headFamilyRecords = $records['headFamilyRecords'];
+				$kkRecords = $records['kkRecords'];
+				$headFamilyRecords = $records['headFamilyRecords'];
 
-		return view('pages.citizen.create', ['kkRecords' => $kkRecords, 'headFamilyRecords' => json_encode($headFamilyRecords)]);
+				return view('pages.citizen.create', ['kkRecords' => $kkRecords, 'headFamilyRecords' => json_encode($headFamilyRecords)]);
+			}
+			return redirect('login');
+		} catch (\Exception $e) {
+			return back()->with('toast_error', 'Terjadi kesalahan saat membuat data warga!');
+		}
 	}
 
 	/**
@@ -86,8 +97,12 @@ class CitizenController extends Controller
 	 */
 	public function show(string $id)
 	{
-		$citizen = CitizensModel::find($id);
-		return response()->json($citizen);
+		try {
+			$citizen = CitizensModel::find($id);
+			return response()->json($citizen);
+		} catch (\Exception $e) {
+			return response()->json(['status' => 'error', 'message' => $e->getMessage()], 400);
+		}
 	}
 
 	/**
@@ -95,15 +110,22 @@ class CitizenController extends Controller
 	 */
 	public function edit(string $id)
 	{
-		$citizen = CitizensModel::findOrFail($id);
-		$roleUser = auth()->user()->role;
-		$rt = preg_replace("/[^0-9]/", "", $roleUser);
+		try {
+			if (auth()->check()) {
+				$citizen = CitizensModel::findOrFail($id);
+				$roleUser = auth()->user()->role;
+				$rt = preg_replace("/[^0-9]/", "", $roleUser);
 
-		$records = $this->familyService->getKKRecords($rt);
+				$records = $this->familyService->getKKRecords($rt);
 
-		$kkRecords = $records['kkRecords'];
-		$headFamilyRecords = $records['headFamilyRecords'];
-		return view('pages.citizen.edit', ['citizen' => $citizen, 'kkRecords' => $kkRecords, 'headFamilyRecords' => json_encode($headFamilyRecords)]);
+				$kkRecords = $records['kkRecords'];
+				$headFamilyRecords = $records['headFamilyRecords'];
+				return view('pages.citizen.edit', ['citizen' => $citizen, 'kkRecords' => $kkRecords, 'headFamilyRecords' => json_encode($headFamilyRecords)]);
+			}
+			return redirect('login');
+		} catch (\Exception $e) {
+			return response()->json(['status' => 'error', 'message' => $e->getMessage()], 400);
+		}
 	}
 
 	/**
@@ -112,7 +134,6 @@ class CitizenController extends Controller
 	public function update(Request $request, string $citizen)
 	{
 		try {
-			// Pass the citizen ID to the StoreCitizenRequest
 			$storeCitizenRequest = new StoreCitizenRequest($citizen);
 			$citizenValidator = Validator::make($request->all(), $storeCitizenRequest->rules());
 
@@ -129,17 +150,21 @@ class CitizenController extends Controller
 
 	public function upload(Request $request, string $id)
 	{
-		$request->validate([
-			'file_surat' => 'required|file',
-		]);
+		try {
+			$request->validate([
+				'file_surat' => 'required|file',
+			]);
 
-		DB::transaction(function () use ($request, $id) {
-			$citizen = RiwayatWargaModel::findOrFail($id);
+			DB::transaction(function () use ($request, $id) {
+				$citizen = RiwayatWargaModel::findOrFail($id);
 
-			$this->historyService->uploadFile($citizen, $request);
-		});
+				$this->historyService->uploadFile($citizen, $request);
+			});
 
-		return redirect()->back();
+			return redirect()->back();
+		} catch (\Exception $e) {
+			return response()->json(['status' => 'error', 'message' => $e->getMessage()], 400);
+		}
 	}
 
 	public function download($id)
@@ -156,68 +181,74 @@ class CitizenController extends Controller
 	 */
 	public function softDeleteAndAddToHistory(StoreHistoryRequest $storeHistoryRequest, $id_warga)
 	{
-		DB::transaction(function () use ($storeHistoryRequest, $id_warga) {
-			$citizen = CitizensModel::withTrashed()->findOrFail($id_warga);
-			$citizen->delete();
-			if ($citizen->id_hubungan === 1) {
-				$kk = KKModel::withTrashed()->findOrFail($citizen->id_kk);
-				$citizens = CitizensModel::withTrashed()->where('id_kk', $citizen->id_kk)->get();
+		try {
+			DB::transaction(function () use ($storeHistoryRequest, $id_warga) {
+				$citizen = CitizensModel::withTrashed()->findOrFail($id_warga);
+				$citizen->delete();
+				if ($citizen->id_hubungan === 1) {
+					$kk = KKModel::withTrashed()->findOrFail($citizen->id_kk);
+					$citizens = CitizensModel::withTrashed()->where('id_kk', $citizen->id_kk)->get();
 
-				$headOfFamily = $citizens->where('id_hubungan', 1)->first();
+					$headOfFamily = $citizens->where('id_hubungan', 1)->first();
 
-				foreach ($citizens as $citizen) {
+					foreach ($citizens as $citizen) {
+						$citizen->delete();
+
+						RiwayatWargaModel::create([
+							'id_warga' => $citizen->id_warga,
+							'tanggal' => Carbon::now(),
+							'status' => $storeHistoryRequest->status,
+						]);
+					}
+
+					$kk->delete();
+
+					RiwayatKKModel::create([
+						'id_kk' => $citizen->id_kk,
+						'tanggal' => Carbon::now(),
+						'status' => $storeHistoryRequest->status,
+						'nama_lengkap' => $headOfFamily->nama_lengkap ?? 'N/A', // Simpan nama kepala keluarga,
+					]);
+				} else {
 					$citizen->delete();
 
 					RiwayatWargaModel::create([
-						'id_warga' => $citizen->id_warga,
+						'id_warga' => $id_warga,
 						'tanggal' => Carbon::now(),
 						'status' => $storeHistoryRequest->status,
 					]);
 				}
-
-				$kk->delete();
-
-				RiwayatKKModel::create([
-					'id_kk' => $citizen->id_kk,
-					'tanggal' => Carbon::now(),
-					'status' => $storeHistoryRequest->status,
-					'nama_lengkap' => $headOfFamily->nama_lengkap ?? 'N/A', // Simpan nama kepala keluarga,
-				]);
-			} else {
-				$citizen->delete();
-
-				RiwayatWargaModel::create([
-					'id_warga' => $id_warga,
-					'tanggal' => Carbon::now(),
-					'status' => $storeHistoryRequest->status,
-				]);
-			}
-		});
-		return redirect('history')->with('toast_success', 'Data Warga Berhasil Dihapus!');
+			});
+			return redirect('history')->with('toast_success', 'Data Warga Berhasil Dihapus!');
+		} catch (\Exception $e) {
+			return response()->json(['status' => 'error', 'message' => $e->getMessage()], 400);
+		}
 	}
 
 	public function restore($id)
 	{
-		$citizenHistory = RiwayatWargaModel::findOrFail($id);
-		$citizen = CitizensModel::withTrashed()->find($citizenHistory->id_warga);
+		try {
+			$citizenHistory = RiwayatWargaModel::findOrFail($id);
+			$citizen = CitizensModel::withTrashed()->find($citizenHistory->id_warga);
 
-		if (!$citizen || $citizenHistory->status === 'Kematian') {
-			return back()->with('toast_error', 'Warga tidak ditemukan');
+			if (!$citizen || $citizenHistory->status === 'Kematian') {
+				return back()->with('toast_error', 'Warga tidak ditemukan');
+			}
+
+			if ($citizen->file_surat) {
+				Storage::delete('public/surat/' . $citizenHistory->file_surat);
+			}
+
+			if ($citizen->id_hubungan === 1) {
+				$kk = KKModel::withTrashed()->findOrFail($citizen->id_kk);
+				$kk->restore();
+			}
+			$citizen->restore();
+			$citizenHistory->delete();
+
+			return redirect('penduduk')->with('toast_success', 'Data Warga Berhasil Dikembalikan!');
+		} catch (\Exception $e) {
+			return response()->json(['status' => 'error', 'message' => $e->getMessage()], 400);
 		}
-
-		if ($citizen->file_surat) {
-			Storage::delete('public/surat/' . $citizenHistory->file_surat);
-		}
-
-		if ($citizen->id_hubungan === 1) {
-			$kk = KKModel::withTrashed()->findOrFail($citizen->id_kk);
-			$kk->restore();
-		}
-		$citizen->restore();
-		$citizenHistory->delete();
-
-		// Restore citizens yang terkait
-		// CitizensModel::withTrashed()->where('id_kk', $kk->id_kk)->restore();
-		return redirect('penduduk')->with('toast_success', 'Data Warga Berhasil Dikembalikan!');
 	}
 }
