@@ -63,7 +63,8 @@
                                             </div>
                                         @endif
                                         @if(!\App\Helpers\SidebarHelper::hasAnyRole(['rw']))
-                                            <form action="{{ route('family-heads.create') }}">
+                                            <form action="{{ route('family-heads.create') }}"
+                                                  id="add-data-form">
                                                 <div class="btn-group my-2">
                                                     <button class="btn btn-primary"
                                                             id="add-btn">
@@ -108,22 +109,18 @@
         .section-header {
             justify-content: space-between;
         }
-
-        .dt-buttons {
-            float: right;
-        }
     </style>
 @endpush
 @push('js')
     {{--    <script src="{{ asset('assets/js/page/modules-datatables.js') }}"></script>--}}
     <script type="module">
-        var citizensEditUrl = "{{ route('citizens.edit', ['citizen' => '__id__']) }}";
+        const citizensEditUrl = "{{ route('citizens.edit', ['citizen' => '__id__']) }}";
         $(document).on('click', '.edit-btn', function () {
             let id = $(this).parent().data('id');
             window.location.href = citizensEditUrl.replace('__id__', id);
         });
 
-        var familyShowUrl = "{{ route('family-heads.show', ['family_head' => '__id__']) }}";
+        const familyShowUrl = "{{ route('family-heads.show', ['family_head' => '__id__']) }}";
 
         $(document).on('click', '.btn-info', function () {
             let id = $(this).parent().data('id');
@@ -131,6 +128,7 @@
         });
 
         $(document).ready(() => {
+            const form = $('form#add-data-form');
             const tableIds = ['#citizens-table', '#family-heads-table'];
             $('#citizens-table').removeClass('table-bordered');
             $('#citizens-table_processing').empty();
@@ -140,24 +138,19 @@
                 const target = $(this).attr("href");
                 const tabId = target.substring(1);
 
-                var url = new URL(window.location.href);
+                const url = new URL(window.location.href);
                 url.searchParams.set('activeTab', tabId);
                 window.history.pushState({}, '', url);
 
-                // Remove active and show classes from other tabs
                 $(target).addClass("active show").siblings().removeClass("active show");
                 $('a[data-toggle="tab"]').removeClass('active show');
                 $(this).addClass('active show');
 
-                // Load content dynamically
                 loadTabContent(tabId);
                 window.onpopstate();
 
-                if (tabId === 'family-heads') {
-                    $('form').attr('action', "{{ route('family-heads.create') }}");
-                } else if (tabId === 'citizens') {
-                    $('form').attr('action', "{{ route('citizens.create') }}");
-                }
+                let route = (tabId === 'family-heads') ? "{{ route('family-heads.create') }}" : "{{ route('citizens.create') }}";
+                form.attr('action', route);
             });
 
             window.onpopstate = function () {
@@ -166,7 +159,6 @@
                 $('#add-btn').text((activeTab === 'family-heads') ? 'Tambah Keluarga' : 'Tambah Warga');
             };
 
-            // Load content based on URL parameter on page load
             function setActiveTabAndUpdateContent(tabName) {
                 $('a[data-toggle="tab"][href="#' + tabName + '"]').addClass('active show');
                 $('#' + tabName).addClass('active show').siblings().removeClass('active show');
@@ -197,9 +189,6 @@
 
                         destroyTable(tableIds);
                     },
-                    error: function (xhr) {
-                        console.log("Error loading tab content:", xhr);
-                    }
                 });
             }
 
@@ -212,18 +201,15 @@
             }
 
             $('#id_rt').change(function () {
-                var id_rt = $(this).val();
+                const id_rt = $(this).val();
                 if (id_rt) {
                     $.ajax({
-                        url: "{{ route('citizens.index') }}", // Menggunakan route yang tepat
+                        url: "{{ route('citizens.index') }}",
                         type: "GET",
                         data: {id_rt: id_rt},
                         success: function (data) {
                             $('#citizens').html(data);
                         },
-                        error: function (xhr) {
-                            console.log("Error loading table:", xhr);
-                        }
                     });
 
                     $.ajax({
@@ -233,13 +219,10 @@
                         success: function (data) {
                             $('#family-heads').html(data);
                         },
-                        error: function (xhr) {
-                            console.log("Error loading family heads table:", xhr);
-                        }
                     });
                 } else {
-                    $('#citizens').html(''); // Kosongkan tabel jika tidak ada RT yang dipilih
-                    $('#family-heads').html(''); // Kosongkan tabel Family Heads jika tidak ada RT yang dipilih
+                    $('#citizens').html('');
+                    $('#family-heads').html('');
                 }
             });
         });

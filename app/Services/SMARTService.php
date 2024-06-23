@@ -55,7 +55,7 @@ class SMARTService
 					$result[$key][$k] = $v;
 					continue;
 				}
-				$denominator = ($max[$k] - $min[$k]) != 0 ? ($max[$k] - $min[$k]) : 1;
+				$denominator = $max[$k] != $min[$k] ? ($max[$k] - $min[$k]) : 1;
 				if ($k === 0 || $k === 2) {
 					$result[$key][$k] = round((($max[$k] - $v) / $denominator) * 100, 3);
 				} else {
@@ -100,9 +100,7 @@ class SMARTService
 			return $a['sum'] <=> $b['sum'];
 		});
 
-		$smart = array_values($smart);
-
-		return $smart;
+		return array_values($smart);
 	}
 
 	public function fullCalculatedSmart($data)

@@ -39,8 +39,7 @@ class FamilyController extends Controller
 			$id_rt = $request->input('id_rt');
 			$familyHeads = KKModel::where('id_rt', $id_rt)->get();
 		} else {
-			// Handle case where no id_rt is provided (optional)
-			$familyHeads = KKModel::all(); // Or fetch all family heads if no filter is applied
+			$familyHeads = KKModel::all();
 		}
 
 		return $familyHeadDataTable->render('components.tables.family-heads', compact('familyHeads'));
@@ -65,16 +64,13 @@ class FamilyController extends Controller
 		$errors = [];
 
 		try {
-			// Validate family data
 			$familyValidator = Validator::make($request->family, (new StoreFamilyCardRequest)->rules());
 			if ($familyValidator->fails()) {
 				$errors['family'] = $familyValidator->errors()->toArray();
 			}
-
-			// Validate citizens data without id_kk
 			$citizens = $request->citizens;
 			$citizenRules = (new StoreCitizenRequest)->rules();
-			unset($citizenRules['id_kk']); // Remove id_kk rule temporarily
+			unset($citizenRules['id_kk']);
 			foreach ($citizens as $i => $citizen) {
 				$citizenValidator = Validator::make($citizen, $citizenRules);
 				if ($citizenValidator->fails()) {
@@ -82,7 +78,6 @@ class FamilyController extends Controller
 				}
 			}
 
-			// If any errors found, return immediately
 			if (!empty($errors)) {
 				return response()->json(['status' => 'error', 'message' => $errors], 400);
 			}
@@ -90,7 +85,6 @@ class FamilyController extends Controller
 			DB::transaction(function () use ($familyValidator, $citizens, &$index) {
 				$familyData = $familyValidator->validated();
 
-				// Create user
 				$roleUser = auth()->user()->role;
 				$rt = preg_replace("/[^0-9]/", "", $roleUser);
 				$tanggalHariIni = Carbon::now();
@@ -102,7 +96,6 @@ class FamilyController extends Controller
 					'role' => 'warga',
 				]);
 
-				// Create family
 				$newFamily = KKModel::create(array_merge($familyData, [
 					'id_user' => $user->id_user,
 					'id_rt' => $rt,
@@ -113,7 +106,6 @@ class FamilyController extends Controller
 					'id_kk' => $newFamily->id_kk,
 				]);
 
-				// Validate and create each citizen with id_kk
 				foreach ($citizens as $citizen) {
 					$citizenValidator = Validator::make(array_merge($citizen, [
 						'id_kk' => $newFamily->id_kk,
@@ -262,7 +254,6 @@ class FamilyController extends Controller
 		$kkHistory->delete();
 		$kk->restore();
 
-		// Restore citizens yang terkait
 		CitizensModel::withTrashed()->where('id_kk', $kk->id_kk)->restore();
 		return redirect('penduduk')->with('toast_success', 'Data Keluarga Berhasil Dikembalikan!');
 	}
